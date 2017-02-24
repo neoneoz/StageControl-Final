@@ -170,7 +170,6 @@ GameObject:
   - 4: {fileID: 470406}
   - 114: {fileID: 11499218}
   - 114: {fileID: 11408376}
-  - 114: {fileID: 11440930}
   - 114: {fileID: 11447808}
   m_Layer: 0
   m_Name: Tinker Lab
@@ -674,18 +673,6 @@ MonoBehaviour:
   isfriendly: 1
   m_isDistract: 0
   buildTimer: 30
---- !u!114 &11440930
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21fd192da9648e4cb6e24850765ff21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAX_HEALTH: 100
 --- !u!114 &11447808
 MonoBehaviour:
   m_ObjectHideFlags: 1

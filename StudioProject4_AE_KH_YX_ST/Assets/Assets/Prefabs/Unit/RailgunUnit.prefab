@@ -220,8 +220,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 462498}
-  - 114: {fileID: 11459104}
-  - 114: {fileID: 11464362}
   - 114: {fileID: 11434482}
   - 114: {fileID: 11485962}
   - 114: {fileID: 11457454}
@@ -859,13 +857,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9410bef31ae534f8061d7e8ed6ff4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_type: 0
   m_attkRadius: 7
   m_attkDamage: 0
   m_attkAnim: {fileID: 7400000, guid: e49998e06cf2d414d942fb12b2582da9, type: 3}
+  m_attackspeed: 0
+  m_health: 0
   PathToEnd: []
   pathindex: 0
   m_isFriendly: 0
+  m_targetEnemy: {fileID: 0}
   m_building: {fileID: 0}
+  projectile: {fileID: 0}
 --- !u!114 &11457454
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -882,29 +885,6 @@ MonoBehaviour:
   FlockingList: []
   leader: {fileID: 0}
   isleader: 1
---- !u!114 &11459104
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 189996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21fd192da9648e4cb6e24850765ff21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAX_HEALTH: 100
---- !u!114 &11464362
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 189996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d49d1418f81a0a4fa1b07cf8de5ae69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11485962
 MonoBehaviour:
   m_ObjectHideFlags: 1

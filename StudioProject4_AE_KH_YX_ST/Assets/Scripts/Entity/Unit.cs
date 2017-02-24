@@ -16,8 +16,6 @@ public enum UNIT_TEAM
 /**/
 // Controller class of all units
 /**/
-[RequireComponent(typeof(Health))]
-[RequireComponent(typeof(HealthBar))]
 [RequireComponent(typeof(Flocking))]
 [RequireComponent(typeof(VMovement))]
 public class Unit : MonoBehaviour {
@@ -191,7 +189,7 @@ public class Unit : MonoBehaviour {
         //        m_building.m_isDistract = false;
         //}
 
-        if (GetComponent<Health>().GetHealth() < 0) // Unit died
+        if (m_health < 0) // Unit died
         {
             RemoveEntity(this.gameObject);
             UnityEngine.Object.Destroy(this.gameObject);

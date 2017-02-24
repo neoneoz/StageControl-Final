@@ -74,7 +74,6 @@ public class Spawn : MonoBehaviour
             {
                 spawn = (GameObject)Instantiate(m_entity); // Create a copy of the original "hell"spawn
                 spawn.transform.SetParent(m_controller.transform);
-                spawn.GetComponent<Health>().MAX_HEALTH = 100;
                 spawn.GetComponent<Unit>().SetPath(GetComponent<Pathfinder>().PathToEnd);
                 spawn.GetComponent<Unit>().m_building = GetComponent<Building>();
                 ++m_currAmt;

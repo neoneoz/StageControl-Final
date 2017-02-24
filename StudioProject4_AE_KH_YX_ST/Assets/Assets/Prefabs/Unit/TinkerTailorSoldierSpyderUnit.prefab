@@ -40,8 +40,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 496566}
-  - 114: {fileID: 11418450}
-  - 114: {fileID: 11408196}
   - 114: {fileID: 11460984}
   - 114: {fileID: 11429890}
   - 114: {fileID: 11472612}
@@ -1002,29 +1000,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11408196
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d49d1418f81a0a4fa1b07cf8de5ae69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &11418450
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21fd192da9648e4cb6e24850765ff21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAX_HEALTH: 100
 --- !u!114 &11429890
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1051,13 +1026,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9410bef31ae534f8061d7e8ed6ff4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_type: 0
   m_attkRadius: 2
   m_attkDamage: 5
   m_attkAnim: {fileID: 7400000, guid: 3b8cf772cb944f249b18a067937929b7, type: 3}
+  m_attackspeed: 0
+  m_health: 0
   PathToEnd: []
   pathindex: 0
   m_isFriendly: 0
+  m_targetEnemy: {fileID: 0}
   m_building: {fileID: 0}
+  projectile: {fileID: 0}
 --- !u!114 &11472612
 MonoBehaviour:
   m_ObjectHideFlags: 1

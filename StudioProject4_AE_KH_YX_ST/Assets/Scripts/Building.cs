@@ -149,18 +149,18 @@ public class Building : MonoBehaviour
                     }
                 }
 
-                if (GetComponent<Health>().GetHealth() < 0)
-                {
-                    Unit.m_destroyerOfWorlds = new Component[100];
-                    Unit.RemoveEntity(gameObject, m_buildingList);
-                    UnityEngine.Object.Destroy(this.gameObject);
-                    //Unit.m_destroyerOfWorlds = GetComponents(typeof(Component));
-                    //for (int i = 0; i < Unit.m_destroyerOfWorlds.Length; ++i)
-                    //{
-                    //    if (Unit.m_destroyerOfWorlds[i].gameObject.activeSelf)
-                    //        UnityEngine.Object.Destroy(Unit.m_destroyerOfWorlds[i]);
-                    //}
-                }
+                //if (GetComponent<Health>().GetHealth() < 0)
+                //{
+                //    Unit.m_destroyerOfWorlds = new Component[100];
+                //    Unit.RemoveEntity(gameObject, m_buildingList);
+                //    UnityEngine.Object.Destroy(this.gameObject);
+                //    //Unit.m_destroyerOfWorlds = GetComponents(typeof(Component));
+                //    //for (int i = 0; i < Unit.m_destroyerOfWorlds.Length; ++i)
+                //    //{
+                //    //    if (Unit.m_destroyerOfWorlds[i].gameObject.activeSelf)
+                //    //        UnityEngine.Object.Destroy(Unit.m_destroyerOfWorlds[i]);
+                //    //}
+                //}
 
                 break;
 
