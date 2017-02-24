@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -40,6 +41,7 @@ public class Unit : MonoBehaviour {
     public float m_attackspeed;//time between attacks
 
     public float m_health;
+    public float m_maxHealth;
     private Timer m_timer;
     public static Component[] m_destroyerOfWorlds; // Stores and destroys all the components of an object
     
@@ -53,6 +55,12 @@ public class Unit : MonoBehaviour {
     [HideInInspector]
     public Building m_building; // The building which spawned this unit
     public GameObject projectile;
+
+    //Health stuff
+    Image friendlyHealth = null;
+    Image enemyHealth = null;
+
+
     public void SetPath(List<Vector3> newPath)
     {
         PathToEnd = newPath;
@@ -61,6 +69,8 @@ public class Unit : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Invoke("InstantiateStats", 0.1f);
+
         m_currGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
         m_oldGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
 
@@ -99,6 +109,19 @@ public class Unit : MonoBehaviour {
         m_targetList = new List<GameObject>();
         m_targetIndex = 0;
 	}
+
+    void InstantiateStats()
+    {
+        friendlyHealth = Instantiate(SceneData.sceneData.Health_friendly);
+        friendlyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
+        friendlyHealth.enabled = false;
+        friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+
+        enemyHealth = Instantiate(SceneData.sceneData.Health_enemy);
+        enemyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
+        enemyHealth.enabled = false;
+        enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+    }
 	
 	// Update is called once per frame
     void FixedUpdate()
@@ -146,6 +169,26 @@ public class Unit : MonoBehaviour {
                     }
                 }
             }
+        }
+
+        if (m_isFriendly == true && friendlyHealth != null)
+        {
+            friendlyHealth.enabled = true;
+            friendlyHealth.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+            friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = true;
+            friendlyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
+            friendlyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+        }
+
+        else if (m_isFriendly == false && enemyHealth != null)
+        {
+            enemyHealth.enabled = true;
+            enemyHealth.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+            enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = true;
+            enemyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
+            enemyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
         }
 
         //for (int i = 0; i < Building.m_buildingList.Count; ++i)
@@ -199,6 +242,8 @@ public class Unit : MonoBehaviour {
                 if (m_destroyerOfWorlds[i].gameObject.activeSelf)
                     UnityEngine.Object.Destroy(m_destroyerOfWorlds[i]);
             }
+            Destroy(friendlyHealth);
+            Destroy(enemyHealth);
         }
 
         /*Affected by spell*/

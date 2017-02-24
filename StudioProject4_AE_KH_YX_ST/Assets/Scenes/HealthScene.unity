@@ -210,14 +210,11 @@ MonoBehaviour:
   CohesionWeight: 1
   SeperationWeight: 1
   AlignmentWeight: 1
-  spell_grid: {x: 0, y: 0, z: 0, w: 0}
-  is_spellCast: 0
-  spell_dmg: 0
   buildingP: {fileID: 19837254, guid: 79119af665e78f642aef9f1a48521389, type: 2}
   buildTimer: {fileID: 11474922, guid: 17bbdc4747fc7154492d35f91aa118a9, type: 2}
-  spawnTimer: {fileID: 0}
-  Health_friendly: {fileID: 0}
-  Health_enemy: {fileID: 0}
+  spawnTimer: {fileID: 11474922, guid: 2c020845e92ec424a8335273a6da9175, type: 2}
+  Health_friendly: {fileID: 11453072, guid: 6d91d8fedd7699442be904f3c70d602f, type: 2}
+  Health_enemy: {fileID: 11426256, guid: 6ea9964883ea7024887f2500699c540d, type: 2}
 --- !u!4 &88376218
 Transform:
   m_ObjectHideFlags: 0
@@ -2425,8 +2422,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {x: 0, y: 0, z: 0}
   SmallerScale: {x: 0.1, y: 0.1, z: 0.1}
-  effectTime: 0
-  effect: {fileID: 0}
 --- !u!1001 &900021586
 Prefab:
   m_ObjectHideFlags: 0
@@ -2546,8 +2541,8 @@ MonoBehaviour:
   isfriendly: 1
   m_isDistract: 0
   buildTimer: 0
-  buildingHealth: 0
-  maxBuildingHealth: 0
+  buildingHealth: 1000
+  maxBuildingHealth: 1000
 --- !u!4 &982690058
 Transform:
   m_ObjectHideFlags: 0
@@ -2801,8 +2796,8 @@ MonoBehaviour:
   isfriendly: 0
   m_isDistract: 0
   buildTimer: 0
-  buildingHealth: 0
-  maxBuildingHealth: 0
+  buildingHealth: 1000
+  maxBuildingHealth: 1000
 --- !u!4 &1066008270
 Transform:
   m_ObjectHideFlags: 0

@@ -40,6 +40,11 @@ public class SceneData : MonoBehaviour
     public ParticleSystem buildingP;
 
     public Image buildTimer;
+    public Image spawnTimer;
+
+    //Building Health
+    public Image Health_friendly;
+    public Image Health_enemy;
 
     void SnapBasesToGrid()
     {

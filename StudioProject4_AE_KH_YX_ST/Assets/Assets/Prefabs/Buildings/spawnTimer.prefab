@@ -11,7 +11,7 @@ GameObject:
   - 222: {fileID: 22295636}
   - 114: {fileID: 11474922}
   m_Layer: 5
-  m_Name: buildTimer
+  m_Name: spawnTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,12 +36,12 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a1fa3e3e0d739514b9e6a4029fc05fde, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0087e5dd976ac2445aefcbef77d2db65, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 2
 --- !u!222 &22295636

@@ -44,13 +44,16 @@ public class Bprojectile : MonoBehaviour {
 
         gameObject.transform.position += Velocity * Time.deltaTime;
         // Arc
-        float cTime = displacement.magnitude;
-        // calculate straight-line lerp position:
-        Vector3 currentPos = Vector3.Lerp(LevelManager.instance.PlayerBase.transform.position, target.transform.position, cTime);
-        // add a value to Y, using Sine to give a curved trajectory in the Y direction
-        transform.position = new Vector3(transform.position.x, transform.position.y + (trajectoryHeight * Mathf.Sin(Mathf.Clamp01(cTime) * Mathf.PI)), transform.position.z);
-	    //create the rotation we need to be in to look at the target
-        lookRotation = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+        if (GetComponent<Spell>() != null)
+        {
+            float cTime = displacement.magnitude;
+            // calculate straight-line lerp position:
+            Vector3 currentPos = Vector3.Lerp(LevelManager.instance.PlayerBase.transform.position, target.transform.position, cTime);
+            // add a value to Y, using Sine to give a curved trajectory in the Y direction
+            transform.position = new Vector3(transform.position.x, transform.position.y + (trajectoryHeight * Mathf.Sin(Mathf.Clamp01(cTime) * Mathf.PI)), transform.position.z);
+            //create the rotation we need to be in to look at the target
+            lookRotation = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+        }
 	}
 }
