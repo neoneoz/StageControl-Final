@@ -1166,7 +1166,7 @@ MonoBehaviour:
   b_state: 0
   isfriendly: 1
   m_isDistract: 0
-  buildTimer: 30
+  buildTimer: 2
 --- !u!114 &11481220
 MonoBehaviour:
   m_ObjectHideFlags: 1

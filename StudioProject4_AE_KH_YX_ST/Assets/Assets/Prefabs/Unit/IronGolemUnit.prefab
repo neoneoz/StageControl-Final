@@ -681,6 +681,8 @@ MonoBehaviour:
   m_targetEnemy: {fileID: 0}
   m_building: {fileID: 0}
   projectile: {fileID: 0}
+  Emitter: {fileID: 0}
+  ismelee: 1
 --- !u!114 &11449950
 MonoBehaviour:
   m_ObjectHideFlags: 1

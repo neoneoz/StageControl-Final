@@ -21,9 +21,12 @@ public enum UNIT_TEAM
 public class Unit : MonoBehaviour {
     public enum UNIT_TYPE
     {
-        PROJECTILE_RANGE,
-        HSCAN_RANGE,
-        MELEE
+        CW_KNIGHT,
+        BALLISTA,
+        SPIDER_TNK,
+        BBUSTER,
+        RAILGUN,
+        IEN_GOLEM
 
     };
 
@@ -52,7 +55,12 @@ public class Unit : MonoBehaviour {
     private int m_targetIndex; // The current target in the list unit is focusing attack on
     [HideInInspector]
     public Building m_building; // The building which spawned this unit
+
+    //attack stuff
     public GameObject projectile;
+    public GameObject Emitter;//for hitscan units
+    public bool ismelee;
+
     public void SetPath(List<Vector3> newPath)
     {
         PathToEnd = newPath;
@@ -98,6 +106,12 @@ public class Unit : MonoBehaviour {
         //m_targetBuilding = null;
         m_targetList = new List<GameObject>();
         m_targetIndex = 0;
+
+        if (m_type == UNIT_TYPE.SPIDER_TNK || m_type == UNIT_TYPE.BBUSTER || m_type == UNIT_TYPE.RAILGUN)
+        {
+            Emitter = Instantiate(Emitter);
+            Emitter.SetActive(false);
+        }
 	}
 	
 	// Update is called once per frame
@@ -111,9 +125,12 @@ public class Unit : MonoBehaviour {
         if (m_targetEnemy == null)
         {
             //rotate the unit properly
+            Animator anim =gameObject.transform.GetChild(0).GetComponent<Animator>();
+            anim.SetBool("b_attack", false);
             GetComponent<VMovement>().m_stopMove = false;
-
-            gameObject.transform.rotation =  new Quaternion(0, 1, 0,-Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
+            //Mathf.Rad2Deg();
+            float rotation = Mathf.Rad2Deg * (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
+            gameObject.transform.rotation =  new Quaternion(0, 1, 0,rotation);
 
             for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
@@ -128,8 +145,9 @@ public class Unit : MonoBehaviour {
             }
 
         }
-        if(m_targetEnemy)
+        if (m_targetEnemy)
             DoAttack();
+        
         
 
         if (GetComponent<Flocking>().isleader)
@@ -211,39 +229,77 @@ public class Unit : MonoBehaviour {
         {
             m_targetEnemy = null;
             return;
-        }
-
-        if ((m_targetEnemy.transform.position - transform.position).sqrMagnitude > m_attkRadius * m_attkRadius)//range check
+        } 
+      
+        Vector3 displacement = m_targetEnemy.transform.position - transform.position;
+        if (!ismelee &&(displacement).sqrMagnitude > m_attkRadius * m_attkRadius)//range check
         {
             m_targetEnemy = null;
             return;
         }
-            GetComponent<VMovement>().m_stopMove = true;//stop moving to whack
+        else if(ismelee)
+        {
+            float mrange = 60;
+            if (ismelee && displacement.sqrMagnitude > mrange)
+            {
+                gameObject.GetComponent<VMovement>().Velocity = displacement.normalized * 35;
+                GetComponent<VMovement>().m_stopMove = false;
+                return;
+            }
+        }
+      
+        
+
+           
         if (!m_timer.can_run)//atkspeed check
             return;
-
+        if(!ismelee)
+            GetComponent<VMovement>().m_stopMove = true;//stop moving to whack
 
 
         //Attack sucess past this line//////////////////////////
-            
+        Animator anim = gameObject.transform.GetChild(0).GetComponent<Animator>();
+        anim.SetBool("b_attack", true);
             m_timer.Reset();//reset atk speed timer
         switch(m_type)
         {
-            case (UNIT_TYPE.MELEE):
+            case (UNIT_TYPE.CW_KNIGHT):
                 {
+                    //probably change later
+                  GetComponent<VMovement>().m_stopMove = true;
+                  //do damage
 
                 }break;
-            case (UNIT_TYPE.HSCAN_RANGE):
-                {
-
-                } break;
-
-             case (UNIT_TYPE.PROJECTILE_RANGE):
+           
+             case (UNIT_TYPE.BALLISTA):
                 {
                     //Instantiate()
                     GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity) as GameObject;
-                    bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage);
+                    bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage,1);
+                }break; 
+
+                case (UNIT_TYPE.SPIDER_TNK):
+                {
+                    //GameObject flash = Instantiate(projectile, gameObject.transform.GetChild(1).transform.position, Quaternion.identity) as GameObject;
+                    Emitter.SetActive(true);
+                    Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
+
+                } break;
+                case (UNIT_TYPE.BBUSTER):
+                {
+                    Emitter.SetActive(true);
+                    Emitter.transform.position = gameObject.transform.position;
                 }break;
+                case (UNIT_TYPE.RAILGUN):
+                    {
+                        Emitter.SetActive(true);
+                        Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
+                        Vector3 pos = new Vector3(m_targetEnemy.transform.position.x, m_targetEnemy.transform.position.y+1000, m_targetEnemy.transform.position.z);
+                        GameObject blast = Instantiate(projectile, pos, Quaternion.identity) as GameObject;
+                        blast.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage,2, 400);
+                }break; 
+                    
+
         }
 
 

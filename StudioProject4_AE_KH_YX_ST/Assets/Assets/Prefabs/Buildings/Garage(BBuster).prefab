@@ -535,8 +535,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442db459fc7ae5b44979a8d6b3662592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_secondsToSpawn: 40
-  m_entity: {fileID: 106502, guid: 6f889c45066575344b892cf0e5aedeb3, type: 2}
+  m_secondsToSpawn: 10
+  m_entity: {fileID: 187190, guid: 6f889c45066575344b892cf0e5aedeb3, type: 2}
   m_orientationX: right
   m_orientationZ: up
   m_offsetGridX: 9
@@ -662,7 +662,7 @@ MonoBehaviour:
   b_state: 0
   isfriendly: 1
   m_isDistract: 0
-  buildTimer: 50
+  buildTimer: 3
 --- !u!114 &11487650
 MonoBehaviour:
   m_ObjectHideFlags: 1

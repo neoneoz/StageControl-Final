@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0, z: 0}
-  speed: 15
+  speed: 10
   m_stopMove: 0
   m_stopMove2: 0
 --- !u!114 &11409452
@@ -497,17 +497,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_type: 0
-  m_attkRadius: 1
+  m_attkRadius: 120
   m_attkDamage: 10
   m_attkAnim: {fileID: 7400000, guid: 6833b506f6030d1498557d7e0c7d89c0, type: 3}
   m_attackspeed: 0
-  m_health: 0
+  m_health: 150
   PathToEnd: []
   pathindex: 0
   m_isFriendly: 0
   m_targetEnemy: {fileID: 0}
   m_building: {fileID: 0}
   projectile: {fileID: 0}
+  Emitter: {fileID: 0}
+  ismelee: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
