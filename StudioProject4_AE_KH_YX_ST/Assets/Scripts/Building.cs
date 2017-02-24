@@ -25,10 +25,15 @@ public class Building : MonoBehaviour
     float timerB = 0.0f;
     ParticleSystem buildingTemp = null;
     Image buildTimerTemp = null;
+    Image spawnTimerTemp = null;
+    Image buildingHealth_friendlyTemp = null;
+    Image buildingHealth_enemyTemp = null;
     public float buildTimer;
     private static GameObject m_buildingControl;
     private static bool m_initController = true;
-    public static List<GameObject> m_buildingList; // List of all the buildings in the scene 
+    public static List<GameObject> m_buildingList; // List of all the buildings in the scene
+    public float buildingHealth;
+    public float maxBuildingHealth;
 
     // Use this for initialization
     void Start()
@@ -43,10 +48,10 @@ public class Building : MonoBehaviour
         {
             m_buildingControl = new GameObject();
             m_buildingControl.name = "Building Controller";
-            GameObject temporary = new GameObject();
-            Canvas temporary_canvas = temporary.AddComponent<Canvas>();
-            temporary_canvas.transform.SetParent(m_buildingControl.transform);
-            temporary_canvas.renderMode = RenderMode.WorldSpace;
+            //GameObject temporary = new GameObject();
+            //Canvas temporary_canvas = temporary.AddComponent<Canvas>();
+            //temporary_canvas.transform.SetParent(m_buildingControl.transform);
+            //temporary_canvas.renderMode = RenderMode.WorldSpace;
             m_buildingList = new List<GameObject>();
             m_initController = false;
         }
@@ -76,7 +81,21 @@ public class Building : MonoBehaviour
         buildingTemp = Instantiate(SceneData.sceneData.buildingP);
         buildTimerTemp = Instantiate(SceneData.sceneData.buildTimer);
         buildTimerTemp.transform.SetParent(SceneData.sceneData.UI.transform);
-        buildTimerTemp.enabled = false;    
+        buildTimerTemp.enabled = false;
+
+        spawnTimerTemp = Instantiate(SceneData.sceneData.spawnTimer);
+        spawnTimerTemp.transform.SetParent(SceneData.sceneData.UI.transform);
+        spawnTimerTemp.enabled = false;
+
+        buildingHealth_friendlyTemp = Instantiate(SceneData.sceneData.Health_friendly);
+        buildingHealth_friendlyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
+        buildingHealth_friendlyTemp.enabled = false;
+        buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
+
+        buildingHealth_enemyTemp = Instantiate(SceneData.sceneData.Health_enemy);
+        buildingHealth_enemyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
+        buildingHealth_enemyTemp.enabled = false;
+        buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
     }
     
 
@@ -108,7 +127,7 @@ public class Building : MonoBehaviour
                     {
                         buildingTemp.Play();
                         buildingTemp.transform.position = gameObject.transform.position;
-                        buildTimerTemp.fillAmount -= 1.0f / buildTimer * Time.deltaTime;
+                        buildTimerTemp.fillAmount += 1.0f / buildTimer * Time.deltaTime;
                         buildTimerTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
                         for (int i = 0; i < gameObject.transform.GetChild(0).childCount; ++i)
                         {
@@ -128,10 +147,42 @@ public class Building : MonoBehaviour
                         }
                         b_state = BUILDSTATE.B_ACTIVE;
                         Destroy(buildingTemp);
+                        Destroy(buildTimerTemp);
                     }
                 }
                 break;
             case BUILDSTATE.B_ACTIVE:
+                if (isfriendly == true && buildingHealth_friendlyTemp != null)
+                {
+                    buildingHealth_friendlyTemp.enabled = true;
+                    buildingHealth_friendlyTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+                    buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().enabled = true;
+                    buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().fillAmount = buildingHealth / maxBuildingHealth;
+                    buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+         
+                }
+
+                else if (isfriendly == false && buildingHealth_enemyTemp != null)
+                {
+                    buildingHealth_enemyTemp.enabled = true;
+                    buildingHealth_enemyTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+                    buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().enabled = true;
+                    buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().fillAmount = buildingHealth / maxBuildingHealth;
+                    buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+                }
+
+                if (GetComponent<Spawn>() && spawnTimerTemp)
+                {
+                    spawnTimerTemp.enabled = true;
+                    spawnTimerTemp.fillAmount = GetComponent<Spawn>().m_timer.GetRatio();
+                    spawnTimerTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+                }
+
+                
+                
                 for (int i = 0; i < gameObject.transform.GetChild(0).childCount; ++i)
                 {
                     gameObject.transform.GetChild(0).transform.GetChild(i).GetComponent<MeshRenderer>().material = undamaged;
@@ -148,7 +199,7 @@ public class Building : MonoBehaviour
                         GetComponent<Pathfinder>().FindPath(GetMaxPosOfBuilding(LevelManager.instance.PlayerBase.transform.position, LevelManager.instance.PlayerBase.GetComponent<Building>().size));
                     }
                 }
-
+                
                 //if (GetComponent<Health>().GetHealth() < 0)
                 //{
                 //    Unit.m_destroyerOfWorlds = new Component[100];
@@ -163,7 +214,7 @@ public class Building : MonoBehaviour
                 //}
 
                 break;
-
+           
 
         }
 
@@ -172,6 +223,6 @@ public class Building : MonoBehaviour
     public void SetBuilding()
     {
         b_state = BUILDSTATE.B_CONSTRUCT;
-        buildTimerTemp.enabled = true;  
+        buildTimerTemp.enabled = true;
     }
 }

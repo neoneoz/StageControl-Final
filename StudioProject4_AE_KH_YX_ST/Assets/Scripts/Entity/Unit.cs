@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,12 +22,9 @@ public enum UNIT_TEAM
 public class Unit : MonoBehaviour {
     public enum UNIT_TYPE
     {
-        CW_KNIGHT,
-        BALLISTA,
-        SPIDER_TNK,
-        BBUSTER,
-        RAILGUN,
-        IEN_GOLEM
+        PROJECTILE_RANGE,
+        HSCAN_RANGE,
+        MELEE
 
     };
 
@@ -43,6 +41,7 @@ public class Unit : MonoBehaviour {
     public float m_attackspeed;//time between attacks
 
     public float m_health;
+    public float m_maxHealth;
     private Timer m_timer;
     public static Component[] m_destroyerOfWorlds; // Stores and destroys all the components of an object
     
@@ -55,11 +54,12 @@ public class Unit : MonoBehaviour {
     private int m_targetIndex; // The current target in the list unit is focusing attack on
     [HideInInspector]
     public Building m_building; // The building which spawned this unit
-
-    //attack stuff
     public GameObject projectile;
-    public GameObject Emitter;//for hitscan units
-    public bool ismelee;
+
+    //Health stuff
+    Image friendlyHealth = null;
+    Image enemyHealth = null;
+
 
     public void SetPath(List<Vector3> newPath)
     {
@@ -69,6 +69,8 @@ public class Unit : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Invoke("InstantiateStats", 0.1f);
+
         m_currGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
         m_oldGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
 
@@ -106,13 +108,20 @@ public class Unit : MonoBehaviour {
         //m_targetBuilding = null;
         m_targetList = new List<GameObject>();
         m_targetIndex = 0;
-
-        if (m_type == UNIT_TYPE.SPIDER_TNK || m_type == UNIT_TYPE.BBUSTER || m_type == UNIT_TYPE.RAILGUN)
-        {
-            Emitter = Instantiate(Emitter);
-            Emitter.SetActive(false);
-        }
 	}
+
+    void InstantiateStats()
+    {
+        friendlyHealth = Instantiate(SceneData.sceneData.Health_friendly);
+        friendlyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
+        friendlyHealth.enabled = false;
+        friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+
+        enemyHealth = Instantiate(SceneData.sceneData.Health_enemy);
+        enemyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
+        enemyHealth.enabled = false;
+        enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+    }
 	
 	// Update is called once per frame
     void FixedUpdate()
@@ -125,12 +134,9 @@ public class Unit : MonoBehaviour {
         if (m_targetEnemy == null)
         {
             //rotate the unit properly
-            Animator anim =gameObject.transform.GetChild(0).GetComponent<Animator>();
-            anim.SetBool("b_attack", false);
             GetComponent<VMovement>().m_stopMove = false;
-            //Mathf.Rad2Deg();
-            float rotation = Mathf.Rad2Deg * (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
-            gameObject.transform.rotation =  new Quaternion(0, 1, 0,rotation);
+
+            gameObject.transform.rotation =  new Quaternion(0, 1, 0,-Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
 
             for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
@@ -145,9 +151,8 @@ public class Unit : MonoBehaviour {
             }
 
         }
-        if (m_targetEnemy)
+        if(m_targetEnemy)
             DoAttack();
-        
         
 
         if (GetComponent<Flocking>().isleader)
@@ -164,6 +169,26 @@ public class Unit : MonoBehaviour {
                     }
                 }
             }
+        }
+
+        if (m_isFriendly == true && friendlyHealth != null)
+        {
+            friendlyHealth.enabled = true;
+            friendlyHealth.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+            friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = true;
+            friendlyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
+            friendlyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+        }
+
+        else if (m_isFriendly == false && enemyHealth != null)
+        {
+            enemyHealth.enabled = true;
+            enemyHealth.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+
+            enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = true;
+            enemyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
+            enemyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
         }
 
         //for (int i = 0; i < Building.m_buildingList.Count; ++i)
@@ -217,6 +242,8 @@ public class Unit : MonoBehaviour {
                 if (m_destroyerOfWorlds[i].gameObject.activeSelf)
                     UnityEngine.Object.Destroy(m_destroyerOfWorlds[i]);
             }
+            Destroy(friendlyHealth);
+            Destroy(enemyHealth);
         }
  
     }
@@ -229,77 +256,39 @@ public class Unit : MonoBehaviour {
         {
             m_targetEnemy = null;
             return;
-        } 
-      
-        Vector3 displacement = m_targetEnemy.transform.position - transform.position;
-        if (!ismelee &&(displacement).sqrMagnitude > m_attkRadius * m_attkRadius)//range check
+        }
+
+        if ((m_targetEnemy.transform.position - transform.position).sqrMagnitude > m_attkRadius * m_attkRadius)//range check
         {
             m_targetEnemy = null;
             return;
         }
-        else if(ismelee)
-        {
-            float mrange = 60;
-            if (ismelee && displacement.sqrMagnitude > mrange)
-            {
-                gameObject.GetComponent<VMovement>().Velocity = displacement.normalized * 35;
-                GetComponent<VMovement>().m_stopMove = false;
-                return;
-            }
-        }
-      
-        
-
-           
+            GetComponent<VMovement>().m_stopMove = true;//stop moving to whack
         if (!m_timer.can_run)//atkspeed check
             return;
-        if(!ismelee)
-            GetComponent<VMovement>().m_stopMove = true;//stop moving to whack
+
 
 
         //Attack sucess past this line//////////////////////////
-        Animator anim = gameObject.transform.GetChild(0).GetComponent<Animator>();
-        anim.SetBool("b_attack", true);
+            
             m_timer.Reset();//reset atk speed timer
         switch(m_type)
         {
-            case (UNIT_TYPE.CW_KNIGHT):
+            case (UNIT_TYPE.MELEE):
                 {
-                    //probably change later
-                  GetComponent<VMovement>().m_stopMove = true;
-                  //do damage
 
                 }break;
-           
-             case (UNIT_TYPE.BALLISTA):
+            case (UNIT_TYPE.HSCAN_RANGE):
+                {
+
+                } break;
+
+             case (UNIT_TYPE.PROJECTILE_RANGE):
                 {
                     //Instantiate()
                     GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity) as GameObject;
-                    bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage,1);
-                }break; 
-
-                case (UNIT_TYPE.SPIDER_TNK):
-                {
-                    //GameObject flash = Instantiate(projectile, gameObject.transform.GetChild(1).transform.position, Quaternion.identity) as GameObject;
-                    Emitter.SetActive(true);
-                    Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
-
-                } break;
-                case (UNIT_TYPE.BBUSTER):
-                {
-                    Emitter.SetActive(true);
-                    Emitter.transform.position = gameObject.transform.position;
+                    bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage);
                 }break;
-                case (UNIT_TYPE.RAILGUN):
-                    {
-                        Emitter.SetActive(true);
-                        Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
-                        Vector3 pos = new Vector3(m_targetEnemy.transform.position.x, m_targetEnemy.transform.position.y+1000, m_targetEnemy.transform.position.z);
-                        GameObject blast = Instantiate(projectile, pos, Quaternion.identity) as GameObject;
-                        blast.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage,2, 400);
-                }break; 
-                    
-
         }
 
 
