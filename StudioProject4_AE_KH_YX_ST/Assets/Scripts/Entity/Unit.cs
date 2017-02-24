@@ -3,11 +3,6 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum UNIT_TYPE
-{
-    CLOCKWORK_SOLDIER,
-}
-
 public enum UNIT_TEAM
 {
     BLUE_TEAM,
@@ -19,18 +14,22 @@ public enum UNIT_TEAM
 /**/
 [RequireComponent(typeof(Flocking))]
 [RequireComponent(typeof(VMovement))]
-public class Unit : MonoBehaviour {
+public class Unit : MonoBehaviour
+{
     public enum UNIT_TYPE
     {
-        PROJECTILE_RANGE,
-        HSCAN_RANGE,
-        MELEE
+        CW_KNIGHT,
+        BALLISTA,
+        SPIDER_TNK,
+        BBUSTER,
+        RAILGUN,
+        IEN_GOLEM
 
     };
 
 
 
-    public UNIT_TYPE m_type; 
+    public UNIT_TYPE m_type;
     public int m_attkRadius; // Attack radius which is how many grids surrounding the unit it can detect/see enemies
     public int m_attkDamage;
     private float m_attkDist; // Minimum distance before unit attacks closest enemy unit
@@ -44,7 +43,7 @@ public class Unit : MonoBehaviour {
     public float m_maxHealth;
     private Timer m_timer;
     public static Component[] m_destroyerOfWorlds; // Stores and destroys all the components of an object
-    
+
     public List<Vector3> PathToEnd = null;
     public int pathindex = 0;
     private UNIT_TEAM m_team; // The team this entity belongs to
@@ -54,12 +53,15 @@ public class Unit : MonoBehaviour {
     private int m_targetIndex; // The current target in the list unit is focusing attack on
     [HideInInspector]
     public Building m_building; // The building which spawned this unit
+
+    //attack stuff
     public GameObject projectile;
+    public GameObject Emitter;//for hitscan units
+    public bool ismelee;
 
     //Health stuff
     Image friendlyHealth = null;
     Image enemyHealth = null;
-
 
     public void SetPath(List<Vector3> newPath)
     {
@@ -67,8 +69,9 @@ public class Unit : MonoBehaviour {
         pathindex = newPath.Count - 1;
     }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         Invoke("InstantiateStats", 0.1f);
 
         m_currGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
@@ -100,15 +103,21 @@ public class Unit : MonoBehaviour {
 
         m_timer.Init(0, m_attackspeed, 0);
         //the timer runs for the attack speed tiem
-        
-        
+
+
         m_timer.can_run = true;
         m_destroyerOfWorlds = new Component[100];
         m_targetEnemy = null;
         //m_targetBuilding = null;
         m_targetList = new List<GameObject>();
         m_targetIndex = 0;
-	}
+
+        if (m_type == UNIT_TYPE.SPIDER_TNK || m_type == UNIT_TYPE.BBUSTER || m_type == UNIT_TYPE.RAILGUN)
+        {
+            Emitter = Instantiate(Emitter);
+            Emitter.SetActive(false);
+        }
+    }
 
     void InstantiateStats()
     {
@@ -122,21 +131,24 @@ public class Unit : MonoBehaviour {
         enemyHealth.enabled = false;
         enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
     }
-	
-	// Update is called once per frame
+
+    // Update is called once per frame
     void FixedUpdate()
     {
         m_currGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position); // Get unit's current grid
-        
+
         //check if target is alive
 
 
         if (m_targetEnemy == null)
         {
             //rotate the unit properly
+            Animator anim = gameObject.transform.GetChild(0).GetComponent<Animator>();
+            anim.SetBool("b_attack", false);
             GetComponent<VMovement>().m_stopMove = false;
-
-            gameObject.transform.rotation =  new Quaternion(0, 1, 0,-Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
+            //Mathf.Rad2Deg();
+            float rotation = Mathf.Rad2Deg * (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
+            gameObject.transform.rotation = new Quaternion(0, 1, 0, rotation);
 
             for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
@@ -151,9 +163,10 @@ public class Unit : MonoBehaviour {
             }
 
         }
-        if(m_targetEnemy)
+        if (m_targetEnemy)
             DoAttack();
-        
+
+
 
         if (GetComponent<Flocking>().isleader)
         {
@@ -232,7 +245,7 @@ public class Unit : MonoBehaviour {
         //        m_building.m_isDistract = false;
         //}
 
-        if (m_health < 0) // Unit died
+        if (m_health <= 0) // Unit died
         {
             RemoveEntity(this.gameObject);
             UnityEngine.Object.Destroy(this.gameObject);
@@ -245,12 +258,17 @@ public class Unit : MonoBehaviour {
             Destroy(friendlyHealth);
             Destroy(enemyHealth);
         }
- 
+
     }
-    
-    
+
+    public void TakeDmage(float damage)
+    {
+        m_health -= damage;
+    }
+
+
     void DoAttack()
-    { 
+    {
         m_timer.Update();//update attack speed
         if (m_targetEnemy.GetComponent<Unit>().m_health <= 0)//enemy hp check
         {
@@ -258,37 +276,78 @@ public class Unit : MonoBehaviour {
             return;
         }
 
-        if ((m_targetEnemy.transform.position - transform.position).sqrMagnitude > m_attkRadius * m_attkRadius)//range check
+        Vector3 displacement = m_targetEnemy.transform.position - transform.position;
+        if (!ismelee && (displacement).sqrMagnitude > m_attkRadius * m_attkRadius)//range check
         {
             m_targetEnemy = null;
             return;
         }
-            GetComponent<VMovement>().m_stopMove = true;//stop moving to whack
+        else if (ismelee)
+        {
+            float mrange = 60;
+            if (ismelee && displacement.sqrMagnitude > mrange)
+            {
+                gameObject.GetComponent<VMovement>().Velocity = displacement.normalized * 35;
+                GetComponent<VMovement>().m_stopMove = false;
+                return;
+            }
+        }
+
+
+
+
         if (!m_timer.can_run)//atkspeed check
             return;
-
+        if (!ismelee)
+            GetComponent<VMovement>().m_stopMove = true;//stop moving to whack
 
 
         //Attack sucess past this line//////////////////////////
-            
-            m_timer.Reset();//reset atk speed timer
-        switch(m_type)
+        Animator anim = gameObject.transform.GetChild(0).GetComponent<Animator>();
+        anim.SetBool("b_attack", true);
+        m_timer.Reset();//reset atk speed timer
+        switch (m_type)
         {
-            case (UNIT_TYPE.MELEE):
+            case (UNIT_TYPE.CW_KNIGHT):
                 {
-
-                }break;
-            case (UNIT_TYPE.HSCAN_RANGE):
-                {
+                    //probably change later
+                    GetComponent<VMovement>().m_stopMove = true;
+                    m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+                    //do damage
 
                 } break;
 
-             case (UNIT_TYPE.PROJECTILE_RANGE):
+            case (UNIT_TYPE.BALLISTA):
                 {
                     //Instantiate()
                     GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity) as GameObject;
-                    bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage);
-                }break;
+                    bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 1);
+                } break;
+
+            case (UNIT_TYPE.SPIDER_TNK):
+                {
+                    //GameObject flash = Instantiate(projectile, gameObject.transform.GetChild(1).transform.position, Quaternion.identity) as GameObject;
+                    Emitter.SetActive(true);
+                    Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
+                    m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+
+                } break;
+            case (UNIT_TYPE.BBUSTER):
+                {
+                    Emitter.SetActive(true);
+                    Emitter.transform.position = gameObject.transform.position;
+                    m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+                } break;
+            case (UNIT_TYPE.RAILGUN):
+                {
+                    Emitter.SetActive(true);
+                    Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
+                    Vector3 pos = new Vector3(m_targetEnemy.transform.position.x, m_targetEnemy.transform.position.y + 1000, m_targetEnemy.transform.position.z);
+                    GameObject blast = Instantiate(projectile, pos, Quaternion.identity) as GameObject;
+                    blast.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 2, 400);
+                } break;
+
+
         }
 
 
@@ -316,222 +375,8 @@ public class Unit : MonoBehaviour {
 
 }
 
-/*     for (int i = 0; i < Spawn.m_entityList.Count; ++i)
-        {
-            GameObject ent = (GameObject)Spawn.m_entityList[i];
-            if (ent.GetComponent<Unit>().m_isFriendly != m_isFriendly) // if the entity being checked is not himself and is in the opponent's team
-            {
-                float dist = (ent.transform.position - transform.position).sqrMagnitude;
-                if (dist < m_attkDist) // An enemy has drawn close to the unit, attack it
-                {
-                    m_timer.Update();
-                    //Vector2 enemyGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(ent.transform.position); // The commented out code below is to check and kill all enemies in a grid
-                    //for (int j = 0; j < Spawn.m_entityList.Count; ++j)
-                    {
-                        //GameObject enemy = (GameObject)Spawn.m_entityList[j];
-                        //if (SceneData.sceneData.gridmesh.GetGridIndexAtPosition(enemy.transform.position).x == enemyGrid.x && SceneData.sceneData.gridmesh.GetGridIndexAtPosition(enemy.transform.position).y == enemyGrid.y && m_timer.can_run)
-                        {
-                            ent.GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, m_attkDamage);
-                            m_timer.Reset();
-                        }
-                    }
-                    m_animator.SetBool("b_attack", true); // Play attack animation
-                    m_switchAnimation = true;
-                    //if (m_targetEnemy == null)
-                    {
-                        //m_targetEnemy = ent;
-                        m_targetList.Add(ent);
-                        GetComponent<VMovement>().m_stopMove = true;
-                    }
-                }
-                else if (m_switchAnimation)
-                {
-                    m_animator.SetBool("b_attack", false);
-                    m_switchAnimation = false;
-                }
-            }
-            if ((m_targetEnemy == null || m_targetEnemy.GetComponent<Health>().GetHealth() < 0) && GetComponent<VMovement>().m_stopMove)
-            {
-                m_targetEnemy = null;
-                GetComponent<VMovement>().m_stopMove = false;
-            }
-        }
 
-        if (GetComponent<Flocking>().isleader)
-        {
-            if (PathToEnd.Count > 0)
-            {
-                GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized;
-                if ((PathToEnd[pathindex] - transform.position).sqrMagnitude < GetComponent<VMovement>().speed * GetComponent<VMovement>().speed)
-                {
-                    --pathindex;
-                    if (pathindex <= 0)
-                    {
-                        PathToEnd.Clear();
-                    }
-                }
-            }
-        }
 
-        for (int i = 0; i < Building.m_buildingList.Count; ++i)
-        {
-            GameObject ent = Building.m_buildingList[i];
-            if (ent.GetComponent<Building>().isfriendly != m_isFriendly && m_targetBuilding == null) // if not from the same team
-            {
-                // need to make the list of ent to kill
-                if (Vector3.Distance(ent.transform.position, transform.position) < Mathf.Sqrt(m_attkDist)) // distance check to see if building to attack is nearby
-                {
-                    m_animator.SetBool("b_attack", true); // Play attack animation
-                    m_switchAnimation = true;
-                    if (m_targetBuilding == null)
-                    {
-                        Debug.Log(ent.GetComponent<Building>().gameObject.name);
-                        m_targetBuilding = ent;
-                    }
-                }
-                else if (m_switchAnimation)
-                {
-                    m_animator.SetBool("b_attack", false);
-                    m_switchAnimation = false;
-                }
-            }
-        }
 
-        if ((m_targetBuilding == null || m_targetBuilding.GetComponent<Health>().GetHealth() < 0) && GetComponent<VMovement>().m_stopMove)
-        {
-            m_targetBuilding = null;
-            GetComponent<VMovement>().m_stopMove = false;
-        }
-        else if (m_targetBuilding != null)
-        {
-            m_building.m_isDistract = true;
-            m_building.GetComponent<Pathfinder>().FindPath(m_building.GetMaxPosOfBuilding(m_targetBuilding.transform.position, m_targetBuilding.GetComponent<Building>().size));
-            SetPath(m_building.GetComponent<Pathfinder>().PathToEnd);
 
-            m_targetBuilding.GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, m_attkDamage);
-            GetComponent<VMovement>().m_stopMove = true;
-            if (m_targetBuilding.GetComponent<Health>().GetHealth() < 0)
-                m_building.m_isDistract = false;
-        }
 
-        if (GetComponent<Health>().GetHealth() < 0) // Unit died
-        {
-            RemoveEntity(this.gameObject);
-            UnityEngine.Object.Destroy(this.gameObject);
-            m_destroyerOfWorlds = GetComponents(typeof(Component));
-            for (int i = 0; i < m_destroyerOfWorlds.Length; ++i)
-            {
-                if (m_destroyerOfWorlds[i].gameObject.activeSelf)
-                    UnityEngine.Object.Destroy(m_destroyerOfWorlds[i]);
-            }
-        }
-	}
- */
-
-/*
-        GameObject target = null;
-        if (m_targetList[m_targetIndex] != null)
-            target = m_targetList[m_targetIndex];
-        //else
-        {
-            for (int i = 0; i < Spawn.m_entityList.Count; ++i)
-            {
-                GameObject ent = (GameObject)Spawn.m_entityList[i];
-                if (/*ent != this.gameObject/ && ent.GetComponent<Unit>().m_isFriendly != m_isFriendly) // if the entity being checked is not himself and is in the opponent's team
-                {
-                    float dist = (ent.transform.position - transform.position).sqrMagnitude;
-                    if (dist < m_attkDist) // An enemy has drawn close to the unit, attack it
-                    {
-                        m_timer.Update();
-                        //Vector2 enemyGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(ent.transform.position); // The commented out code below is to check and kill all enemies in a grid
-                        //for (int j = 0; j < Spawn.m_entityList.Count; ++j)
-                        {
-                            //GameObject enemy = (GameObject)Spawn.m_entityList[j];
-                            //if (SceneData.sceneData.gridmesh.GetGridIndexAtPosition(enemy.transform.position).x == enemyGrid.x && SceneData.sceneData.gridmesh.GetGridIndexAtPosition(enemy.transform.position).y == enemyGrid.y && m_timer.can_run)
-                            {
-                                ent.GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, m_attkDamage);
-                                m_timer.Reset();
-                            }
-                        }
-                        m_animator.SetBool("b_attack", true); // Play attack animation
-                        m_switchAnimation = true;
-                        m_targetList.Add(ent);
-                    }
-                    else if (m_switchAnimation)
-                    {
-                        m_animator.SetBool("b_attack", false);
-                        m_switchAnimation = false;
-                    }
-                }
-            }
-
-            if (GetComponent<Flocking>().isleader)
-            {
-                if (PathToEnd.Count > 0)
-                {
-                    GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized;
-                    if ((PathToEnd[pathindex] - transform.position).sqrMagnitude < GetComponent<VMovement>().speed * GetComponent<VMovement>().speed)
-                    {
-                        --pathindex;
-                        if (pathindex <= 0)
-                        {
-                            PathToEnd.Clear();
-                        }
-                    }
-                }
-            }
-
-            for (int i = 0; i < Building.m_buildingList.Count; ++i)
-            {
-                GameObject ent = Building.m_buildingList[i];
-                if (ent.GetComponent<Building>().isfriendly != m_isFriendly) // if not from the same team
-                {
-                    // need to make the list of ent to kill
-                    if (Vector3.Distance(ent.transform.position, transform.position) < Mathf.Sqrt(m_attkDist)) // distance check to see if building to attack is nearby
-                    {
-                        m_animator.SetBool("b_attack", true); // Play attack animation
-                        m_switchAnimation = true;
-                        Debug.Log(ent.GetComponent<Building>().gameObject.name);
-                        m_targetList.Add(ent);
-                    }
-                    else if (m_switchAnimation)
-                    {
-                        m_animator.SetBool("b_attack", false);
-                        m_switchAnimation = false;
-                    }
-                }
-            }
-
-            // set target to null
-            if (target != null && target.GetComponent<Health>().GetHealth() < 0 && GetComponent<VMovement>().m_stopMove == true)
-            {
-                m_targetList.Remove(target);
-                //if (m_targetList[m_targetIndex + 1] != null)
-                //    ++m_targetIndex;
-                m_building.m_isDistract = false;
-                GetComponent<VMovement>().m_stopMove = false;
-            }
-            else if (target != null)
-            {
-                m_building.m_isDistract = true;
-                if (target.GetComponent<Building>())
-                    m_building.GetComponent<Pathfinder>().FindPath(m_building.GetMaxPosOfBuilding(target.transform.position, target.GetComponent<Building>().size));
-                SetPath(m_building.GetComponent<Pathfinder>().PathToEnd);
-                target.GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, m_attkDamage);
-                if (Vector3.Distance(target.transform.position, transform.position) < Mathf.Sqrt(m_attkDist))
-                    GetComponent<VMovement>().m_stopMove = true;
-            }
-
-            if (GetComponent<Health>().GetHealth() < 0) // Unit died
-            {
-                RemoveEntity(this.gameObject);
-                UnityEngine.Object.Destroy(this.gameObject);
-                m_destroyerOfWorlds = GetComponents(typeof(Component));
-                for (int i = 0; i < m_destroyerOfWorlds.Length; ++i)
-                {
-                    if (m_destroyerOfWorlds[i].gameObject.activeSelf)
-                        UnityEngine.Object.Destroy(m_destroyerOfWorlds[i]);
-                }
-            }
-        }
-	}*/

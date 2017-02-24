@@ -32,29 +32,26 @@ public class Bprojectile : MonoBehaviour {
             return;
         
         Vector3 displacement = (target.transform.position - gameObject.transform.position);
-        Velocity = displacement.normalized * speed;
+      
         switch (type)
         {
         case(1):
-      
+        Velocity = displacement.normalized * speed;
         if(displacement.sqrMagnitude < 10f*10f)
         {
-            //target.GetComponent<Unit>().m_health -= damage;//take damage code
+            target.GetComponent<Unit>().TakeDmage(damage);
             DestroyObject(gameObject);
         }break;
         case(2):
-        
-        //if (gameObject.transform.position.y < SceneData.sceneData.ground.SampleHeight(gameObject.transform.position));
-        //{
-        //    //target.GetComponent<Unit>().m_health -= damage;//take damage cod
-        //    
-        //    DestroyObject(gameObject);
-        //}
-        if (displacement.sqrMagnitude < 10f * 10f)
-        {
-            //target.GetComponent<Unit>().m_health -= damage;//take damage code
-            Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
+
+
+        Velocity = new Vector3(0, -1, 0) * speed; 
+        if(transform.position.y < -200)
+        { 
+            Instantiate(explosion, target.transform.position, Quaternion.identity);
             DestroyObject(gameObject);
+            
+
         }
         break;
           
