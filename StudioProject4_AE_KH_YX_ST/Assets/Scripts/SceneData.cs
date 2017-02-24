@@ -26,6 +26,15 @@ public class SceneData : MonoBehaviour
     public float SeperationWeight = 1f;
     public float AlignmentWeight = 1f;
 
+    /*Spell*/
+    // Two values for storing where player is placing spell card
+    [HideInInspector]
+    public Vector4 spell_grid;
+    [HideInInspector]
+    public bool is_spellCast; // is the spell cast?
+    [HideInInspector]
+    public float spell_dmg; // spell damage
+    /**/
 
     //Particles
     public ParticleSystem buildingP;

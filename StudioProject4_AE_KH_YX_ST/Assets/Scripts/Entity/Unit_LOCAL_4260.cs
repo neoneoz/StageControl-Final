@@ -203,16 +203,7 @@ public class Unit : MonoBehaviour
             enemyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
             enemyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
         }
-        /*Affected by spell*/
-        if (SceneData.sceneData.is_spellCast)
-        {
-            if (SceneData.sceneData.gridmesh.CheckWithinRadius(transform.position, SceneData.sceneData.spell_grid))
-            {
-                m_health -= Time.deltaTime * (int)SceneData.sceneData.spell_dmg;
-                //GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, (int)SceneData.sceneData.spell_dmg);
-            }
-        }
-        /**/
+
         //for (int i = 0; i < Building.m_buildingList.Count; ++i)
         //{
         //    GameObject ent = Building.m_buildingList[i];
@@ -268,16 +259,11 @@ public class Unit : MonoBehaviour
             Destroy(enemyHealth);
         }
 
-
     }
 
     public void TakeDmage(float damage)
     {
         m_health -= damage;
-
-       
- 
-
     }
 
 
