@@ -62,9 +62,9 @@ public class Deck : MonoBehaviour
             draw.SetBool("Isdraw", false);
             a_draw = true;
             addcard();
-        
+
         }
-      
+
 
     }
 
@@ -84,7 +84,7 @@ public class Deck : MonoBehaviour
 
     public void DrawCard()
     {
-        
+
         // GameObject drawcard = gameObject.transform.GetChild(0).GetComponent<GameObject>();
         Animator draw = gameObject.transform.GetChild(0).GetComponent<Animator>();
         if (Cards.Count <= 30 && Cards.Count > 0 && drawable == true)
@@ -122,8 +122,8 @@ public class Deck : MonoBehaviour
         firstCard.GetComponent<UnitCards>().GenerateBuilding();
         Cards.Remove(firstCard);
         return;
-     }
-   
+    }
 
-    
+
+
 }

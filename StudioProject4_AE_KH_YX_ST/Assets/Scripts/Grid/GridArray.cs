@@ -57,6 +57,41 @@ public class GridArray : MonoBehaviour
      
             
     }
+
+    public void RenderRadius(Vector3 mouse_pos, float radius)
+    {
+        float offset = (radius - 1f);
+        Vector3 maxpos = new Vector3(mouse_pos.x + (GridSizeX * 0.5f) * offset, mouse_pos.y, mouse_pos.z + (GridSizeZ * 0.5f) * offset);
+        GameObject max = GetGridAtPosition(maxpos);
+        RenderBuildGrids(max, radius);
+    }
+
+    public Vector4 GetMouseGrid(Vector3 position, float size)
+    {
+        float offset = (size - 1f);
+        Vector3 maxpos = new Vector3(position.x + (GridSizeX * 0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
+        GameObject max = GetGridAtPosition(maxpos);
+        float scale = size - 1;
+        Vector2 mxIndex = new Vector2(max.GetComponent<Grid>().position.x, max.GetComponent<Grid>().position.y);
+        Vector2 mnIndex = new Vector2(mxIndex.x - scale, mxIndex.y - scale);
+        int maxX = (int)mxIndex.x; int minX = (int)mnIndex.x;
+        int maxY = (int)mxIndex.y; int minY = (int)mnIndex.y;
+        return new Vector4(minX, minY, maxX, maxY);
+    }
+
+    public bool CheckWithinRadius(Vector3 ent_pos, Vector4 gridMinMax)
+    {
+        Vector2 ent_grid = GetGridIndexAtPosition(ent_pos);
+        if (ent_grid.x >= gridMinMax.x && ent_grid.x <= gridMinMax.z)
+        {
+            if (ent_grid.y >= gridMinMax.y && ent_grid.y <= gridMinMax.w)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void RenderBuildGrids(GameObject max, float size)
     {
         //Debug.Log("showing grid");

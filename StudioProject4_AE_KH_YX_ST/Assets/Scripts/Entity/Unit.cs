@@ -200,6 +200,17 @@ public class Unit : MonoBehaviour {
                     UnityEngine.Object.Destroy(m_destroyerOfWorlds[i]);
             }
         }
+
+        /*Affected by spell*/
+        if (SceneData.sceneData.is_spellCast)
+        {
+            if (SceneData.sceneData.gridmesh.CheckWithinRadius(transform.position, SceneData.sceneData.spell_grid))
+            {
+                m_health -= Time.deltaTime * (int)SceneData.sceneData.spell_dmg;
+                //GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, (int)SceneData.sceneData.spell_dmg);
+            }
+        }
+        /**/
  
     }
     
