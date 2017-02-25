@@ -1096,6 +1096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_secondsToSpawn: 10
+  m_timer: {fileID: 0}
   m_entity: {fileID: 131550, guid: b72ee064e4655ea4ab0169063befdd46, type: 2}
   m_orientationX: right
   m_orientationZ: up
@@ -1167,6 +1168,8 @@ MonoBehaviour:
   isfriendly: 1
   m_isDistract: 0
   buildTimer: 2
+  buildingHealth: 600
+  maxBuildingHealth: 600
 --- !u!114 &11481220
 MonoBehaviour:
   m_ObjectHideFlags: 1

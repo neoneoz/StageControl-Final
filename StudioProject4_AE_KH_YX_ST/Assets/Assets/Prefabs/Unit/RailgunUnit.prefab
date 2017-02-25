@@ -887,9 +887,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_type: 4
   m_attkRadius: 250
-  m_attkDamage: 0
+  m_attkDamage: 35
   m_attkAnim: {fileID: 7400000, guid: e49998e06cf2d414d942fb12b2582da9, type: 3}
-  m_attackspeed: 3
+  m_attackspeed: 3.5
   m_health: 200
   m_maxHealth: 200
   PathToEnd: []
@@ -898,7 +898,7 @@ MonoBehaviour:
   m_targetEnemy: {fileID: 0}
   m_building: {fileID: 0}
   projectile: {fileID: 181392, guid: 07118f2ecd407424a8ee6e4b4a047933, type: 2}
-  Emitter: {fileID: 162250, guid: 064d3a40b9748d645a29268e929d5329, type: 2}
+  Emitter: {fileID: 186286, guid: 0d8e8ec3a80ff924b96d3b33cafeb064, type: 2}
   ismelee: 0
 --- !u!114 &11438686
 MonoBehaviour:

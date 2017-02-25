@@ -39,19 +39,18 @@ public class Bprojectile : MonoBehaviour {
         Velocity = displacement.normalized * speed;
         if(displacement.sqrMagnitude < 10f*10f)
         {
-            target.GetComponent<Unit>().TakeDmage(damage);
+            DoDamage();
             DestroyObject(gameObject);
         }break;
-        case(2):
+        case(2)://railgun
 
 
         Velocity = new Vector3(0, -1, 0) * speed; 
         if(transform.position.y < -200)
         { 
-            Instantiate(explosion, target.transform.position, Quaternion.identity);
+            GameObject ex =  Instantiate(explosion, target.transform.position, Quaternion.identity) as GameObject;
+            ex.GetComponent<Rexplosion>().damage = damage;
             DestroyObject(gameObject);
-            
-
         }
         break;
           
@@ -61,4 +60,13 @@ public class Bprojectile : MonoBehaviour {
         
 	
 	}
+
+    void DoDamage()
+    {
+        if (target.GetComponent<Unit>() != null)
+            target.GetComponent<Unit>().TakeDamage(damage);
+        else
+            target.GetComponent<Building>().TakeDamage(damage);
+
+    }
 }

@@ -225,4 +225,10 @@ public class Building : MonoBehaviour
         b_state = BUILDSTATE.B_CONSTRUCT;
         buildTimerTemp.enabled = true;
     }
+
+    public void TakeDamage(float damage)
+    {
+        buildingHealth -= damage;
+        
+    }
 }
