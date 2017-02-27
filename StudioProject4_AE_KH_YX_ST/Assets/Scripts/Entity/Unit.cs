@@ -229,7 +229,7 @@ public class Unit : MonoBehaviour
             enemyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
         }
         /*Affected by spell*/
-        if (SceneData.sceneData.is_spellCast)
+        if (SceneData.sceneData.is_spellCast && SceneData.sceneData.is_spellHit)
         {
             if (SceneData.sceneData.gridmesh.CheckWithinRadius(transform.position, SceneData.sceneData.spell_grid))
             {

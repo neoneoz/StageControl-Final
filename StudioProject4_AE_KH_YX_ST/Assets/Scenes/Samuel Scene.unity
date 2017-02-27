@@ -215,6 +215,9 @@ MonoBehaviour:
   spell_dmg: 0
   buildingP: {fileID: 19837254, guid: 79119af665e78f642aef9f1a48521389, type: 2}
   buildTimer: {fileID: 11474922, guid: 17bbdc4747fc7154492d35f91aa118a9, type: 2}
+  spawnTimer: {fileID: 0}
+  Health_friendly: {fileID: 0}
+  Health_enemy: {fileID: 0}
 --- !u!4 &88376218
 Transform:
   m_ObjectHideFlags: 0
@@ -459,7 +462,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 20
 --- !u!120 &153693214
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2545,6 +2548,8 @@ MonoBehaviour:
   isfriendly: 1
   m_isDistract: 0
   buildTimer: 0
+  buildingHealth: 0
+  maxBuildingHealth: 0
 --- !u!4 &982690058
 Transform:
   m_ObjectHideFlags: 0
@@ -2557,7 +2562,7 @@ Transform:
   m_Children:
   - {fileID: 1439523054}
   m_Father: {fileID: 0}
-  m_RootOrder: 33
+  m_RootOrder: 34
 --- !u!224 &1018540745 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22465028, guid: 78d2fdb4f726500448d816f80fc91448,
@@ -2798,6 +2803,8 @@ MonoBehaviour:
   isfriendly: 0
   m_isDistract: 0
   buildTimer: 0
+  buildingHealth: 0
+  maxBuildingHealth: 0
 --- !u!4 &1066008270
 Transform:
   m_ObjectHideFlags: 0
@@ -3636,7 +3643,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 4
 --- !u!114 &1311828729
 MonoBehaviour:
   m_ObjectHideFlags: 0

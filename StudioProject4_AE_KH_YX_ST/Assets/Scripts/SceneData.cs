@@ -33,6 +33,8 @@ public class SceneData : MonoBehaviour
     [HideInInspector]
     public bool is_spellCast; // is the spell cast?
     [HideInInspector]
+    public bool is_spellHit; // is the spell cast?
+    [HideInInspector]
     public float spell_dmg; // spell damage
     /**/
 

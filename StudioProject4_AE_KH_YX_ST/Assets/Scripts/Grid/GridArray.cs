@@ -207,6 +207,19 @@ public class GridArray : MonoBehaviour
         return new Vector3(0, 0, 0);
     }
 
+    public Grid GetGridObjAtPosition(Vector3 pos)
+    {
+        int index_x = (int)(pos.x - GridSizeX * 0.5f) / GridSizeX;
+        int index_z = (int)(pos.z - GridSizeZ * 0.5f) / GridSizeZ;
+
+        if (index_x >= 0 && index_x <= m_rows &&
+            index_z >= 0 && index_z <= m_columns)
+        {
+            return gridmesh[index_x, index_z].GetComponent<Grid>();
+        }
+        return null;
+    }
+
     // Gets grid index in Vec2 at position argument or returns zero vector if theres none
     public Vector3 GetGridIndexAtPosition(Vector3 position)
     {
