@@ -607,7 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_secondsToSpawn: 20
   m_timer: {fileID: 0}
-  m_entity: {fileID: 172868, guid: 2345a5f3c6d3f5a4baa1a915062d81be, type: 2}
+  m_entity: {fileID: 136398, guid: 2345a5f3c6d3f5a4baa1a915062d81be, type: 2}
   m_orientationX: right
   m_orientationZ: none
   m_offsetGridX: 2

@@ -18,16 +18,7 @@ public class Flocking : MonoBehaviour
 
         DoFlock();
 
-        if (isleader == false)
-        {
-
-            // Cap Maximum speed of followers
-            gameObject.GetComponent<VMovement>().Velocity += cohesion(leader);//+ alignment(Force);
-            float MAX = leader.GetComponent<VMovement>().speed * 2;
-            gameObject.GetComponent<VMovement>().Velocity.x = Mathf.Clamp(gameObject.GetComponent<VMovement>().Velocity.x, -MAX, MAX);
-            gameObject.GetComponent<VMovement>().Velocity.z = Mathf.Clamp(gameObject.GetComponent<VMovement>().Velocity.z, -MAX, MAX);
-        }
-        else
+        if(isleader)
         {
             Debug.DrawLine(transform.position, transform.position + new Vector3(0, 1000, 0), Color.blue);
         }
@@ -59,6 +50,14 @@ public class Flocking : MonoBehaviour
 
     void DoFlock()
     {
+        float MAX = GetComponent<VMovement>().speed;
+        if (!isleader)
+        {
+            MAX = leader.GetComponent<VMovement>().speed;
+            gameObject.GetComponent<VMovement>().Velocity += cohesion(leader);
+            
+        
+        }
         Vector3 Force = new Vector3(0, 0, 0);
         for (int i = 0; i < FlockingList.Count; ++i)
         {
@@ -80,6 +79,9 @@ public class Flocking : MonoBehaviour
                 FlockingList[i].GetComponent<VMovement>().Velocity += FlockingList[i].GetComponent<Flocking>().seperation(Repel);
             }
         }
+
+        gameObject.GetComponent<VMovement>().Velocity.x = Mathf.Clamp(gameObject.GetComponent<VMovement>().Velocity.x, -MAX, MAX);
+        gameObject.GetComponent<VMovement>().Velocity.z = Mathf.Clamp(gameObject.GetComponent<VMovement>().Velocity.z, -MAX, MAX);
     }
 
     void updatelist()

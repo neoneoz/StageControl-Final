@@ -468,7 +468,6 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0, z: 0}
   speed: 10
   m_stopMove: 0
-  m_stopMove2: 0
 --- !u!114 &11409452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -501,8 +500,8 @@ MonoBehaviour:
   m_attkDamage: 10
   m_attkAnim: {fileID: 7400000, guid: 6833b506f6030d1498557d7e0c7d89c0, type: 3}
   m_attackspeed: 1.2
-  m_health: 150
-  m_maxHealth: 150
+  m_health: 60
+  m_maxHealth: 60
   PathToEnd: []
   pathindex: 0
   m_isFriendly: 0

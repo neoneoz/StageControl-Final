@@ -152,8 +152,8 @@ public class Unit : MonoBehaviour
             anim.SetBool("b_attack", false);
             GetComponent<VMovement>().m_stopMove = false;
             //Mathf.Rad2Deg();
-            float rotation = Mathf.Rad2Deg * (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.x, gameObject.GetComponent<VMovement>().Velocity.z));
-            gameObject.transform.rotation = new Quaternion(0, 1, 0, rotation);
+            float rotation = (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.z, gameObject.GetComponent<VMovement>().Velocity.x));
+            gameObject.transform.rotation = new Quaternion(0, 1, 0, rotation + 1.5708f);
 
             for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
