@@ -142,6 +142,11 @@ public class Unit : MonoBehaviour
 
         if (m_targetEnemy == null)
         {
+            //projectile.SetActive(false);
+            if(Emitter)
+            Emitter.SetActive(false);
+
+
             //rotate the unit properly
             Animator anim = gameObject.transform.GetChild(0).GetComponent<Animator>();
             anim.SetBool("b_attack", false);
@@ -162,7 +167,27 @@ public class Unit : MonoBehaviour
                     m_targetEnemy = ent;
             }
 
+            if (m_targetEnemy == null) // still no enemy found
+            {
+                /**/
+                for (int i = 0; i < Building.m_buildingList.Count; ++i)
+                {
+                    GameObject ent = Building.m_buildingList[i];
+                    if (ent.GetComponent<Building>().isfriendly == m_isFriendly) // if not from the same team
+                        continue;
+                    float dist = (ent.transform.position - transform.position).sqrMagnitude;
+
+                    if (dist <= m_attkRadius * m_attkRadius) // distance check to see if building to attack is nearby
+                        m_targetEnemy = ent;
+
+                    }
+                
+
+            }
+
         }
+
+
         if (m_targetEnemy)
             DoAttack();
 
@@ -212,30 +237,7 @@ public class Unit : MonoBehaviour
                 //GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, (int)SceneData.sceneData.spell_dmg);
             }
         }
-        /**/
-        //for (int i = 0; i < Building.m_buildingList.Count; ++i)
-        //{
-        //    GameObject ent = Building.m_buildingList[i];
-        //    if (ent.GetComponent<Building>().isfriendly != m_isFriendly && m_targetBuilding == null) // if not from the same team
-        //    {
-        //        // need to make the list of ent to kill
-        //        if (Vector3.Distance(ent.transform.position, transform.position) < Mathf.Sqrt(m_attkDist)) // distance check to see if building to attack is nearby
-        //        {
-        //            m_animator.SetBool("b_attack", true); // Play attack animation
-        //            m_switchAnimation = true;
-        //            if (m_targetBuilding == null)
-        //            {
-        //                Debug.Log(ent.GetComponent<Building>().gameObject.name);
-        //                m_targetBuilding = ent;
-        //            }
-        //        }
-        //        else if (m_switchAnimation)
-        //        {
-        //            m_animator.SetBool("b_attack", false);
-        //            m_switchAnimation = false;
-        //        }
-        //    }
-        //}
+       
 
         //if ((m_targetBuilding == null || m_targetBuilding.GetComponent<Health>().GetHealth() < 0) && GetComponent<VMovement>().m_stopMove2)
         //{
@@ -256,6 +258,8 @@ public class Unit : MonoBehaviour
 
         if (m_health <= 0) // Unit died
         {
+            if (Emitter != null)
+                Destroy(Emitter);
             RemoveEntity(this.gameObject);
             UnityEngine.Object.Destroy(this.gameObject);
             m_destroyerOfWorlds = GetComponents(typeof(Component));
@@ -284,7 +288,7 @@ public class Unit : MonoBehaviour
     void DoAttack()
     {
         m_timer.Update();//update attack speed
-        if (m_targetEnemy.GetComponent<Unit>().m_health <= 0)//enemy hp check
+        if (GetHealth() <=0 )//enemy hp check
         {
             m_targetEnemy = null;
             return;
@@ -326,7 +330,7 @@ public class Unit : MonoBehaviour
                 {
                     //probably change later
                     GetComponent<VMovement>().m_stopMove = true;
-                    m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+                    DoDamage(m_attkDamage);
                     //do damage
 
                 } break;
@@ -343,24 +347,33 @@ public class Unit : MonoBehaviour
                     //GameObject flash = Instantiate(projectile, gameObject.transform.GetChild(1).transform.position, Quaternion.identity) as GameObject;
                     Emitter.SetActive(true);
                     Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
-                    m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+                    DoDamage(m_attkDamage);
 
                 } break;
             case (UNIT_TYPE.BBUSTER):
                 {
                     Emitter.SetActive(true);
-                    Emitter.transform.position = gameObject.transform.position;
-                    m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+                    Emitter.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y+10, gameObject.transform.position.z);
+                    //Emitter.transform.position.y += 20;
+                    DoDamage(m_attkDamage);
                 } break;
             case (UNIT_TYPE.RAILGUN):
                 {
                     Emitter.SetActive(true);
                     Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
                     Vector3 pos = new Vector3(m_targetEnemy.transform.position.x, m_targetEnemy.transform.position.y + 1000, m_targetEnemy.transform.position.z);
+
                     GameObject blast = Instantiate(projectile, pos, Quaternion.identity) as GameObject;
                     blast.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 2, 400);
-                } break;
 
+                } break;
+            case (UNIT_TYPE.IEN_GOLEM):
+                {
+                    //probably change later
+                    GetComponent<VMovement>().m_stopMove = true;
+                    DoDamage(m_attkDamage);
+                    //do damage
+                } break;
 
         }
 
@@ -371,12 +384,27 @@ public class Unit : MonoBehaviour
 
     }
 
-    void TakeDamage(float damage)
+    void DoDamage(float damage)
+    {
+        if( m_targetEnemy.GetComponent<Unit>() != null)
+            m_targetEnemy.GetComponent<Unit>().TakeDamage(m_attkDamage);
+        else
+            m_targetEnemy.GetComponent<Building>().TakeDamage(m_attkDamage);
+
+    }
+
+    public void TakeDamage(float damage)
     {
         m_health -= damage;
     }
 
-
+    float GetHealth()
+    {
+        if(m_targetEnemy.GetComponent<Unit>() != null)
+            return m_targetEnemy.GetComponent<Unit>().m_health;
+        else
+            return m_targetEnemy.GetComponent<Building>().buildingHealth;
+    }
 
     // Remove a gameobject from Spawn.m_entityList
     public static void RemoveEntity(GameObject go, List<GameObject> list = null)

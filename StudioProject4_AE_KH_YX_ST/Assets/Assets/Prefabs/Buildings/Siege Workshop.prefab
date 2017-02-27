@@ -986,8 +986,8 @@ MonoBehaviour:
   isfriendly: 1
   m_isDistract: 0
   buildTimer: 3
-  buildingHealth: 1000
-  maxBuildingHealth: 1000
+  buildingHealth: 500
+  maxBuildingHealth: 500
 --- !u!114 &11448892
 MonoBehaviour:
   m_ObjectHideFlags: 1

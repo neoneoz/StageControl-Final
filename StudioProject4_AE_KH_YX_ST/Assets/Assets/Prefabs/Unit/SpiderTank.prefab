@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_attkRadius: 80
   m_attkDamage: 5
   m_attkAnim: {fileID: 7400000, guid: 3b8cf772cb944f249b18a067937929b7, type: 3}
-  m_attackspeed: 0.2
+  m_attackspeed: 0.3
   m_health: 175
   m_maxHealth: 175
   PathToEnd: []

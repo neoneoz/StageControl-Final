@@ -60,14 +60,14 @@ public class Spawn : MonoBehaviour
 
     void Update()
     {
-        if (m_building.isfriendly && m_entityList.Count > m_team1MAX)
-            return;
-        if (!m_building.isfriendly && m_entityList.Count > m_team2MAX)
-            return;
+        //if (m_building.isfriendly && m_entityList.Count > m_team1MAX)
+        //    return;
+        //if (!m_building.isfriendly && m_entityList.Count > m_team2MAX)
+        //    return;
         if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE)
             m_timer.Update();
         //SharedData.instance.gridmesh.RenderBuildGrids(transform.position, transform.localScale);
-        if (m_timer.can_run && m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound && m_currAmt < m_spawnLimit)
+        if (m_timer.can_run && m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound/* && m_currAmt < m_spawnLimit*/)
         {
             GameObject spawn;
             for (int i = 0; i < m_spawnAmt; ++i)
@@ -116,6 +116,7 @@ public class Spawn : MonoBehaviour
                     orientationZ = 1;
                 Vector3 spawn_pos = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)this_grid.x + m_offsetGridX * orientationX, (int)this_grid.y + m_offsetGridZ * orientationZ); // is actually the grid this object is on's z position + 30, not y
                 spawn_pos.y = SceneData.sceneData.gridmesh.GetTerrainHeightAtGrid(spawn_pos);
+                
                 spawn.transform.position = spawn_pos;
                 if (m_building.isfriendly)
                     spawn.GetComponent<Unit>().m_isFriendly = true;
