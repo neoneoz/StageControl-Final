@@ -8,20 +8,20 @@ public class Flocking : MonoBehaviour
     public float SeperationOffset = 800f;
     public List<GameObject> FlockingList = new List<GameObject>();
     public GameObject leader;
-    public bool isleader = true;
+    public bool isleader = false;
 
     void Update()
     {
         updatelist();
 
-        UpdateLeadership();
+        //UpdateLeadership();
 
         DoFlock();
 
-        if(isleader)
-        {
-            Debug.DrawLine(transform.position, transform.position + new Vector3(0, 1000, 0), Color.blue);
-        }
+        //if (isleader)
+        //{
+        //    Debug.DrawLine(transform.position, transform.position + new Vector3(0, 1000, 0), Color.blue);
+        //}
     }
 
     void UpdateLeadership()
@@ -51,18 +51,18 @@ public class Flocking : MonoBehaviour
     void DoFlock()
     {
         float MAX = GetComponent<VMovement>().speed;
-        if (!isleader)
-        {
-            MAX = leader.GetComponent<VMovement>().speed;
-            gameObject.GetComponent<VMovement>().Velocity += cohesion(leader);
+        //if (!isleader)
+        //{
+        //    MAX = leader.GetComponent<VMovement>().speed;
+        //    gameObject.GetComponent<VMovement>().Velocity += cohesion(leader);
             
         
-        }
+        //}
         Vector3 Force = new Vector3(0, 0, 0);
         for (int i = 0; i < FlockingList.Count; ++i)
         {
-            if (FlockingList[i].GetComponent<Flocking>().isleader)
-                continue;
+            //if (FlockingList[i].GetComponent<Flocking>().isleader)
+            //    continue;
 
             Vector3 Repel = new Vector3(0, 0, 0);
             Vector3 displacement = (FlockingList[i].transform.position - gameObject.transform.position);
@@ -72,7 +72,7 @@ public class Flocking : MonoBehaviour
                 Force.y = FlockingList[i].GetComponent<VMovement>().Velocity.y;
             }
 
-            if (displacement.magnitude < 10)
+            if (displacement.magnitude < 15)
             {
                 //Debug.Log("repeling");
                 Repel = displacement;
@@ -163,7 +163,7 @@ public class Flocking : MonoBehaviour
 //    public Vector3 computeAlignment()
 //    {
 //        value.Set(0, 0, 0);
-//        foreach(GameObject neighbour in neighbours)
+//        foreach (GameObject neighbour in neighbours)
 //        {
 //            value.x += neighbour.GetComponent<VMovement>().Velocity.x;
 //            value.y += neighbour.GetComponent<VMovement>().Velocity.y;
@@ -228,15 +228,15 @@ public class Flocking : MonoBehaviour
 //                leaderindex = i;
 //                break;
 //            }
-//            if(isLeader)
-//            Debug.DrawLine(transform.position, neighbours[i].transform.position, Color.yellow);
+//            if (isLeader)
+//                Debug.DrawLine(transform.position, neighbours[i].transform.position, Color.yellow);
 //        }
 
 //        if (leaderNearby == false)
 //        {
 //            isLeader = true;
 //        }
-//        else if(leaderNearby && isLeader)
+//        else if (leaderNearby && isLeader)
 //        {
 //            //isLeader = true;
 //            neighbours[leaderindex].GetComponent<Flocking>().isLeader = false;

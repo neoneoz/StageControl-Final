@@ -7,7 +7,7 @@ public class Spawn : MonoBehaviour
 {
     // How many seconds before next spawn
     public float m_secondsToSpawn;
-    public Timer m_timer;
+    public float m_spawntimer;
     // The controller that the spawned entity belongs to like EnemyController
     private static GameObject m_controller;
     private static bool m_initController = false;
@@ -35,8 +35,7 @@ public class Spawn : MonoBehaviour
     void Start()
     {
         m_tempList = new List<GameObject>();
-        m_timer = this.gameObject.AddComponent<Timer>();
-        m_timer.Init(0, m_secondsToSpawn, 0);
+        m_spawntimer = 0;
         m_building = GetComponent<Building>();
         if (m_initController == false)
         {
@@ -77,10 +76,15 @@ public class Spawn : MonoBehaviour
         //if (!m_building.isfriendly && m_entityList.Count > m_team2MAX)
         //    return;
         if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE)
-            m_timer.Update();
+            m_spawntimer += Time.deltaTime;
         //SharedData.instance.gridmesh.RenderBuildGrids(transform.position, transform.localScale);
-        if (m_timer.can_run && m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound && m_currAmt < m_spawnLimit)
+        if (m_spawntimer < m_secondsToSpawn)
+            return;
+
+
+        if (m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound && m_currAmt < m_spawnLimit)
         {
+            m_spawntimer = 0;//reset timer
             GameObject spawn;
             for (int i = 0; i < m_spawnAmt; ++i)
             {
@@ -158,7 +162,6 @@ public class Spawn : MonoBehaviour
                 m_entityList.Add(spawn);
                 m_tempList.Add(spawn);
             }
-            m_timer.Reset();
 
             if (m_entityList.Count < m_spawnLimit && m_currAmt > m_spawnLimit)
             {
@@ -173,4 +176,14 @@ public class Spawn : MonoBehaviour
 
         }
     }
+
+
+    public float GetRatio()
+    {
+        if (m_spawntimer == 0)
+            return 1;
+
+        return m_spawntimer / m_secondsToSpawn;
+    }
+
 }

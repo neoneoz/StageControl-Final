@@ -915,7 +915,7 @@ MonoBehaviour:
   SeperationOffset: 800
   FlockingList: []
   leader: {fileID: 0}
-  isleader: 1
+  isleader: 0
 --- !u!114 &11478188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -930,7 +930,6 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0, z: 0}
   speed: 20
   m_stopMove: 0
-  m_stopMove2: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

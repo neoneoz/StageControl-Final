@@ -483,7 +483,7 @@ MonoBehaviour:
   SeperationOffset: 800
   FlockingList: []
   leader: {fileID: 0}
-  isleader: 1
+  isleader: 0
 --- !u!114 &11434802
 MonoBehaviour:
   m_ObjectHideFlags: 1

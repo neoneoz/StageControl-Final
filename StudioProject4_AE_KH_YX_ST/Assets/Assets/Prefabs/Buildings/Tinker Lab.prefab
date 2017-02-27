@@ -813,12 +813,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_secondsToSpawn: 14
-  m_timer: {fileID: 0}
+  m_spawntimer: 0
   m_entity: {fileID: 198864, guid: 07d70d1946270cc4c8191e0d7ffb28f1, type: 2}
-  m_orientationX: right
-  m_orientationZ: up
-  m_offsetGridX: 9
-  m_offsetGridZ: 5
+  m_orientationX: left
+  m_orientationZ: none
+  m_offsetGridX: -1
+  m_offsetGridZ: 0
   m_spawnAmt: 1
   m_spawnLimit: 12
   m_tempList: []
