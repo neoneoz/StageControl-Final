@@ -212,6 +212,7 @@ MonoBehaviour:
   AlignmentWeight: 1
   spell_grid: {x: 0, y: 0, z: 0, w: 0}
   is_spellCast: 0
+  is_spellHit: 0
   spell_dmg: 0
   buildingP: {fileID: 19837254, guid: 79119af665e78f642aef9f1a48521389, type: 2}
   buildTimer: {fileID: 11474922, guid: 17bbdc4747fc7154492d35f91aa118a9, type: 2}
@@ -6060,7 +6061,7 @@ GameObject:
   - 114: {fileID: 2002022917}
   m_Layer: 0
   m_Name: PlayerManager
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

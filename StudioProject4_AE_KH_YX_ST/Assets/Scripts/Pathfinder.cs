@@ -117,7 +117,7 @@ public class Pathfinder : MonoBehaviour
         {
             if (currentNode.GetNodeID() == EndNode.GetNodeID())
             {
-                Debug.Log("Found");
+                Debug.Log("Found"); // Remove this shit guys
                 PathFound = true;
                 Node getPath;
                 for (getPath = currentNode; getPath != null; getPath = getPath.parent)

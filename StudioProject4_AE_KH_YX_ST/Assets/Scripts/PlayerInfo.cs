@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-public class PlayerInfo : MonoBehaviour {
+public class PlayerInfo : MonoBehaviour { // Can be singleton
 
     int Gold;
     public Text goldtext; 
 	// Use this for initialization
 	void Start () {
-        Gold = 5000;
+        Gold = 500;
         goldtext.text = Gold.ToString();
 	}
 	

@@ -36,7 +36,6 @@ public class TriggerAnimation : MonoBehaviour {
                 ps.Stop();
                 ps.gameObject.SetActive(false);
             }
-            Debug.Log("damn");
             anim.SetBool("b_attack", false);
             m_changeAnim = false;
         }        

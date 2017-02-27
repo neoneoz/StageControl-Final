@@ -63,6 +63,10 @@ public class Unit : MonoBehaviour
     Image friendlyHealth = null;
     Image enemyHealth = null;
 
+    // Gold carried by each unit
+    public int m_gold;
+    private PlayerInfo m_player; // The instance to the player, could be singleton then dont need a reference
+
     public void SetPath(List<Vector3> newPath)
     {
         PathToEnd = newPath;
@@ -117,6 +121,7 @@ public class Unit : MonoBehaviour
             Emitter = Instantiate(Emitter);
             Emitter.SetActive(false);
         }
+        m_player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
     }
 
     void InstantiateStats()
@@ -270,6 +275,12 @@ public class Unit : MonoBehaviour
             }
             Destroy(friendlyHealth);
             Destroy(enemyHealth);
+            /*Gold*/
+            if (!m_isFriendly)
+            {
+                m_player.AddPlayerGold(m_gold);
+            }
+            /**/
         }
 
 
