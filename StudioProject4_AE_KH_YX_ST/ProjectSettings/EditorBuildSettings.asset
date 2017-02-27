@@ -13,5 +13,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Arun Scene.unity
   - enabled: 0
     path: Assets/Scenes/Test Scene.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI.unity

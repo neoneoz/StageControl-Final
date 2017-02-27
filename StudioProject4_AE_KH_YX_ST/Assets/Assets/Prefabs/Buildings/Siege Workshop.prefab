@@ -904,7 +904,7 @@ MonoBehaviour:
   m_entity: {fileID: 188288, guid: b08db7a63960641448d6ae419fa64cca, type: 2}
   m_orientationX: right
   m_orientationZ: none
-  m_offsetGridX: 5
+  m_offsetGridX: -1
   m_offsetGridZ: 0
   m_spawnAmt: 2
   m_spawnLimit: 5
