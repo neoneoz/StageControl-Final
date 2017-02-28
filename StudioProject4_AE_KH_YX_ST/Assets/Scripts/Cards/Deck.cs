@@ -21,7 +21,7 @@ public class Deck : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        GenerateDeck();
     }
 
     public void GenerateDeck()
@@ -93,7 +93,6 @@ public class Deck : MonoBehaviour
             if (SceneData.sceneData.handhandler.handsize < 5 && a_draw) //&& draw.GetCurrentAnimatorStateInfo(0).IsName("Idle"))//can draw here
             {
                 //gameObject.transform.GetChild(0).GetComponent<Animation>().
-
                 draw.SetBool("Isdraw", true);
                 a_draw = false;
             }

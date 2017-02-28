@@ -164,12 +164,24 @@ public class FogOfWar : MonoBehaviour
 
     void UpdateTexture()
     {
-        bool AllFinished = false;
         for (int i = 0; i < NumToUpdate; ++i)
         {
+            if (!allObjects[ObjIndex])
             {
-                if (!allObjects[ObjIndex])
-                    continue;
+                ++ObjIndex;
+                if (ObjIndex >= allObjects.Count - 1)
+                {
+                    ListsSet = false;
+                    break;
+                }
+                continue;
+            }
+            if (!allObjects[ObjIndex].activeSelf)
+            {
+                ++ObjIndex;
+                continue;
+            }
+
                 if (allObjects[ObjIndex].GetComponent<Vision>() && CheckIfFriendly(allObjects[ObjIndex]))
                 {
                     int radius = ConvertWorldScaleToTextureScale(allObjects[ObjIndex].GetComponent<Vision>().radius);
@@ -185,17 +197,12 @@ public class FogOfWar : MonoBehaviour
                     }
                 }
 
-                if (ObjIndex == allObjects.Count - 1)
+                if (ObjIndex >= allObjects.Count - 1)
                 {
-                    AllFinished = true;
+                    ListsSet = false;
+                    break;
                 }
                 ++ObjIndex;
-            }
-            if (AllFinished)
-            {
-                ListsSet = false;
-                break;
-            }
         }
 
         //for (int buildingIndex = 0; buildingIndex < Building.m_buildingList.Count; ++buildingIndex)

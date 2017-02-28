@@ -225,6 +225,9 @@ public class Unit : MonoBehaviour
                 {
                     if (!nearbyList[i] || nearbyList[i].GetComponent<Unit>())
                         continue;
+                    if(nearbyList[i].GetComponent<Building>().b_state != Building.BUILDSTATE.B_ACTIVE)
+                        continue;
+
                     GameObject ent = nearbyList[i];
                     if (ent.GetComponent<Building>().isfriendly == m_isFriendly) // if not from the same team
                         continue;
@@ -325,7 +328,10 @@ public class Unit : MonoBehaviour
         Destroy(friendlyHealth.transform.GetChild(0).gameObject);
         Destroy(enemyHealth);
         Destroy(enemyHealth.transform.GetChild(0).gameObject);
-        SpatialPartition.instance.RemoveGameObject(gameObject);
+        if (SpatialPartition.instance)
+        {
+            SpatialPartition.instance.RemoveGameObject(gameObject);
+        }
     }
 
     void DoAttack()
@@ -373,9 +379,11 @@ public class Unit : MonoBehaviour
                 {
                     //probably change later
                     GetComponent<VMovement>().m_stopMove = true;
-                    DoDamage(m_attkDamage);
                     //do damage
-
+                    DoDamage(m_attkDamage);
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_clockworkKnight;
+                    PlayAudio.instance.m_source.volume = 0.5f;
+                    PlayAudio.instance.PlayOnce();
                 } break;
 
             case (UNIT_TYPE.BALLISTA):
@@ -384,9 +392,8 @@ public class Unit : MonoBehaviour
                     GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity) as GameObject;
                     bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 1);
                     PlayAudio.instance.m_source.clip = PlayAudio.instance.m_ballista;
-                    PlayAudio.instance.m_source.volume = 0.4f;
+                    PlayAudio.instance.m_source.volume = 0.5f;
                     PlayAudio.instance.PlayOnce();
-                    PlayAudio.instance.m_soundOwner = gameObject;
                 } break;
 
             case (UNIT_TYPE.SPIDER_TNK):
@@ -395,7 +402,9 @@ public class Unit : MonoBehaviour
                     Emitter.SetActive(true);
                     Emitter.transform.position = gameObject.transform.GetChild(1).transform.position;
                     DoDamage(m_attkDamage);
-
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_spidertank;
+                    PlayAudio.instance.m_source.volume = 0.4f;
+                    PlayAudio.instance.PlayOnce();
                 } break;
             case (UNIT_TYPE.BBUSTER):
                 {
@@ -404,6 +413,9 @@ public class Unit : MonoBehaviour
                     Emitter.transform.rotation = transform.rotation;
                     //Emitter.transform.position.y += 20;
                     DoDamage(m_attkDamage);
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_buster;
+                    PlayAudio.instance.m_source.volume = 0.6f;
+                    PlayAudio.instance.PlayOnce();
                 } break;
             case (UNIT_TYPE.RAILGUN):
                 {
@@ -413,14 +425,20 @@ public class Unit : MonoBehaviour
 
                     GameObject blast = Instantiate(projectile, pos, Quaternion.identity) as GameObject;
                     blast.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 2, 400);
-
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_railgun;
+                    PlayAudio.instance.m_source.volume = 0.6f;
+                    PlayAudio.instance.PlayOnce();
                 } break;
             case (UNIT_TYPE.IEN_GOLEM):
                 {
                     //probably change later
-                    GetComponent<VMovement>().m_stopMove = true;
-                    DoDamage(m_attkDamage);
+                    GetComponent<VMovement>().m_stopMove = true;                    
                     //do damage
+                    DoDamage(m_attkDamage);
+
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_ironGolem;
+                    PlayAudio.instance.m_source.volume = 0.6f;
+                    PlayAudio.instance.PlayOnce();
                 } break;
 
         }

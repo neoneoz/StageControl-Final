@@ -258,7 +258,7 @@ public class Building : MonoBehaviour
             else
             {
                 Destroy(buildingHealth_enemyTemp);
-                Destroy(buildingHealth_friendlyTemp.transform.GetChild(0).gameObject);
+                Destroy(buildingHealth_enemyTemp.transform.GetChild(0).gameObject);
             }
             Building.m_buildingList.Remove(gameObject);
             Destroy(gameObject);

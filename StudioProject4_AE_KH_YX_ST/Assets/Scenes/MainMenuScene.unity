@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1690f764439d7a24a8dc9c262a224ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_sceneName: TestScene
+  m_sceneName: Attacking
 --- !u!1 &257438987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,6 +1102,67 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 348403157}
   m_Mesh: {fileID: 4300040, guid: 609e8d8bf0f457143b1f2fcd3f224785, type: 3}
+--- !u!1 &397144290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 397144292}
+  - 114: {fileID: 397144291}
+  m_Layer: 0
+  m_Name: SceneData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &397144291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 397144290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70aa31b5eeb7f5a44bca8f24cf47017a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EntityList: {fileID: 0}
+  UI: {fileID: 0}
+  gridmesh: {fileID: 0}
+  debuginfo: {fileID: 0}
+  ground: {fileID: 0}
+  Player: {fileID: 0}
+  PlayerDeck: {fileID: 0}
+  isHoldingCard: 0
+  handhandler: {fileID: 0}
+  draghandler: {fileID: 0}
+  CohesionWeight: 1
+  SeperationWeight: 1
+  AlignmentWeight: 1
+  spell_grid: {x: 0, y: 0, z: 0, w: 0}
+  is_spellCast: 0
+  is_spellHit: 0
+  spell_dmg: 0
+  buildingP: {fileID: 19837254, guid: 79119af665e78f642aef9f1a48521389, type: 2}
+  buildTimer: {fileID: 11474922, guid: 17bbdc4747fc7154492d35f91aa118a9, type: 2}
+  spawnTimer: {fileID: 11474922, guid: 2c020845e92ec424a8335273a6da9175, type: 2}
+  Health_friendly: {fileID: 11453072, guid: 6d91d8fedd7699442be904f3c70d602f, type: 2}
+  Health_enemy: {fileID: 11426256, guid: 6ea9964883ea7024887f2500699c540d, type: 2}
+--- !u!4 &397144292
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 397144290}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 95.698204, y: 4.4700785, z: 141.3392}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
 --- !u!1 &432249761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2531,6 +2592,59 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1203076941}
   m_Mesh: {fileID: 4300024, guid: 609e8d8bf0f457143b1f2fcd3f224785, type: 3}
+--- !u!1 &1212260794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1212260796}
+  - 114: {fileID: 1212260795}
+  m_Layer: 0
+  m_Name: SharedData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1212260795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1212260794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6466512659b684eabd141b134cef13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DatabasePopulater:
+  - type: 0
+    gm: {fileID: 100540, guid: 0807804876a66cf41bf8d4a1c822f855, type: 2}
+  - type: 1
+    gm: {fileID: 154950, guid: 1c4bbf18970eebd4c97157227a1ca3f7, type: 2}
+  - type: 2
+    gm: {fileID: 119988, guid: 7032b76405567b445ae6955ae8e1fb28, type: 2}
+  - type: 3
+    gm: {fileID: 145040, guid: f0606f13751b1c047a63001d4051708c, type: 2}
+  - type: 4
+    gm: {fileID: 132880, guid: bca9ffa892778b5439f57c9e77ac1a1a, type: 2}
+  - type: 5
+    gm: {fileID: 114830, guid: a65fb5ad20d19fc4fbcc20bfb7458e69, type: 2}
+  m_bgmObject: {fileID: 1858336703}
+--- !u!4 &1212260796
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1212260794}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 80.59866, y: 78.15431, z: 116.5743}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
 --- !u!1 &1219490231
 GameObject:
   m_ObjectHideFlags: 0
@@ -3932,7 +4046,7 @@ GameObject:
   - 82: {fileID: 1858336703}
   m_Layer: 0
   m_Name: Background Music
-  m_TagString: Untagged
+  m_TagString: bgm
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3946,7 +4060,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 59927ed1e13dfef49bdaaaa299ef6e02, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a0ac77a09b2d3424f90be48966512b98, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 0.3
