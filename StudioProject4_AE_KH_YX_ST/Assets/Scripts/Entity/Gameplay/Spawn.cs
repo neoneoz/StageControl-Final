@@ -82,7 +82,7 @@ public class Spawn : MonoBehaviour
             return;
 
 
-        if (m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound  )// && m_currAmt < m_spawnLimit)
+        if (m_spawnAmt > 0  && GetComponent<Pathfinder>().PathFound  )// && m_currAmt < m_spawnLimit)
         {
             m_spawntimer = 0;//reset timer
             GameObject spawn;
@@ -163,10 +163,10 @@ public class Spawn : MonoBehaviour
                 m_tempList.Add(spawn);
             }
 
-            if (m_entityList.Count < m_spawnLimit && m_currAmt > m_spawnLimit)
-            {
-                m_currAmt = 0;
-            }
+            //if (m_entityList.Count < m_spawnLimit && m_currAmt > m_spawnLimit)
+            //{
+            //    m_currAmt = 0;
+            //}
             //if (m_entityList.Count > 10)
             //{
             //    m_spawnAmt = 0;

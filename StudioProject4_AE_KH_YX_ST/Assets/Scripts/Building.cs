@@ -35,6 +35,14 @@ public class Building : MonoBehaviour
     public float buildingHealth;
     public float maxBuildingHealth;
 
+    //ID
+    uint ID;
+
+    public uint GetID()
+    {
+        return ID;
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -74,6 +82,8 @@ public class Building : MonoBehaviour
         imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
         imgChild.color = Color.green;
         m_buildingList.Add(gameObject);
+        ID = SceneData.sceneData.GetUniqueID();
+        SpatialPartition.instance.AddGameObject(gameObject);
     }
 
     void InstantiateParticles()
@@ -230,5 +240,10 @@ public class Building : MonoBehaviour
     {
         buildingHealth -= damage;
         
+    }
+
+    void OnDestroy()
+    {
+        SpatialPartition.instance.RemoveGameObject(gameObject);    
     }
 }

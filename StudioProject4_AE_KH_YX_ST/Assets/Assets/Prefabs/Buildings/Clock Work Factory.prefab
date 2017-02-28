@@ -119,6 +119,7 @@ GameObject:
   - 114: {fileID: 11435796}
   - 114: {fileID: 11473658}
   - 114: {fileID: 11481220}
+  - 114: {fileID: 11440440}
   m_Layer: 0
   m_Name: Clock Work Factory
   m_TagString: Untagged
@@ -1105,6 +1106,18 @@ MonoBehaviour:
   m_spawnAmt: 4
   m_spawnLimit: 20
   m_tempList: []
+--- !u!114 &11440440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 20
 --- !u!114 &11444184
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Rexplosion : MonoBehaviour {
 
@@ -21,25 +22,17 @@ public class Rexplosion : MonoBehaviour {
        time += Time.deltaTime;
         if(!exploded)
         {
-            for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
+            List<GameObject> nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position, radius);
+            Debug.Log( nearbyList.Count);
+            for (int i = 0; i < nearbyList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
-                GameObject ent = (GameObject)Spawn.m_entityList[i];
-
+                GameObject ent = nearbyList[i];
                 //if (ent.GetComponent<Unit>().m_isFriendly == m_isfriendly) // if is same team , ignore
                     //continue;
 
                 float dist = (ent.transform.position - transform.position).sqrMagnitude;
                 if (dist <= radius * radius) // An enemy has drawn close to the unit, attack it
                     DoDamage(ent);
-            }
-            for (int i = 0; i < Building.m_buildingList.Count; ++i)
-            {
-                GameObject ent = Building.m_buildingList[i];
-             
-                float dist = (ent.transform.position - transform.position).sqrMagnitude;
-                if (dist <= radius * radius) // distance check to see if building to attack is nearby
-                    DoDamage(ent);
-
             }
             exploded = true;
         }
@@ -54,6 +47,5 @@ public class Rexplosion : MonoBehaviour {
             target.GetComponent<Unit>().TakeDamage(damage);
         else
             target.GetComponent<Building>().TakeDamage(damage);
-
     }
 }

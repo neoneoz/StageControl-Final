@@ -12,6 +12,7 @@ public class SceneData : MonoBehaviour
     public Text debuginfo;
     public Terrain ground;
     public PlayerInfo Player;
+    public Camera camera;
 
     //Decks
     public GameObject PlayerDeck = null;
@@ -47,6 +48,15 @@ public class SceneData : MonoBehaviour
     //Building Health
     public Image Health_friendly;
     public Image Health_enemy;
+
+    //Object ID
+    uint ObjectID = 0;
+
+    public uint GetUniqueID()
+    {
+        ObjectID++;
+        return ObjectID - 1;
+    }
 
     void SnapBasesToGrid()
     {

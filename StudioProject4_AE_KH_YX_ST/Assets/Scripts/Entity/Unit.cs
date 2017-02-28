@@ -42,8 +42,6 @@ public class Unit : MonoBehaviour
     public float m_health;
     public float m_maxHealth;
     private Timer m_timer;
-    public static Component[] m_destroyerOfWorlds; // Stores and destroys all the components of an object
-
     public List<Vector3> PathToEnd = null;
     public int pathindex = 0;
     private UNIT_TEAM m_team; // The team this entity belongs to
@@ -62,6 +60,14 @@ public class Unit : MonoBehaviour
     //Health stuff
     Image friendlyHealth = null;
     Image enemyHealth = null;
+
+    //ID
+    uint ID;
+
+    public uint GetID()
+    {
+        return ID;
+    }
 
     public void SetPath(List<Vector3> newPath)
     {
@@ -106,7 +112,6 @@ public class Unit : MonoBehaviour
 
 
         m_timer.can_run = true;
-        m_destroyerOfWorlds = new Component[100];
         m_targetEnemy = null;
         //m_targetBuilding = null;
         m_targetList = new List<GameObject>();
@@ -117,6 +122,9 @@ public class Unit : MonoBehaviour
             Emitter = Instantiate(Emitter);
             Emitter.SetActive(false);
         }
+
+        ID = SceneData.sceneData.GetUniqueID();
+        SpatialPartition.instance.AddGameObject(gameObject);
     }
 
     void InstantiateStats()
@@ -132,19 +140,13 @@ public class Unit : MonoBehaviour
         enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void FindTarget()
     {
-        m_currGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position); // Get unit's current grid
-
-        //check if target is alive
-
-
         if (m_targetEnemy == null)
         {
             //projectile.SetActive(false);
-            if(Emitter)
-            Emitter.SetActive(false);
+            if (Emitter)
+                Emitter.SetActive(false);
 
 
             //rotate the unit properly
@@ -155,9 +157,13 @@ public class Unit : MonoBehaviour
             float rotation = (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.z, gameObject.GetComponent<VMovement>().Velocity.x));
             gameObject.transform.rotation = new Quaternion(0, 1, 0, rotation + 1.5708f);
 
-            for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
+            List<GameObject> nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position, m_attkRadius);
+
+            for (int i = 0; i < nearbyList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
-                GameObject ent = (GameObject)Spawn.m_entityList[i];
+                if (!nearbyList[i] || nearbyList[i].GetComponent<Building>())
+                    continue;
+                GameObject ent = nearbyList[i];
 
                 if (ent.GetComponent<Unit>().m_isFriendly == m_isFriendly) // if is same team , ignore
                     continue;
@@ -170,9 +176,11 @@ public class Unit : MonoBehaviour
             if (m_targetEnemy == null) // still no enemy found
             {
                 /**/
-                for (int i = 0; i < Building.m_buildingList.Count; ++i)
+                for (int i = 0; i < nearbyList.Count; ++i)
                 {
-                    GameObject ent = Building.m_buildingList[i];
+                    if (!nearbyList[i] || nearbyList[i].GetComponent<Unit>())
+                        continue;
+                    GameObject ent = nearbyList[i];
                     if (ent.GetComponent<Building>().isfriendly == m_isFriendly) // if not from the same team
                         continue;
                     float dist = (ent.transform.position - transform.position).sqrMagnitude;
@@ -180,32 +188,34 @@ public class Unit : MonoBehaviour
                     if (dist <= m_attkRadius * m_attkRadius) // distance check to see if building to attack is nearby
                         m_targetEnemy = ent;
 
-                    }
-                
-
+                }
             }
-
         }
+    }
 
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        m_currGrid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position); // Get unit's current grid
+
+        //check if target is alive
+        FindTarget();
 
         if (m_targetEnemy)
             DoAttack();
 
-
-
-     
-            if (PathToEnd.Count > 0)
+        if (PathToEnd.Count > 0)
+        {
+            GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized;
+            if ((PathToEnd[pathindex] - transform.position).sqrMagnitude < GetComponent<VMovement>().speed * GetComponent<VMovement>().speed)
             {
-                GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized;
-                if ((PathToEnd[pathindex] - transform.position).sqrMagnitude < GetComponent<VMovement>().speed * GetComponent<VMovement>().speed)
+                --pathindex;
+                if (pathindex <= 0)
                 {
-                    --pathindex;
-                    if (pathindex <= 0)
-                    {
-                        PathToEnd.Clear();
-                    }
+                    PathToEnd.Clear();
                 }
             }
+        }
         
 
         if (m_isFriendly == true && friendlyHealth != null)
@@ -261,26 +271,26 @@ public class Unit : MonoBehaviour
                 Destroy(Emitter);
             RemoveEntity(this.gameObject);
             UnityEngine.Object.Destroy(this.gameObject);
-            m_destroyerOfWorlds = GetComponents(typeof(Component));
-            for (int i = 0; i < m_destroyerOfWorlds.Length; ++i)
-            {
-                if (m_destroyerOfWorlds[i].gameObject.activeSelf)
-                    UnityEngine.Object.Destroy(m_destroyerOfWorlds[i]);
-            }
-            Destroy(friendlyHealth);
-            Destroy(enemyHealth);
         }
 
 
     }
 
+    void OnDestroy()
+    {
+        foreach (var comp in GetComponents<Component>())
+        {
+            Destroy(comp);
+        }
+
+        Destroy(friendlyHealth);
+        Destroy(enemyHealth);
+        SpatialPartition.instance.RemoveGameObject(gameObject);
+    }
+
     public void TakeDmage(float damage)
     {
         m_health -= damage;
-
-       
- 
-
     }
 
 

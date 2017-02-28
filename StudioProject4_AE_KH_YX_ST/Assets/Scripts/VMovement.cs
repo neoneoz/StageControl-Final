@@ -30,6 +30,11 @@ public class VMovement : MonoBehaviour
         }
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, SceneData.sceneData.ground.SampleHeight(gameObject.transform.position), gameObject.transform.position.z);
 
+        if (transform.position.x < 0 || transform.position.x > SceneData.sceneData.ground.terrainData.size.x
+        || transform.position.z < 0 || transform.position.z > SceneData.sceneData.ground.terrainData.size.z)
+        {
+            Destroy(gameObject);
+        }
 
         moveX = true;
         moveZ = true;

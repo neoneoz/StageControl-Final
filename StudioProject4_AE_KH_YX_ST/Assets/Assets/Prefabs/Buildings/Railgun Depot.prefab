@@ -189,6 +189,7 @@ GameObject:
   - 114: {fileID: 11473168}
   - 114: {fileID: 11414214}
   - 114: {fileID: 11469010}
+  - 114: {fileID: 11483536}
   m_Layer: 0
   m_Name: Railgun Depot
   m_TagString: Untagged
@@ -799,7 +800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_secondsToSpawn: 10
-  m_timer: {fileID: 0}
+  m_spawntimer: 0
   m_entity: {fileID: 172686, guid: 51957ef316cfadd45933972b910dd29b, type: 2}
   m_orientationX: right
   m_orientationZ: up
@@ -822,6 +823,18 @@ MonoBehaviour:
   matIndex: 0
   AnimRate: {x: 1, y: 2}
   texturename: _MainTex
+--- !u!114 &11483536
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 20
 --- !u!114 &11498722
 MonoBehaviour:
   m_ObjectHideFlags: 1
