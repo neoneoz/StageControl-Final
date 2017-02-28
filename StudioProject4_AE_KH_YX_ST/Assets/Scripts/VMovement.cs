@@ -15,7 +15,8 @@ public class VMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        Velocity.Set(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        //Velocity.Set(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        Velocity = Vector3.zero;
         m_stopMove = false;
        // m_stopMove2 = false;
 	}

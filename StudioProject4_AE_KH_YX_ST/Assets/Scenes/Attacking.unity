@@ -1783,7 +1783,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 119436, guid: d3adaf152f5307a4a899c0ec6ace213d, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11482714, guid: d3adaf152f5307a4a899c0ec6ace213d, type: 2}
       propertyPath: isfriendly
@@ -2225,6 +2225,8 @@ MonoBehaviour:
   EntityList: {fileID: 0}
   Buildings: {fileID: 0}
   FogTexture: {fileID: 2800000, guid: ba621a8a627d6864990293854f9716b7, type: 3}
+  buffer1: {fileID: 0}
+  buffer2: {fileID: 0}
   FogCurve:
     serializedVersion: 2
     m_Curve:
@@ -2832,7 +2834,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &982690055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2947,7 +2949,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 193894, guid: b86c1ae52a6e6844183155907a587fbe, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11499218, guid: b86c1ae52a6e6844183155907a587fbe, type: 2}
       propertyPath: m_Enabled
@@ -3147,7 +3149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1066008267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3928,7 +3930,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114404, guid: ff93cda254e32be458d0dafa964d7ac6, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11458146, guid: ff93cda254e32be458d0dafa964d7ac6, type: 2}
       propertyPath: isfriendly

@@ -162,8 +162,8 @@ public class Building : MonoBehaviour
                 }
                 break;
             case BUILDSTATE.B_ACTIVE:
-                if (PlayAudio.instance.m_source.isPlaying && PlayAudio.instance.m_soundOwner.Equals(gameObject) && PlayAudio.instance.m_source.time > buildTimer)
-                    PlayAudio.instance.m_source.Stop();
+                //if (PlayAudio.instance.m_source.isPlaying && PlayAudio.instance.m_soundOwner.Equals(gameObject) && PlayAudio.instance.m_source.time > buildTimer)
+                    //PlayAudio.instance.m_source.Stop();
                 if (isfriendly == true && buildingHealth_friendlyTemp != null)
                 {
                     buildingHealth_friendlyTemp.enabled = true;
@@ -260,6 +260,7 @@ public class Building : MonoBehaviour
                 Destroy(buildingHealth_enemyTemp);
                 Destroy(buildingHealth_enemyTemp.transform.GetChild(0).gameObject);
             }
+            SceneData.sceneData.gridmesh.FreeGrids(gameObject);
             Building.m_buildingList.Remove(gameObject);
             Destroy(gameObject);
 

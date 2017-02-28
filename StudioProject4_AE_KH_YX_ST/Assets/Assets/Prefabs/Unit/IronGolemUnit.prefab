@@ -702,8 +702,8 @@ MonoBehaviour:
   m_attkDamage: 100
   m_attkAnim: {fileID: 7400000, guid: 711e3a388ed0d7c4786f425f45868390, type: 3}
   m_attackspeed: 4
-  m_health: 450
-  m_maxHealth: 450
+  m_health: 650
+  m_maxHealth: 650
   PathToEnd: []
   pathindex: 0
   m_isFriendly: 0
