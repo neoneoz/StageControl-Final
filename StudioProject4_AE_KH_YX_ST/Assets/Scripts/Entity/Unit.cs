@@ -198,8 +198,7 @@ public class Unit : MonoBehaviour
 
 
 
-        if (GetComponent<Flocking>().isleader)
-        {
+     
             if (PathToEnd.Count > 0)
             {
                 GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized;
@@ -212,7 +211,7 @@ public class Unit : MonoBehaviour
                     }
                 }
             }
-        }
+        
 
         if (m_isFriendly == true && friendlyHealth != null)
         {
@@ -351,6 +350,10 @@ public class Unit : MonoBehaviour
                     //Instantiate()
                     GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity) as GameObject;
                     bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 1);
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_ballista;
+                    PlayAudio.instance.m_source.volume = 0.4f;
+                    PlayAudio.instance.PlayOnce();
+                    PlayAudio.instance.m_soundOwner = gameObject;
                 } break;
 
             case (UNIT_TYPE.SPIDER_TNK):
