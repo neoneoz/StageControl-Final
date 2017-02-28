@@ -82,7 +82,7 @@ public class Spawn : MonoBehaviour
             return;
 
 
-        if (m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound && m_currAmt < m_spawnLimit)
+        if (m_spawnAmt > 0 && m_entityList.Count < Building.MAX_UNIT && GetComponent<Pathfinder>().PathFound  )// && m_currAmt < m_spawnLimit)
         {
             m_spawntimer = 0;//reset timer
             GameObject spawn;

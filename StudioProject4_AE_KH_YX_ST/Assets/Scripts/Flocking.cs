@@ -9,19 +9,15 @@ public class Flocking : MonoBehaviour
     public List<GameObject> FlockingList = new List<GameObject>();
     public GameObject leader;
     public bool isleader = false;
-
+    Vector3 foward;
     void Update()
     {
         updatelist();
 
         //UpdateLeadership();
-
+        foward = transform.position + GetComponent<VMovement>().Velocity.normalized * 20;
         DoFlock();
-
-        //if (isleader)
-        //{
-        //    Debug.DrawLine(transform.position, transform.position + new Vector3(0, 1000, 0), Color.blue);
-        //}
+        Debug.DrawLine(transform.position,foward, Color.blue);
     }
 
     void UpdateLeadership()
@@ -72,6 +68,12 @@ public class Flocking : MonoBehaviour
                 Force.y = FlockingList[i].GetComponent<VMovement>().Velocity.y;
             }
 
+            if ((FlockingList[i].transform.position - foward).magnitude < 30)
+            {
+                //Debug.Log("ass");
+                //Repel = displacement;
+                GetComponent<VMovement>().Velocity += Avoidence(gameObject);
+            }
             if (displacement.magnitude < 15)
             {
                 //Debug.Log("repeling");
@@ -131,6 +133,14 @@ public class Flocking : MonoBehaviour
         return (CenterOfMass - gameObject.transform.position).normalized;
     }
 
+    Vector3 Avoidence(GameObject avoid)
+    {
+        Vector3 avd;
+        avd.x = foward.x - avoid.transform.position.x;
+        avd.z = foward.z - avoid.transform.position.z;
+        avd.y = 0;
+        return avd.normalized *200;
+    }
 }
 
 //public class Flocking : MonoBehaviour

@@ -193,8 +193,7 @@ public class Unit : MonoBehaviour
 
 
 
-        if (GetComponent<Flocking>().isleader)
-        {
+     
             if (PathToEnd.Count > 0)
             {
                 GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized;
@@ -207,7 +206,7 @@ public class Unit : MonoBehaviour
                     }
                 }
             }
-        }
+        
 
         if (m_isFriendly == true && friendlyHealth != null)
         {
