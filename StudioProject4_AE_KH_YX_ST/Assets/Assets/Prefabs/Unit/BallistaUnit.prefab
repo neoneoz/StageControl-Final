@@ -447,6 +447,7 @@ MonoBehaviour:
   projectile: {fileID: 126898, guid: 9db5fe5892bbd1b4d9c9ffac42470d16, type: 2}
   Emitter: {fileID: 0}
   ismelee: 0
+  m_gold: 50
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

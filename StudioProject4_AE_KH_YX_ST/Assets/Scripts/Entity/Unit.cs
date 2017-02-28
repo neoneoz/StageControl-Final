@@ -57,6 +57,13 @@ public class Unit : MonoBehaviour
     public GameObject Emitter;//for hitscan units
     public bool ismelee;
 
+    //SP
+    public List<GameObject> nearbyList;
+    public int minindex_x;
+    public int minindex_y;
+    public int maxindex_x;
+    public int maxindex_y;
+
     //Health stuff
     Image friendlyHealth = null;
     Image enemyHealth = null;
@@ -68,6 +75,11 @@ public class Unit : MonoBehaviour
     {
         return ID;
     }
+
+    // Gold carried by each unit
+    public int m_gold;
+    private PlayerInfo m_player; // The instance to the player, could be singleton then dont need a reference
+
 
     public void SetPath(List<Vector3> newPath)
     {
@@ -124,11 +136,12 @@ public class Unit : MonoBehaviour
         }
 
         ID = SceneData.sceneData.GetUniqueID();
-        SpatialPartition.instance.AddGameObject(gameObject);
+        m_player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInfo>();
     }
 
     void InstantiateStats()
     {
+        SpatialPartition.instance.AddGameObject(gameObject);
         friendlyHealth = Instantiate(SceneData.sceneData.Health_friendly);
         friendlyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
         friendlyHealth.enabled = false;
@@ -142,6 +155,8 @@ public class Unit : MonoBehaviour
 
     void FindTarget()
     {
+        nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position, m_attkRadius, out minindex_x, out minindex_y, out maxindex_x, out maxindex_y);
+
         if (m_targetEnemy == null)
         {
             //projectile.SetActive(false);
@@ -157,7 +172,37 @@ public class Unit : MonoBehaviour
             float rotation = (Mathf.Atan2(gameObject.GetComponent<VMovement>().Velocity.z, gameObject.GetComponent<VMovement>().Velocity.x));
             gameObject.transform.rotation = new Quaternion(0, 1, 0, rotation + 1.5708f);
 
-            List<GameObject> nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position, m_attkRadius);
+            //for (int i = 0; i < Spawn.m_entityList.Count; ++i)//SCROLL THRU ALL ENTETIES
+            //{
+            //    //if (!nearbyList[i] || nearbyList[i].GetComponent<Building>())
+            //    //    continue;
+            //    GameObject ent = Spawn.m_entityList[i];
+
+            //    if (ent.GetComponent<Unit>().m_isFriendly == m_isFriendly) // if is same team , ignore
+            //        continue;
+
+            //    float dist = (ent.transform.position - transform.position).sqrMagnitude;
+            //    if (dist <= m_attkRadius * m_attkRadius) // An enemy has drawn close to the unit, attack it
+            //        m_targetEnemy = ent;
+            //}
+
+            //if (m_targetEnemy == null) // still no enemy found
+            //{
+            //    /**/
+            //    for (int i = 0; i < Building.m_buildingList.Count; ++i)
+            //    {
+            //        //if (!nearbyList[i] || nearbyList[i].GetComponent<Unit>())
+            //        //    continue;
+            //        GameObject ent = Building.m_buildingList[i];
+            //        if (ent.GetComponent<Building>().isfriendly == m_isFriendly) // if not from the same team
+            //            continue;
+            //        float dist = (ent.transform.position - transform.position).sqrMagnitude;
+
+            //        if (dist <= m_attkRadius * m_attkRadius) // distance check to see if building to attack is nearby
+            //            m_targetEnemy = ent;
+
+            //    }
+            //}
 
             for (int i = 0; i < nearbyList.Count; ++i)//SCROLL THRU ALL ENTETIES
             {
@@ -265,14 +310,6 @@ public class Unit : MonoBehaviour
         //        m_building.m_isDistract = false;
         //}
 
-        if (m_health <= 0) // Unit died
-        {
-            if (Emitter != null)
-                Destroy(Emitter);
-            RemoveEntity(this.gameObject);
-            UnityEngine.Object.Destroy(this.gameObject);
-        }
-
 
     }
 
@@ -283,16 +320,13 @@ public class Unit : MonoBehaviour
             Destroy(comp);
         }
 
+        
         Destroy(friendlyHealth);
+        Destroy(friendlyHealth.transform.GetChild(0).gameObject);
         Destroy(enemyHealth);
+        Destroy(enemyHealth.transform.GetChild(0).gameObject);
         SpatialPartition.instance.RemoveGameObject(gameObject);
     }
-
-    public void TakeDmage(float damage)
-    {
-        m_health -= damage;
-    }
-
 
     void DoAttack()
     {
@@ -349,6 +383,10 @@ public class Unit : MonoBehaviour
                     //Instantiate()
                     GameObject bullet = Instantiate(projectile, gameObject.transform.position, Quaternion.identity) as GameObject;
                     bullet.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 1);
+                    PlayAudio.instance.m_source.clip = PlayAudio.instance.m_ballista;
+                    PlayAudio.instance.m_source.volume = 0.4f;
+                    PlayAudio.instance.PlayOnce();
+                    PlayAudio.instance.m_soundOwner = gameObject;
                 } break;
 
             case (UNIT_TYPE.SPIDER_TNK):
@@ -363,6 +401,7 @@ public class Unit : MonoBehaviour
                 {
                     Emitter.SetActive(true);
                     Emitter.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y+10, gameObject.transform.position.z);
+                    Emitter.transform.rotation = transform.rotation;
                     //Emitter.transform.position.y += 20;
                     DoDamage(m_attkDamage);
                 } break;
@@ -386,11 +425,6 @@ public class Unit : MonoBehaviour
 
         }
 
-
-
-
-
-
     }
 
     void DoDamage(float damage)
@@ -405,6 +439,20 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         m_health -= damage;
+        if (m_health <= 0) // Unit died
+        {
+            if (Emitter != null)
+                Destroy(Emitter);
+            RemoveEntity(this.gameObject);
+            Spawn.m_entityList.Remove(gameObject);
+            UnityEngine.Object.Destroy(this.gameObject);
+            /*Gold*/
+            if (!m_isFriendly)
+            {
+                if(m_player)
+                m_player.AddPlayerGold(m_gold);
+            }
+        }
     }
 
     float GetHealth()

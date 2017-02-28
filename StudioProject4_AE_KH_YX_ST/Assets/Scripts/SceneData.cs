@@ -41,6 +41,7 @@ public class SceneData : MonoBehaviour
 
     //Particles
     public ParticleSystem buildingP;
+    public ParticleSystem explosionP;
 
     public Image buildTimer;
     public Image spawnTimer;

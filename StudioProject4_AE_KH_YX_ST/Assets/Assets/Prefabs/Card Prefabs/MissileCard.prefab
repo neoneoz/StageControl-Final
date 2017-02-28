@@ -159,7 +159,7 @@ MonoBehaviour:
   timeText: {fileID: 11451566}
   cardDescription: {fileID: 11487770}
   cardType: 6
-  damage: 50
+  damage: 100
   effectiveUnitType: Everything
   is_spell: 1
   effectRadius: 3

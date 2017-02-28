@@ -166,6 +166,8 @@ public class CameraController : MonoBehaviour
                 GetCamera().transform.position = new Vector3(GetCamera().transform.position.x, groundy, GetCamera().transform.position.z);
             }
         }
+
+        zoomUpdate();
         //GetComponent<Camera>().transform.position = new Vector3(GetComponent<Camera>().transform.position.x, ground.SampleHeight(GetComponent<Camera>().transform.position) + CameraHeight, GetComponent<Camera>().transform.position.z);
     }
 

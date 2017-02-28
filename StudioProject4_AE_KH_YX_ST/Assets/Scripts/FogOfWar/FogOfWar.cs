@@ -35,7 +35,7 @@ public class FogOfWar : MonoBehaviour
 
     //Optimization Codes
     bool ListsSet = false;
-    List<GameObject> allObjects = new List<GameObject>();
+    public List<GameObject> allObjects = new List<GameObject>();
     int ObjIndex = 0;
     public int NumToUpdate = 10;
 

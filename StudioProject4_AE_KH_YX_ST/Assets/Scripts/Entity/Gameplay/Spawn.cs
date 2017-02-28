@@ -31,6 +31,8 @@ public class Spawn : MonoBehaviour
     public List<GameObject> m_tempList; // Stores only entities spawned by this building
     public static int m_team1MAX = 50; // Max entities team 1 can have inside scene
     public static int m_team2MAX = 50; // Max entities team 1 can have inside scene
+    // The minimap panel
+    //private static Transform m_minimapPanel; // The minimap's panel gameobject's transform
 
     void Start()
     {
@@ -65,8 +67,7 @@ public class Spawn : MonoBehaviour
                 m_offsetGridZ = 0;
             m_offsetGridZ += m_building.size;
         }
-        //temp.worldCamera = 
-        //SharedData.instance.gridmesh.GetOccupiedGrids(transform.position, transform.localScale);
+        //m_minimapPanel = GameObject.FindGameObjectWithTag("Minimap").transform;
     }
 
     void Update()
@@ -174,6 +175,12 @@ public class Spawn : MonoBehaviour
             //else if (m_spawnAmt == 0)
             //    m_spawnAmt = m_originalAmt;
 
+            /*Minimap*/
+            //GameObject obj = new GameObject();
+            //obj.transform.SetParent()
+            //Image blip = obj.AddComponent<Image>();
+            
+            /**/
         }
     }
 

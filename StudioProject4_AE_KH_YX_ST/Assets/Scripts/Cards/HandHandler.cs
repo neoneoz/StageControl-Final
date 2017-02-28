@@ -17,7 +17,7 @@ public class HandHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        dist = 100;
+        dist = 120;
         handsize = cardlist.Count;
         m = cardarea.rect.height*0.02f;
         center = Screen.width / 2;

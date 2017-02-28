@@ -82,8 +82,6 @@ public class Building : MonoBehaviour
         imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
         imgChild.color = Color.green;
         m_buildingList.Add(gameObject);
-        ID = SceneData.sceneData.GetUniqueID();
-        SpatialPartition.instance.AddGameObject(gameObject);
     }
 
     void InstantiateParticles()
@@ -106,6 +104,8 @@ public class Building : MonoBehaviour
         buildingHealth_enemyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
         buildingHealth_enemyTemp.enabled = false;
         buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        ID = SceneData.sceneData.GetUniqueID();
+        SpatialPartition.instance.AddGameObject(gameObject);
     }
     
 
@@ -162,6 +162,8 @@ public class Building : MonoBehaviour
                 }
                 break;
             case BUILDSTATE.B_ACTIVE:
+                if (PlayAudio.instance.m_source.isPlaying && PlayAudio.instance.m_soundOwner.Equals(gameObject) && PlayAudio.instance.m_source.time > buildTimer)
+                    PlayAudio.instance.m_source.Stop();
                 if (isfriendly == true && buildingHealth_friendlyTemp != null)
                 {
                     buildingHealth_friendlyTemp.enabled = true;
@@ -234,11 +236,34 @@ public class Building : MonoBehaviour
     {
         b_state = BUILDSTATE.B_CONSTRUCT;
         buildTimerTemp.enabled = true;
+        PlayAudio.instance.m_source.clip = Resources.Load("Audio/steampunkfactory") as AudioClip;
+        PlayAudio.instance.m_source.Play();
+        PlayAudio.instance.m_soundOwner = gameObject;
     }
 
     public void TakeDamage(float damage)
     {
         buildingHealth -= damage;
+        if (buildingHealth <= 0)
+        {
+            //explosionTemp.Play();
+            //explosionTemp.transform.position = gameObject.transform.position;
+            ExplosionManager.instance.ApplyExplosion(transform.position);
+            Destroy(spawnTimerTemp);
+            if (isfriendly == true)
+            {
+                Destroy(buildingHealth_friendlyTemp);
+                Destroy(buildingHealth_friendlyTemp.transform.GetChild(0).gameObject);
+            }
+            else
+            {
+                Destroy(buildingHealth_enemyTemp);
+                Destroy(buildingHealth_friendlyTemp.transform.GetChild(0).gameObject);
+            }
+            Building.m_buildingList.Remove(gameObject);
+            Destroy(gameObject);
+
+        }
         
     }
 

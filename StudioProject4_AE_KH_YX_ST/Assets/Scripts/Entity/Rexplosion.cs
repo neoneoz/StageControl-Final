@@ -6,6 +6,7 @@ public class Rexplosion : MonoBehaviour {
 
     public bool exploded = false , m_isfriendly;
     public float damage,time = 0, radius = 2;
+    public List<GameObject> nearbyList;
 	// Use this for initialization
 	void Start () {
         //target = null;
@@ -19,13 +20,14 @@ public class Rexplosion : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-       time += Time.deltaTime;
+       time += Time.deltaTime; 
         if(!exploded)
         {
-            List<GameObject> nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position, radius);
-            Debug.Log( nearbyList.Count);
+            nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position);
+            //List<GameObject> nearbyList = Spawn.m_entityList;
+            //nearbyList.AddRange(Building.m_buildingList);
             for (int i = 0; i < nearbyList.Count; ++i)//SCROLL THRU ALL ENTETIES
-            {
+            { 
                 GameObject ent = nearbyList[i];
                 //if (ent.GetComponent<Unit>().m_isFriendly == m_isfriendly) // if is same team , ignore
                     //continue;

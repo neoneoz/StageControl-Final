@@ -900,6 +900,7 @@ MonoBehaviour:
   projectile: {fileID: 181392, guid: 07118f2ecd407424a8ee6e4b4a047933, type: 2}
   Emitter: {fileID: 186286, guid: 0d8e8ec3a80ff924b96d3b33cafeb064, type: 2}
   ismelee: 0
+  m_gold: 90
 --- !u!114 &11438686
 MonoBehaviour:
   m_ObjectHideFlags: 1
