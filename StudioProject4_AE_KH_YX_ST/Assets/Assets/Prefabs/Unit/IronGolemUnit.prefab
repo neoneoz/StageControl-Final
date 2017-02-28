@@ -78,6 +78,7 @@ GameObject:
   - 114: {fileID: 11472856}
   - 114: {fileID: 11449682}
   - 114: {fileID: 11416210}
+  - 114: {fileID: 11467988}
   m_Layer: 0
   m_Name: IronGolemUnit
   m_TagString: Untagged
@@ -673,6 +674,18 @@ MonoBehaviour:
   FlockingList: []
   leader: {fileID: 0}
   isleader: 1
+--- !u!114 &11467988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 100
 --- !u!114 &11472856
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -699,6 +712,11 @@ MonoBehaviour:
   projectile: {fileID: 0}
   Emitter: {fileID: 0}
   ismelee: 1
+  nearbyList: []
+  minindex_x: 0
+  minindex_y: 0
+  maxindex_x: 0
+  maxindex_y: 0
   m_gold: 100
 --- !u!1001 &100100000
 Prefab:

@@ -112,6 +112,7 @@ GameObject:
   - 114: {fileID: 11451244}
   - 114: {fileID: 11422526}
   - 114: {fileID: 11416518}
+  - 114: {fileID: 11494014}
   m_Layer: 0
   m_Name: BallistaUnit
   m_TagString: Untagged
@@ -447,7 +448,24 @@ MonoBehaviour:
   projectile: {fileID: 126898, guid: 9db5fe5892bbd1b4d9c9ffac42470d16, type: 2}
   Emitter: {fileID: 0}
   ismelee: 0
+  nearbyList: []
+  minindex_x: 0
+  minindex_y: 0
+  maxindex_x: 0
+  maxindex_y: 0
   m_gold: 50
+--- !u!114 &11494014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 50
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -90,6 +90,7 @@ GameObject:
   - 114: {fileID: 11440312}
   - 114: {fileID: 11460944}
   - 114: {fileID: 11420936}
+  - 114: {fileID: 11400120}
   m_Layer: 0
   m_Name: BunkerBusterUnit
   m_TagString: Untagged
@@ -769,6 +770,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11400120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 40
 --- !u!114 &11420936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -811,6 +824,12 @@ MonoBehaviour:
   projectile: {fileID: 0}
   Emitter: {fileID: 197678, guid: 5547dac39c0a368408649995989a6cdc, type: 2}
   ismelee: 0
+  nearbyList: []
+  minindex_x: 0
+  minindex_y: 0
+  maxindex_x: 0
+  maxindex_y: 0
+  m_gold: 0
 --- !u!114 &11460944
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -403,6 +403,7 @@ GameObject:
   - 114: {fileID: 11403524}
   - 114: {fileID: 11461104}
   - 114: {fileID: 11433476}
+  - 114: {fileID: 11473260}
   m_Layer: 0
   m_Name: SpiderTank
   m_TagString: Untagged
@@ -1054,6 +1055,11 @@ MonoBehaviour:
   projectile: {fileID: 0}
   Emitter: {fileID: 140476, guid: 77736a9963473a34dbb0a28b7f0ca018, type: 2}
   ismelee: 0
+  nearbyList: []
+  minindex_x: 0
+  minindex_y: 0
+  maxindex_x: 0
+  maxindex_y: 0
   m_gold: 40
 --- !u!114 &11433476
 MonoBehaviour:
@@ -1085,6 +1091,18 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0, z: 0}
   speed: 20
   m_stopMove: 0
+--- !u!114 &11473260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 60
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

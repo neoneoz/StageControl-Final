@@ -11,6 +11,7 @@ GameObject:
   - 114: {fileID: 11434802}
   - 114: {fileID: 11408558}
   - 114: {fileID: 11409452}
+  - 114: {fileID: 11423414}
   m_Layer: 0
   m_Name: Clockwork Soldier
   m_TagString: Untagged
@@ -484,6 +485,18 @@ MonoBehaviour:
   FlockingList: []
   leader: {fileID: 0}
   isleader: 0
+--- !u!114 &11423414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 131550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c082ffd8e330f64c8a0377d2244b7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 60
 --- !u!114 &11434802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -510,6 +523,11 @@ MonoBehaviour:
   projectile: {fileID: 0}
   Emitter: {fileID: 0}
   ismelee: 1
+  nearbyList: []
+  minindex_x: 0
+  minindex_y: 0
+  maxindex_x: 0
+  maxindex_y: 0
   m_gold: 15
 --- !u!1001 &100100000
 Prefab:
