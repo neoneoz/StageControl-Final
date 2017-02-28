@@ -16,13 +16,14 @@ public class PlayAudio : MonoBehaviour {
             return m_instance;
         }
     }
-    public AudioClip m_sound;
+    public AudioClip m_ballista;
     public AudioSource m_source;
     public GameObject m_soundOwner; // Used to find out which entity is playing the sound
     // Put volume here, then use slider to adjust all in game volume
 	// Use this for initialization
 	void Start () {
         m_source = GetComponent<AudioSource>();
+        m_ballista = Resources.Load("Audio/BallistaBoltFire") as AudioClip;
 	}
 	
 	// Update is called once per frame

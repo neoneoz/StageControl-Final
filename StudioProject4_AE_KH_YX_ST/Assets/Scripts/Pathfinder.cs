@@ -182,7 +182,7 @@ public class Pathfinder : MonoBehaviour
         }
         newNode.parent = parent;
         newNode.G = newCost;
-        newNode.H = newNode.Distance(EndNode);
+        newNode.H = parent.Distance(EndNode);
 
         foreach(Node node in OpenList)
         {

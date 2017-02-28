@@ -1085,7 +1085,6 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0, z: 0}
   speed: 20
   m_stopMove: 0
-  m_stopMove2: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
