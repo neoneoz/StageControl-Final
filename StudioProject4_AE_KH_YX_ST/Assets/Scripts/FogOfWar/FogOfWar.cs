@@ -24,6 +24,10 @@ public class FogOfWar : MonoBehaviour
    // Texture to read and write to
     public Texture2D FogTexture;
 
+    public Texture2D buffer1;
+    public Texture2D buffer2;
+    bool buffer1inUse = true;
+
     // Circle Curve, how transparent it is to the edge
     public AnimationCurve FogCurve;
 
@@ -105,6 +109,11 @@ public class FogOfWar : MonoBehaviour
         CollisionPlane.transform.localScale = new Vector3(SceneData.sceneData.ground.terrainData.size.x * 0.1f, 1, SceneData.sceneData.ground.terrainData.size.z * 0.1f);
         Destroy(CollisionPlane.GetComponent<MeshRenderer>());
 
+        buffer1 = Instantiate(FogTexture);
+        buffer2 = Instantiate(FogTexture);
+
+        FogTexture = buffer1;
+
         ClearScreen = new Color[FogTexture.width * FogTexture.height];
 
         for(int x = 0; x < FogTexture.width; ++x)
@@ -116,12 +125,28 @@ public class FogOfWar : MonoBehaviour
         }
 	}
 
-    void AddFogAt(int x, int y, int radius)
+    void SwitchBuffers()
+    {
+        if (buffer1inUse)
+        {
+            buffer1inUse = false;
+            Plane.material.mainTexture = buffer2;
+            buffer1.SetPixels(0, 0, FogTexture.width, FogTexture.height, ClearScreen);
+        }
+        else
+        {
+            buffer1inUse = true;
+            Plane.material.mainTexture = buffer1;
+            buffer2.SetPixels(0, 0, FogTexture.width, FogTexture.height, ClearScreen);
+        }
+    }
+
+    void AddFogAt(int x, int y, int radius, Texture2D texture)
     {
         int StartX = Mathf.Clamp(x - radius, 0, x - radius);
         int StartY = Mathf.Clamp(y - radius, 0, y - radius);
         int diameter = radius + radius;
-        Color[] currentColor = FogTexture.GetPixels(StartX, StartY, diameter, diameter);
+        Color[] currentColor = texture.GetPixels(StartX, StartY, diameter, diameter);
         if (!Circles.ContainsKey(radius))
         {
             Circles.Add(radius, DrawCircle(radius));
@@ -132,12 +157,11 @@ public class FogOfWar : MonoBehaviour
             currentColor[i] *= Circles[radius][i];
         }
 
-        FogTexture.SetPixels(StartX, StartY, diameter, diameter, currentColor);
+        texture.SetPixels(StartX, StartY, diameter, diameter, currentColor);
     }
 
     void SetList()
     {
-        FogTexture.SetPixels(0, 0, FogTexture.width, FogTexture.height, ClearScreen);
         allObjects.Clear();
         allObjects.AddRange(Building.m_buildingList);
 
@@ -164,6 +188,15 @@ public class FogOfWar : MonoBehaviour
 
     void UpdateTexture()
     {
+        Texture2D BufferToEdit;
+
+        if (buffer1inUse)
+            BufferToEdit = buffer2;
+        else
+            BufferToEdit = buffer1;
+
+        bool isFinised = false;
+
         for (int i = 0; i < NumToUpdate; ++i)
         {
             if (!allObjects[ObjIndex])
@@ -172,6 +205,7 @@ public class FogOfWar : MonoBehaviour
                 if (ObjIndex >= allObjects.Count - 1)
                 {
                     ListsSet = false;
+                    isFinised = true;
                     break;
                 }
                 continue;
@@ -193,13 +227,14 @@ public class FogOfWar : MonoBehaviour
                     ConvertWorldPosToTexturePos(hit.point, out x, out y);
                     if (hit.collider != null)
                     {
-                        AddFogAt(x, y, radius);
+                        AddFogAt(x, y, radius, BufferToEdit);
                     }
                 }
 
                 if (ObjIndex >= allObjects.Count - 1)
                 {
                     ListsSet = false;
+                    isFinised = true;
                     break;
                 }
                 ++ObjIndex;
@@ -240,7 +275,12 @@ public class FogOfWar : MonoBehaviour
         //        }
         //    }
         //}
-        FogTexture.Apply();  
+        if (isFinised)
+        {
+            SwitchBuffers();
+        }
+
+        BufferToEdit.Apply();
     }
 
     public Dictionary<uint, GameObject> GetInRangeEnemies(bool isFriendly)
