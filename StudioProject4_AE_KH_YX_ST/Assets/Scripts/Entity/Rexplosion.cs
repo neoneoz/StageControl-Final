@@ -23,6 +23,7 @@ public class Rexplosion : MonoBehaviour {
        time += Time.deltaTime; 
         if(!exploded)
         {
+            // See unit.cs if there are enquiries bout the code below
             nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position);
             //List<GameObject> nearbyList = Spawn.m_entityList;
             //nearbyList.AddRange(Building.m_buildingList);
@@ -36,6 +37,9 @@ public class Rexplosion : MonoBehaviour {
                 if (dist <= radius * radius) // An enemy has drawn close to the unit, attack it
                     DoDamage(ent);
             }
+            PlayAudio.instance.m_source.clip = PlayAudio.instance.m_railgunExplode;
+            PlayAudio.instance.m_source.volume = 0.7f;
+            PlayAudio.instance.PlayOnce();
             exploded = true;
         }
         if (time > 1.3)

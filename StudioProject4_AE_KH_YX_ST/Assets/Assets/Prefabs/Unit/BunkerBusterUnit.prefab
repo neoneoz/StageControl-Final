@@ -810,7 +810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_type: 3
-  m_attkRadius: 50
+  m_attkRadius: 150
   m_attkDamage: 20
   m_attkAnim: {fileID: 7400000, guid: b7d66c276d557ed448261b32ace38865, type: 3}
   m_attackspeed: 1

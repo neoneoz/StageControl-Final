@@ -223,6 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectTimer: {fileID: 0}
   effectTime: 0
+  timer: 0
   m_targetPos: {x: 0, y: 0, z: 0}
 --- !u!123 &12308628
 LensFlare:
@@ -286,7 +287,7 @@ ParticleSystem:
   randomSeed: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   moveWithTransform: 1
   scalingMode: 1
   InitialModule:
@@ -595,7 +596,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 2000
+      scalar: 1000
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -659,7 +660,7 @@ ParticleSystem:
           inSlope: 0.6815791
           outSlope: 0.6815791
           tangentMode: 0
-        - time: 1
+        - time: 0.99024385
           value: 0.8518518
           inSlope: 0
           outSlope: 0
