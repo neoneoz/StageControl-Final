@@ -18,6 +18,7 @@ public class PlayAudio : MonoBehaviour {
     }
 
     // Combat and explosion sound effects   
+    public AudioClip m_construct;
     public AudioClip m_ballista;
     public AudioClip m_buster;
     public AudioClip m_buildingExplode;
@@ -37,6 +38,7 @@ public class PlayAudio : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         m_source = GetComponent<AudioSource>();
+        m_construct = Resources.Load("Audio/buildingsound") as AudioClip;
         m_ballista = Resources.Load("Audio/BallistaBoltFire") as AudioClip;
         m_buster = Resources.Load("Audio/Bbuster") as AudioClip;
         m_buildingExplode = Resources.Load("Audio/building explode") as AudioClip;
