@@ -243,6 +243,8 @@ public class Building : MonoBehaviour
         buildTimerTemp.enabled = true;
         PlayAudio.instance.m_source.clip = Resources.Load("Audio/steampunkfactory") as AudioClip;
         PlayAudio.instance.m_source.Play();
+        PlayAudio.instance.m_source.volume = 0.3f;
+        PlayAudio.instance.m_source.priority = 1;
         PlayAudio.instance.m_soundOwner = gameObject;
     }
 

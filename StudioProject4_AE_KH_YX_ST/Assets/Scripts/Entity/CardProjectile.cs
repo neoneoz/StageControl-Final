@@ -37,14 +37,16 @@ public class CardProjectile : MonoBehaviour
         Vector3 dir = displacement.normalized;
         trajectoryHeight = SceneData.sceneData.ground.SampleHeight(transform.position);
         Velocity = displacement.normalized * speed;
+        //speed = displacement.magnitude / GetComponent<Spell>().effectTime;
         prev_speed = displacement.magnitude / GetComponent<Spell>().effectTime;
         if (displacement.sqrMagnitude < 10 * 10 && GetComponent<Spell>().effectTimer.can_run)
         {
             ParticleSystem ps = gameObject.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
             if (!ps.isPlaying)
             {
-                ps.transform.position = new Vector3(target.transform.position.x, SceneData.sceneData.ground.SampleHeight(transform.position) + 20, target.transform.position.z);
+                ps.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z);
                 ps.gameObject.SetActive(true);
+                ps.Play();
             }
         }
 

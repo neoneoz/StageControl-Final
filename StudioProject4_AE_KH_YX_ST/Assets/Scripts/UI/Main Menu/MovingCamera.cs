@@ -12,10 +12,11 @@ public class MovingCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = Vector3.Lerp(transform.position, m_lookAt.transform.position, m_moveSpeed);
-        transform.rotation = Quaternion.Slerp(transform.rotation, m_lookAt.transform.rotation, m_moveSpeed);
+        transform.position = Vector3.Lerp(transform.position, m_lookAt.transform.position, m_moveSpeed); // translate in arc shape from one point to another
+        transform.rotation = Quaternion.Slerp(transform.rotation, m_lookAt.transform.rotation, m_moveSpeed); // Rotate gradually in arc shape to targeted angle
 	}
 
+    // Change position of camera and where it will look at
     public void ChangeMount(GameObject otherLookat)
     {
         m_lookAt = otherLookat;
