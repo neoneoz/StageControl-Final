@@ -18,6 +18,7 @@ public class Grid : MonoBehaviour
     public Vector2 position;
     public Vector3[] Points = new Vector3[5];
     public GRID_STATE state;
+    public bool buildable;
 
     public Vector3 GetWorldPosition()
     {
