@@ -51,7 +51,6 @@ public class GridArray : MonoBehaviour
         snaplocation.x -= (GridSizeX*0.5f) * offset;
         snaplocation.y = SceneData.sceneData.ground.SampleHeight(snaplocation);
         RenderBuildGrids(max, size);
-       
         //max.GetComponent<Grid>().ChangeState(Grid.GRID_STATE.UNAVAILABLE);   
         return snaplocation;
      
@@ -362,7 +361,7 @@ public class GridArray : MonoBehaviour
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 
-                grid.GetComponent<Renderer>().enabled = false;
+                grid.GetComponent<Renderer>().enabled = true;
         //        // Create a copy of the plane and offset it according to [current width, current column] using Instantiate
         //        GameObject grid = (GameObject)Instantiate(StartingGrid);
         //        grid.name = "Row: " + x + " Col: " + z;

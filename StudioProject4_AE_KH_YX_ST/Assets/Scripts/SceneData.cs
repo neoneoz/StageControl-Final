@@ -26,6 +26,7 @@ public class SceneData : MonoBehaviour
     public float CohesionWeight = 1f;
     public float SeperationWeight = 1f;
     public float AlignmentWeight = 1f;
+    public float Gametime = 0;
 
     /*Spell*/
     // Two values for storing where player is placing spell card
@@ -58,7 +59,10 @@ public class SceneData : MonoBehaviour
         ObjectID++;
         return ObjectID - 1;
     }
-
+    void Update()
+    {
+        Gametime += Time.deltaTime;
+    }
     void SnapBasesToGrid()
     {
         if (LevelManager.instance)

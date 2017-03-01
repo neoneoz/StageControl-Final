@@ -7,6 +7,7 @@ public class Grid : MonoBehaviour
     public enum GRID_STATE
     {
         AVAILABLE,
+        BUILD_UNAVAILABLE,
         UNAVAILABLE,
         ISPATH,
         INOPENLIST,
