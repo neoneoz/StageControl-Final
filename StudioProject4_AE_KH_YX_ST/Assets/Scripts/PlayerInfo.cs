@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerInfo : MonoBehaviour { // Can be singleton
 
-    int Gold;
+    public int Gold;
     public Text goldtext; 
 	// Use this for initialization
 	void Start () {

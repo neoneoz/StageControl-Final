@@ -164,7 +164,7 @@ public class GridArray : MonoBehaviour
             {   for (int j = (int)tempmin.y; j <= (int)tempmax.y; ++j)
                 {
                     //Debug.Log("X: " + i + " Y: " + j);
-                    if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE || !gridmesh[i, j].GetComponent<Grid>().buildable)
+                    if (gridmesh[i, j].GetComponent<Grid>().state != Grid.GRID_STATE.BUILD_AVAILABLE || !gridmesh[i, j].GetComponent<Grid>().buildable)
                     {
                         buildsucess = false;//there is a unavailble slot. Return false and send card back to hand;
                         return buildsucess;
@@ -189,7 +189,35 @@ public class GridArray : MonoBehaviour
         return buildsucess;
     }
 
+    public void SetBuildableGrids(GameObject basepos)//sets grids aroun the base's area to be buildable
+    {
+        Debug.Log("fuckass");
 
+        float size = 28;//square sides in terms of grids
+        Vector2 maxgrid = GetGridIndexAtPosition(basepos.transform.position);//get the grid below the base building
+        Vector2 mingrid = maxgrid - new Vector2(size, size);//find minimum grid
+        maxgrid += new Vector2(size, size);//find max grid
+        for (int i = (int)mingrid.x; i <= (int)maxgrid.x; ++i)
+        {
+            if (i < 0 || i > m_rows)
+                continue;
+            for (int j = (int)mingrid.y; j <= (int)maxgrid.y; ++j)
+            {
+                if (j < 0 || j > m_columns)
+                    continue;
+                //Debug.Log("X: " + i + " Y: " + j);
+                if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.AVAILABLE)
+                {
+                    gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.BUILD_AVAILABLE;
+                    gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+
+
+                }
+            }
+        }
+
+
+    }
 
     // Takes in a gameobject position and scale and returns which grids it occupies in the form on their grid index x and y
     public Vector2[] GetOccupiedGrids(Vector3 position, Vector3 scale)

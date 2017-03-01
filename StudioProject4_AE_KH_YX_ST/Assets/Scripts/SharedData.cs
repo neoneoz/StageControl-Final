@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+// Members of class can be accessed in Unity editor
 [System.Serializable]
 public class Card_Link : System.Object
 {
@@ -13,12 +14,12 @@ public class Card_Link : System.Object
 public class SharedData : MonoBehaviour {
     public static SharedData instance = null;
 
-    public List<Card_Link> DatabasePopulater = null;
+    public List<Card_Link> DatabasePopulater = null; // All the cards known in the "Stage Control Universe" are registered here
     public SortedList<CARD_TYPE, GameObject> CardDatabase = new SortedList<CARD_TYPE, GameObject>();
 
     // Background music volume
     [HideInInspector]
-    public static float m_bgmVolume;
+    public static float m_bgmVolume; // background music volume is shared among scenes even after scene changes
     public static bool m_changeVolume;
     public static bool m_changeSfx;
     public AudioSource m_bgmObject;
@@ -28,7 +29,7 @@ public class SharedData : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        m_bgmObject = GameObject.FindGameObjectWithTag("bgm").GetComponent<AudioSource>();
+        m_bgmObject = GameObject.FindGameObjectWithTag("bgm").GetComponent<AudioSource>(); // Find audio source of background music
 	    if(instance == null)
         {
             if (DatabasePopulater == null)
@@ -58,10 +59,10 @@ public class SharedData : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (m_changeSfx)
+        if (m_changeSfx) // If sound effects is changed by settings screen
         {
-            PlayAudio.m_volume = m_sfxVolume;
-            m_changeSfx = false;
+            PlayAudio.m_volume = m_sfxVolume; // Change volume
+            m_changeSfx = false; // run once until next change
         }
 
         if (m_changeVolume && m_bgmObject != null)
@@ -72,6 +73,6 @@ public class SharedData : MonoBehaviour {
         if (m_bgmObject != null && m_bgmVolume != m_bgmObject.volume)
             m_bgmObject.volume = m_bgmVolume;
         else if (/*m_changeVolume &&*/ m_bgmObject == null)
-            m_bgmObject = GameObject.FindGameObjectWithTag("bgm").GetComponent<AudioSource>();
+            m_bgmObject = GameObject.FindGameObjectWithTag("bgm").GetComponent<AudioSource>(); // If scene changed, find the background source of dat scene
 	}
 }

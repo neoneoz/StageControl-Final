@@ -7,7 +7,7 @@ public class Grid : MonoBehaviour
     public enum GRID_STATE
     {
         AVAILABLE,
-        BUILD_UNAVAILABLE,
+        BUILD_AVAILABLE,
         UNAVAILABLE,
         ISPATH,
         INOPENLIST,
@@ -76,6 +76,11 @@ public class Grid : MonoBehaviour
 
        switch(state)
        {
+           case GRID_STATE.BUILD_AVAILABLE:
+               {
+                   GetComponent<LineRenderer>().material = materials[2];
+               }
+               break;
                case GRID_STATE.AVAILABLE:
             {
                 GetComponent<LineRenderer>().material = materials[0];
