@@ -1103,9 +1103,10 @@ MonoBehaviour:
   m_orientationZ: up
   m_offsetGridX: -1
   m_offsetGridZ: 0
-  m_spawnAmt: 4
-  m_spawnLimit: 20
+  m_spawnAmt: 2
+  m_spawnLimit: 6
   m_tempList: []
+  UnitSpawnPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11440440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1180,9 +1181,14 @@ MonoBehaviour:
   b_state: 0
   isfriendly: 1
   m_isDistract: 0
+  buildTimerTemp: {fileID: 0}
+  spawnTimerTemp: {fileID: 0}
+  buildingHealthImage: {fileID: 0}
   buildTimer: 2
   buildingHealth: 600
   maxBuildingHealth: 600
+  isbase: 0
+  isVisible: 0
 --- !u!114 &11481220
 MonoBehaviour:
   m_ObjectHideFlags: 1

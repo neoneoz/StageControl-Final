@@ -83,9 +83,7 @@ public class Pathfinder : MonoBehaviour
             if (!InitializedStartandGoal && !PathFound)
             {
                 Grid StartGrid = SceneData.sceneData.gridmesh.GetGridAtPosition(startPosition).GetComponent<Grid>();
-                Debug.Log(StartGrid.state.ToString());
                 Grid EndGrid = SceneData.sceneData.gridmesh.GetGridAtPosition(endposition).GetComponent<Grid>();
-                Debug.Log(EndGrid.state.ToString());
 
                 StartNode.posX = (int)SceneData.sceneData.gridmesh.GetGridPosition(StartGrid).x;
                 StartNode.posY = (int)SceneData.sceneData.gridmesh.GetGridPosition(StartGrid).y;
@@ -120,7 +118,6 @@ public class Pathfinder : MonoBehaviour
         {
             if (currentNode.GetNodeID() == EndNode.GetNodeID())
             {
-                Debug.Log("Found"); // Remove this shit guys
                 PathFound = true;
                 Node getPath;
                 for (getPath = currentNode; getPath != null; getPath = getPath.parent)

@@ -46,8 +46,8 @@ public class Spawn : MonoBehaviour
             m_controller = new GameObject();
             m_controller.name = "EntityList";
             GameObject temp = new GameObject();
+            temp.name = "EntityList Canvas";
             Canvas temp_canvas = temp.AddComponent<Canvas>();
-            temp_canvas.transform.SetParent(m_controller.transform);
             temp_canvas.renderMode = RenderMode.WorldSpace;
             m_initController = true;
             SceneData.sceneData.EntityList = m_controller;
@@ -132,10 +132,6 @@ public class Spawn : MonoBehaviour
         //    return;
         if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE && GetComponent<Pathfinder>().PathFound && GetComponent<Pathfinder>().PathToEnd.Count > 0)
             m_spawntimer += Time.deltaTime;
-        else 
-        {
-            Debug.Log("PAth foiund: " + GetComponent<Pathfinder>().PathFound.ToString());
-        }
 
         if (SceneData.sceneData.gridmesh.GetGridAtPosition(UnitSpawnPosition).GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE)
         {
@@ -182,7 +178,9 @@ public class Spawn : MonoBehaviour
 
                 spawn.transform.position = UnitSpawnPosition;
                 if (m_building.isfriendly)
+                {
                     spawn.GetComponent<Unit>().m_isFriendly = true;
+                }
                 m_entityList.Add(spawn);
                 m_tempList.Add(spawn);
             }

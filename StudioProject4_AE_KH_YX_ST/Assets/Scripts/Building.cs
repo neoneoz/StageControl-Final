@@ -24,10 +24,9 @@ public class Building : MonoBehaviour
     public bool m_isDistract;
     float timerB = 0.0f;
     ParticleSystem buildingTemp = null;
-    Image buildTimerTemp = null;
-    Image spawnTimerTemp = null;
-    Image buildingHealth_friendlyTemp = null;
-    Image buildingHealth_enemyTemp = null;
+    public Image buildTimerTemp = null;
+    public Image spawnTimerTemp = null;
+    public Image buildingHealthImage = null;
     public float buildTimer;
     private static GameObject m_buildingControl;
     private static bool m_initController = true;
@@ -35,6 +34,8 @@ public class Building : MonoBehaviour
     public float buildingHealth;
     public float maxBuildingHealth;
     public bool isbase = false;
+    public bool isVisible = true;
+
     //ID
     uint ID;
 
@@ -61,9 +62,10 @@ public class Building : MonoBehaviour
             m_initController = false;
         }
 
-        if (isfriendly && isbase)
+        if (isbase)
         {
-            Debug.Log("shit");
+            isVisible = true;
+            if(isfriendly)
             SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
         }
 
@@ -100,19 +102,33 @@ public class Building : MonoBehaviour
         spawnTimerTemp.transform.SetParent(SceneData.sceneData.UI.transform);
         spawnTimerTemp.enabled = false;
 
-        buildingHealth_friendlyTemp = Instantiate(SceneData.sceneData.Health_friendly);
-        buildingHealth_friendlyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
-        buildingHealth_friendlyTemp.enabled = false;
-        buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        //buildingHealth_friendlyTemp = Instantiate(SceneData.sceneData.Health_friendly);
+        //buildingHealth_friendlyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
+        //buildingHealth_friendlyTemp.enabled = false;
+        //buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
 
-        buildingHealth_enemyTemp = Instantiate(SceneData.sceneData.Health_enemy);
-        buildingHealth_enemyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
-        buildingHealth_enemyTemp.enabled = false;
-        buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        //buildingHealth_enemyTemp = Instantiate(SceneData.sceneData.Health_enemy);
+        //buildingHealth_enemyTemp.transform.SetParent(SceneData.sceneData.UI.transform);
+        //buildingHealth_enemyTemp.enabled = false;
+        //buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        CreateHealthBar();
         ID = SceneData.sceneData.GetUniqueID();
         SpatialPartition.instance.AddGameObject(gameObject);
     }
-    
+
+    public void CreateHealthBar()
+    {
+        if (isfriendly)
+        {
+            buildingHealthImage = Instantiate(SceneData.sceneData.Health_friendly);
+            buildingHealthImage.transform.SetParent(SceneData.sceneData.UI.transform);
+        }
+        else
+        {
+            buildingHealthImage = Instantiate(SceneData.sceneData.Health_enemy);
+            buildingHealthImage.transform.SetParent(SceneData.sceneData.UI.transform);
+        }
+    }
 
     public Vector3 GetMaxPosOfBuilding(Vector3 position, int othersize)
     {
@@ -168,29 +184,17 @@ public class Building : MonoBehaviour
                 }
                 break;
             case BUILDSTATE.B_ACTIVE:
+
                 if (PlayAudio.instance.m_soundOwner != null)
                     if (PlayAudio.instance.m_source.isPlaying && PlayAudio.instance.m_soundOwner.Equals(gameObject) && PlayAudio.instance.m_source.time > buildTimer)
                         PlayAudio.instance.m_source.Stop();
-                if (isfriendly == true && buildingHealth_friendlyTemp != null)
-                {
-                    buildingHealth_friendlyTemp.enabled = true;
-                    buildingHealth_friendlyTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
 
-                    buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().enabled = true;
-                    buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().fillAmount = buildingHealth / maxBuildingHealth;
-                    buildingHealth_friendlyTemp.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+                if (buildingHealthImage != null)
+                {
+                    buildingHealthImage.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
+                    buildingHealthImage.transform.GetChild(0).GetComponent<Image>().fillAmount = buildingHealth / maxBuildingHealth;
+                    buildingHealthImage.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
          
-                }
-
-                else if (isfriendly == false && buildingHealth_enemyTemp != null)
-                {
-                    buildingHealth_enemyTemp.enabled = true;
-                    buildingHealth_enemyTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
-
-                    buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().enabled = true;
-                    buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().fillAmount = buildingHealth / maxBuildingHealth;
-                    buildingHealth_enemyTemp.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
-
                 }
 
                 if (GetComponent<Spawn>() && spawnTimerTemp)
@@ -259,16 +263,8 @@ public class Building : MonoBehaviour
             //explosionTemp.transform.position = gameObject.transform.position;
             ExplosionManager.instance.ApplyExplosion(transform.position);
             Destroy(spawnTimerTemp);
-            if (isfriendly == true)
-            {
-                Destroy(buildingHealth_friendlyTemp);
-                Destroy(buildingHealth_friendlyTemp.transform.GetChild(0).gameObject);
-            }
-            else
-            {
-                Destroy(buildingHealth_enemyTemp);
-                Destroy(buildingHealth_enemyTemp.transform.GetChild(0).gameObject);
-            }
+            Destroy(buildingHealthImage);
+            Destroy(buildingHealthImage.transform.GetChild(0).gameObject);
             SceneData.sceneData.gridmesh.FreeGrids(gameObject);
             Building.m_buildingList.Remove(gameObject);
             Destroy(gameObject);

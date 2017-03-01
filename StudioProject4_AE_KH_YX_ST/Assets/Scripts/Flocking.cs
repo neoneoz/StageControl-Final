@@ -89,7 +89,9 @@ public class Flocking : MonoBehaviour
     void updatelist()
     {
         FlockingList.Clear();
-
+        //FlockingList.Remove(gameObject);
+        List<GameObject> nearbyList = SpatialPartition.instance.GetObjectListAt(transform.position, NeighborRadius);
+       
         for (int i = 0; i < SceneData.sceneData.EntityList.transform.childCount; ++i)
         {
             if (gameObject == SceneData.sceneData.EntityList.transform.GetChild(i).gameObject)
