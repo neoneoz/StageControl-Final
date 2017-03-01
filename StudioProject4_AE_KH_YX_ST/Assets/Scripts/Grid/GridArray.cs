@@ -24,7 +24,6 @@ public class GridArray : MonoBehaviour
         GridHyp = Mathf.Sqrt(GridSizeX * GridSizeX + GridSizeZ * GridSizeZ);
 
     }
-
     // Gets gameobject at position passed in or returns null if there is nothing there
     public GameObject GetGridAtPosition(Vector3 position)
     {
@@ -40,7 +39,7 @@ public class GridArray : MonoBehaviour
         return null;
     }
 
-    public Vector3 SnapBuildingPos(Vector3 position , float size)
+    public Vector3 SnapBuildingPos(Vector3 position , float size,bool render = true)
     {
         float offset = (size - 1f);
         Vector3 maxpos = new Vector3(position.x + (GridSizeX *0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
@@ -49,12 +48,15 @@ public class GridArray : MonoBehaviour
         snaplocation.z -= (GridSizeZ*0.5f) * offset;
         snaplocation.x -= (GridSizeX*0.5f) * offset;
         snaplocation.y = SceneData.sceneData.ground.SampleHeight(snaplocation);
+
+        if (render)
         RenderBuildGrids(max, size);
+
         //max.GetComponent<Grid>().ChangeState(Grid.GRID_STATE.UNAVAILABLE);   
         return snaplocation;
      
             
-    }
+    }//takes a position , and a building's size and snaps it to the closet correct position
 
     public void FreeGrids(GameObject building)//call this to free a building's grids after it is destroyed
     {
@@ -124,6 +126,8 @@ public class GridArray : MonoBehaviour
         return false;
     }
 
+
+
     public void RenderBuildGrids(GameObject max, float size)
     {
         //Debug.Log("showing grid");
@@ -155,7 +159,7 @@ public class GridArray : MonoBehaviour
         //store the min max of rendered gfrids
         tempmax = mxIndex;
         tempmin = mnIndex;
-    }
+    }//renders the grids saved in[tempmn, tempmax]
 
     public bool DerenderBuildGrids(bool isbuild)
     {
@@ -190,7 +194,10 @@ public class GridArray : MonoBehaviour
         }
 
         return buildsucess;
-    }
+    }//derenders the grids saved in [tempmin.tempmax], if isbuild, constructs buildinjg and updates grids
+
+
+
 
     public void SetBuildableGrids(GameObject basepos)//sets grids aroun the base's area to be buildable
     {
@@ -220,10 +227,43 @@ public class GridArray : MonoBehaviour
 
     }
 
-    public bool OForceBuild(GameObject building, Vector3 pos)
+    public bool ForceConstruct(GameObject building, Vector3 pos)//ai function to help find a place to build a building
     {
-        
+
+        float offset = (building.GetComponent<Building>().size - 1f);
+        Vector3 position = pos;
+        Vector3 maxpos = new Vector3(position.x + (GridSizeX * 0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
+        GameObject max = GetGridAtPosition(maxpos);
+        Vector2 mxIndex = new Vector2(max.GetComponent<Grid>().position.x, max.GetComponent<Grid>().position.y);
+        Vector2 mnIndex = new Vector2(mxIndex.x - offset, mxIndex.y - offset);
+
+
+        int maxX = (int)mxIndex.x; int minX = (int)mnIndex.x;
+        int maxY = (int)mxIndex.y; int minY = (int)mnIndex.y;
+        for (int i = minX; i <= maxX; ++i)
+        {
+            for (int j = minY; j <= maxY; ++j)
+            {
+                if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE)
+                    return false;
+                gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+
+            }
+        }
+
+        for (int i = minX; i <= maxX; ++i)
+        {
+            for (int j = minY; j <= maxY; ++j)
+            {
+                gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.UNAVAILABLE;
+                gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+
+            }
+        }
         return true;
+
+             
+
     }
 
     // Takes in a gameobject position and scale and returns which grids it occupies in the form on their grid index x and y

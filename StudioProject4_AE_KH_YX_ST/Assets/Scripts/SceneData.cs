@@ -59,8 +59,8 @@ public class SceneData : MonoBehaviour
     }
     void Update()
     {
-        //Gametime += Time.deltaTime;
-        //GameTimer.text = Gametime.ToString();
+        Gametime += Time.deltaTime;
+        GameTimer.text = Gametime.ToString();
     }
     void SnapBasesToGrid()
     {

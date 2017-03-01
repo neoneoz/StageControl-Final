@@ -6,7 +6,7 @@ public class Opponent : MonoBehaviour {
 	// Use this for initialization
     public GameObject Clockwork, Ballista, Bbuster, Spider, Railgun, Irongolem;
     public Building e_base;
-
+    public Vector2 source;
 
     int space,dmg,control,coefficient;//descisionmaking vairables
     float lasthp = 3000;//save the hp of the base
@@ -22,6 +22,10 @@ public class Opponent : MonoBehaviour {
 	void Start () {
 
         lastupdatetime = 0;
+        source = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(new Vector3(820,0,615));//order of execution
+        //Debug.Log("source :" +source);
+        //source.x += 8;
+        //source.y += 8;
         //currentbehaviour = 
 	}
 	
@@ -30,15 +34,15 @@ public class Opponent : MonoBehaviour {
     {
 
         //run the update in intervals 
-        if (SceneData.sceneData.Gametime - lastupdatetime < 5f)
+        if (lastupdatetime - SceneData.sceneData.Gametime > -5f)
             return;
         else//one-off update stuff in here
         {
-           
+            Debug.Log("enemy updating");
             lastupdatetime = SceneData.sceneData.Gametime;
             coefficient = GetCoefficient(); 
             lasthp = e_base.GetComponent<Building>().buildingHealth;
-            peroidicUpdate();
+            ConstructBuilding(Clockwork);
         }
    
     }
@@ -46,7 +50,7 @@ public class Opponent : MonoBehaviour {
 
     void peroidicUpdate()
     {
-        switchstate(); Vector2 source = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(e_base.transform.position);
+        switchstate(); 
         switch(currentbehaviour )
         {
                 
@@ -62,7 +66,7 @@ public class Opponent : MonoBehaviour {
 
             case BEHAVIOUR.E_DEFEND://build more shit futher up
                 Debug.Log("Defending");
-                //ConstructBuilding(Clockwork, source);
+                ConstructBuilding(Clockwork);
     
 
                 break;
@@ -84,7 +88,7 @@ public class Opponent : MonoBehaviour {
        {
            for (int i = (int)basehpdiff; i >= 79; i -= 80)
            {
-               dmg+=5;
+               dmg+=20;
            }
        }
        else
@@ -126,22 +130,48 @@ public class Opponent : MonoBehaviour {
     }
 
 
-    //bool ConstructBuilding(GameObject building , Vector2 grid)
-    //{
-    //    //Vector2 offset = new Vector2(-4,-4);
-    //    //Vector3 pos = SceneData.sceneData.gridmesh.SnapBuildingPos(SceneData.sceneData.gridmesh.get, building.GetComponent<Building>().size);//snap the building to the grid
-    //    //if (SceneData.sceneData.gridmesh.DerenderBuildGrids(true))
-    //    //{
-    //    //    Instantiate(building);
-    //    //    return true;
-    //    //}
-    //    //else
-    //    //{
-            
-    //    //    ConstructBuilding(building, pos+offset);
-    //    //    return false;
-    //    //}
-    //}
+    void ConstructBuilding(GameObject building)
+    {
+        Vector2 offset;  
+        offset.x= Random.Range(-8,8);
+        offset.y = Random.Range(-8,8);
+        //get varied position 
+       
+        source = source + offset;
+        //Debug.Log("source :" + source);
+       
+        trybuild(building, source);
+        
+    }
 
+    bool trybuild(GameObject building,Vector2 grid)
+    {
+        if (grid.x >SceneData.sceneData.gridmesh.m_rows  || grid.x <= 0)
+            return false;
+
+        if (grid.y >SceneData.sceneData.gridmesh.m_columns || grid.y <= 0)
+            return false;
+
+
+
+        Vector3 pos = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)grid.x, (int)grid.y);//get the position frm grid
+        pos = SceneData.sceneData.gridmesh.SnapBuildingPos(pos, building.GetComponent<Building>().size,false);//snap the building to the grid
+        if (SceneData.sceneData.gridmesh.ForceConstruct(building, pos))
+        {
+            Debug.Log("Ai build");
+            GameObject newbuild = Instantiate(building);
+            newbuild.SetActive(true);
+            newbuild.transform.position = pos;
+            newbuild.GetComponent<Building>().isfriendly = false;
+            newbuild.GetComponent<Building>().b_state = Building.BUILDSTATE.B_CONSTRUCT;
+            return true;
+        }
+        else
+        {
+            Debug.Log("Ai build failed");
+            return false;
+        }
+
+    }
 
 }
