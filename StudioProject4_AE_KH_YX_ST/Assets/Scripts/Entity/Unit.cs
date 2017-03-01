@@ -317,8 +317,7 @@ public class Unit : MonoBehaviour
 
     void DoAttack()
     {
-        if (Emitter != null)
-            Emitter.SetActive(false); // makes the enemy not emit projectile rapidly
+
         m_timer.Update();//update attack speed
         if (GetHealth() <=0 )//enemy hp check, enemy die, time to get a new target
         {

@@ -9,7 +9,7 @@ public class SceneData : MonoBehaviour
     public GameObject EntityList;
     public Canvas UI;
     public GridArray gridmesh;
-    public Text debuginfo;
+    public Text debuginfo,GameTimer;
     public Terrain ground;
     public PlayerInfo Player;
     public Camera camera;
@@ -62,6 +62,7 @@ public class SceneData : MonoBehaviour
     void Update()
     {
         Gametime += Time.deltaTime;
+        GameTimer.text = Gametime.ToString();
     }
     void SnapBasesToGrid()
     {
