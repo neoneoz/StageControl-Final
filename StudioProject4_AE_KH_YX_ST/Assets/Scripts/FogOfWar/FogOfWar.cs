@@ -311,17 +311,26 @@ public class FogOfWar : MonoBehaviour
                 continue; 
 
             // Continue if its friendly unit. We're checking enemy against all our units.
-            if (CheckIfFriendly(allObjects[index1]) || !allObjects[index1].GetComponent<Vision>())
+            if (CheckIfFriendly(allObjects[index1]))
                 continue;
 
+            // Skip if this unit does not have vision component
+            if (!allObjects[index1].GetComponent<Vision>())
+                continue;
             bool isVisible = false;
-            for (int index2 = index1 + 1; index2 < allObjects.Count; ++index2)
+
+            GameObject enemyUnit = allObjects[index1];
+
+            for (int index2 = 0; index2 < allObjects.Count; ++index2)
             {
                 // Continue if other index is friendly to check enemy with friendly units.
                 if (!allObjects[index1] || !allObjects[index2] || !allObjects[index2].GetComponent<Vision>() || !CheckIfFriendly(allObjects[index2]))
                     continue;
 
-                if ((allObjects[index1].transform.position - allObjects[index2].transform.position).sqrMagnitude < allObjects[index2].GetComponent<Vision>().radius * allObjects[index2].GetComponent<Vision>().radius)
+                GameObject friendlyUnit = allObjects[index2];
+
+
+                if ((enemyUnit.transform.position - friendlyUnit.transform.position).sqrMagnitude < friendlyUnit.GetComponent<Vision>().radius * friendlyUnit.GetComponent<Vision>().radius)
                 {
                     isVisible = true;
                 }
