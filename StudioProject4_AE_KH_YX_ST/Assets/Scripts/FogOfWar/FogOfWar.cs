@@ -85,6 +85,10 @@ public class FogOfWar : MonoBehaviour
 
 	void Start ()
     {
+#if UNITY_ANDROID
+        Destroy(gameObject);
+#endif
+
         if (instance == null)
         {
             instance = this;
@@ -98,6 +102,8 @@ public class FogOfWar : MonoBehaviour
         CollisionPlane.transform.Rotate(Vector3.right, 180f);
 
         defaultquadHeight = quadHeight;
+        Debug.Log(FogTexture.width);
+        Debug.Log(FogTexture.height);
         WorldToTextureRatio.x = FogTexture.width / SceneData.sceneData.ground.terrainData.size.x;
         WorldToTextureRatio.y = FogTexture.height / SceneData.sceneData.ground.terrainData.size.z;
 

@@ -68,7 +68,7 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    public void FindPath(Vector3 endposition)
+    public void FindPath(Vector3 startPosition, Vector3 endposition)
     {
         for (int i = 0; i < 10; ++i)
         {
@@ -82,8 +82,11 @@ public class Pathfinder : MonoBehaviour
 
             if (!InitializedStartandGoal && !PathFound)
             {
-                Grid StartGrid = SceneData.sceneData.gridmesh.GetGridAtPosition(transform.position).GetComponent<Grid>();
+                Grid StartGrid = SceneData.sceneData.gridmesh.GetGridAtPosition(startPosition).GetComponent<Grid>();
+                Debug.Log(StartGrid.state.ToString());
                 Grid EndGrid = SceneData.sceneData.gridmesh.GetGridAtPosition(endposition).GetComponent<Grid>();
+                Debug.Log(EndGrid.state.ToString());
+
                 StartNode.posX = (int)SceneData.sceneData.gridmesh.GetGridPosition(StartGrid).x;
                 StartNode.posY = (int)SceneData.sceneData.gridmesh.GetGridPosition(StartGrid).y;
                 StartNode.G = 0;

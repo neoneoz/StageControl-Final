@@ -161,6 +161,7 @@ public class Building : MonoBehaviour
                             gameObject.transform.GetChild(0).transform.GetChild(i).GetComponent<MeshRenderer>().material = undamaged;
                         }
                         b_state = BUILDSTATE.B_ACTIVE;
+                        GetComponent<Spawn>().SetSpawnPosition();
                         Destroy(buildingTemp);
                         Destroy(buildTimerTemp);
                     }
@@ -209,11 +210,11 @@ public class Building : MonoBehaviour
                 {
                     if (isfriendly && GetComponent<Pathfinder>() && LevelManager.instance.EnemyBase)
                     {
-                        GetComponent<Pathfinder>().FindPath(GetMaxPosOfBuilding(LevelManager.instance.EnemyBase.transform.position, LevelManager.instance.EnemyBase.GetComponent<Building>().size));
+                        GetComponent<Pathfinder>().FindPath(GetComponent<Spawn>().UnitSpawnPosition, GetMaxPosOfBuilding(LevelManager.instance.EnemyBase.transform.position, LevelManager.instance.EnemyBase.GetComponent<Building>().size));
                     }
                     else if (!isfriendly && GetComponent<Pathfinder>() && LevelManager.instance.PlayerBase)
                     {
-                        GetComponent<Pathfinder>().FindPath(GetMaxPosOfBuilding(LevelManager.instance.PlayerBase.transform.position, LevelManager.instance.PlayerBase.GetComponent<Building>().size));
+                        GetComponent<Pathfinder>().FindPath(GetComponent<Spawn>().UnitSpawnPosition, GetMaxPosOfBuilding(LevelManager.instance.PlayerBase.transform.position, LevelManager.instance.PlayerBase.GetComponent<Building>().size));
                     }
                 }
                 
