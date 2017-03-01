@@ -34,7 +34,7 @@ public class Building : MonoBehaviour
     public static List<GameObject> m_buildingList; // List of all the buildings in the scene
     public float buildingHealth;
     public float maxBuildingHealth;
-
+    public bool isbase = false;
     //ID
     uint ID;
 
@@ -56,13 +56,18 @@ public class Building : MonoBehaviour
         {
             m_buildingControl = new GameObject();
             m_buildingControl.name = "Building Controller";
-            //GameObject temporary = new GameObject();
-            //Canvas temporary_canvas = temporary.AddComponent<Canvas>();
-            //temporary_canvas.transform.SetParent(m_buildingControl.transform);
-            //temporary_canvas.renderMode = RenderMode.WorldSpace;
+
             m_buildingList = new List<GameObject>();
             m_initController = false;
         }
+
+        if (isfriendly && isbase)
+        {
+            Debug.Log("shit");
+            SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
+        }
+
+
         transform.SetParent(m_buildingControl.transform);
         GameObject handle, handleChild;
         handle = new GameObject();

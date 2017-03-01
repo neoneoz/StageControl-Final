@@ -1609,6 +1609,7 @@ MonoBehaviour:
   buildTimer: 0
   buildingHealth: 3000
   maxBuildingHealth: 3000
+  isbase: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
