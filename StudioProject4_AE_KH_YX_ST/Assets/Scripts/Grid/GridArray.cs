@@ -389,7 +389,7 @@ public class GridArray : MonoBehaviour
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 
-                grid.GetComponent<Renderer>().enabled = true;
+                grid.GetComponent<Renderer>().enabled = false;
         //        // Create a copy of the plane and offset it according to [current width, current column] using Instantiate
         //        GameObject grid = (GameObject)Instantiate(StartingGrid);
         //        grid.name = "Row: " + x + " Col: " + z;

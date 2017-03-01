@@ -174,9 +174,9 @@ public class SpatialPartition : MonoBehaviour
 
         List<GameObject> NearbyList = new List<GameObject>();
 
-        for (int index_X = min_indexX; index_X < max_indexX; ++index_X)
+        for (int index_X = min_indexX; index_X <= max_indexX; ++index_X)
         {
-            for (int index_Y = min_indexY; index_Y < max_indexY; ++index_Y)
+            for (int index_Y = min_indexY; index_Y <= max_indexY; ++index_Y)
             {
                 NearbyList.AddRange(SPGridMesh[index_X * m_columns + index_Y].ObjectList);
             }
@@ -211,15 +211,15 @@ public class SpatialPartition : MonoBehaviour
 
         List<GameObject> NearbyList = new List<GameObject>();
 
-        for (int index_X = min_indexX; index_X <max_indexX; ++index_X)
+        for (int index_X = min_indexX; index_X <= max_indexX; ++index_X)
         {
-            for (int index_Y = min_indexY; index_Y < max_indexY; ++index_Y)
+            for (int index_Y = min_indexY; index_Y <= max_indexY; ++index_Y)
             {
 
 				if (index_X < 0 || index_Y < 0
 					|| index_X > m_rows - 1|| index_Y > m_columns - 1)
 				{
-					int a = 0;
+                    return NearbyList;
 				}
                 NearbyList.AddRange(SPGridMesh[index_X * m_columns + index_Y].ObjectList);
             }
