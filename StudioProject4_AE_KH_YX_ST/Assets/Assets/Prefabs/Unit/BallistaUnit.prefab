@@ -453,7 +453,7 @@ MonoBehaviour:
   minindex_y: 0
   maxindex_x: 0
   maxindex_y: 0
-  m_gold: 50
+  m_gold: 40
 --- !u!114 &11494014
 MonoBehaviour:
   m_ObjectHideFlags: 1

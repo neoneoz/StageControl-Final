@@ -386,7 +386,7 @@ public class Unit : MonoBehaviour
                     if (cannotPlay)
                     {
                         PlayAudio.instance.m_source.clip = PlayAudio.instance.m_spidertank;
-                        PlayAudio.instance.m_source.volume = 0.3f;
+                        PlayAudio.instance.m_source.volume = 0.2f;
                         PlayAudio.instance.PlayOnce();
                     }
                     m_audioList[(int)UNIT_TYPE.SPIDER_TNK] = true;
@@ -463,7 +463,7 @@ public class Unit : MonoBehaviour
             if (!m_isFriendly)
             {
                 if(m_player)
-                m_player.AddPlayerGold(m_gold);
+                    m_player.AddPlayerGold(m_gold);
             }
             m_audioList[(int)m_type] = false;
         }

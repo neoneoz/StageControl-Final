@@ -168,8 +168,9 @@ public class Building : MonoBehaviour
                 }
                 break;
             case BUILDSTATE.B_ACTIVE:
-                if (PlayAudio.instance.m_source.isPlaying && PlayAudio.instance.m_soundOwner.Equals(gameObject) && PlayAudio.instance.m_source.time > buildTimer)
-                    PlayAudio.instance.m_source.Stop();
+                if (PlayAudio.instance.m_soundOwner != null)
+                    if (PlayAudio.instance.m_source.isPlaying && PlayAudio.instance.m_soundOwner.Equals(gameObject) && PlayAudio.instance.m_source.time > buildTimer)
+                        PlayAudio.instance.m_source.Stop();
                 if (isfriendly == true && buildingHealth_friendlyTemp != null)
                 {
                     buildingHealth_friendlyTemp.enabled = true;
@@ -244,7 +245,7 @@ public class Building : MonoBehaviour
         buildTimerTemp.enabled = true;
         PlayAudio.instance.m_source.clip = PlayAudio.instance.m_construct;
         PlayAudio.instance.m_source.Play();
-        PlayAudio.instance.m_source.volume = 0.3f;
+        PlayAudio.instance.m_source.volume = 0.1f;
         PlayAudio.instance.m_source.priority = 1;
         PlayAudio.instance.m_soundOwner = gameObject;
     }

@@ -136,7 +136,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 0.8
-  m_Text: "Spidertank\n Factory"
+  m_Text: Missile Launch
 --- !u!114 &11430864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a545cca3e398746bbe13f455d5afd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingName: None
+  buildingName: Missile
   UnitType: None
   goldValue: 100
   Time: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   timeText: {fileID: 11451566}
   cardDescription: {fileID: 11487770}
   cardType: 6
-  damage: 300
+  damage: 200
   effectiveUnitType: Everything
   is_spell: 1
   effectRadius: 3
@@ -195,7 +195,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 30
+  m_Text: 0
 --- !u!114 &11459432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -248,7 +248,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4e1fe0f4aaf543d499ce411503598033, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7ced244539ad124991b7153995d26fa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

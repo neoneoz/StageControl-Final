@@ -40,7 +40,6 @@ public class GridArray : MonoBehaviour
         return null;
     }
 
-
     public Vector3 SnapBuildingPos(Vector3 position , float size)
     {
         float offset = (size - 1f);
@@ -56,9 +55,6 @@ public class GridArray : MonoBehaviour
      
             
     }
-
-
-
 
     public void FreeGrids(GameObject building)//call this to free a building's grids after it is destroyed
     {
@@ -80,7 +76,14 @@ public class GridArray : MonoBehaviour
         {
             for (int j = minY; j <= maxY; ++j)
             {
-                gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.AVAILABLE;
+                if (building.GetComponent<Building>().isfriendly)
+                {
+                    gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.BUILD_AVAILABLE;
+                }
+                else
+                {
+                    gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.AVAILABLE;
+                }
                 gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
 
             }

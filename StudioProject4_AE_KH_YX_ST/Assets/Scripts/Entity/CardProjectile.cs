@@ -14,10 +14,12 @@ public class CardProjectile : MonoBehaviour
     private float trajectoryHeight; // The height at which the projectile can reach
     private Quaternion lookRotation; // Which direction should projectile look
     private float original_magnitude; // The original displacement or distance between the projectile and its destination
+    private bool m_run; // Hurt enemies once only
     // Use this for initialization
     void Start()
     {
         original_magnitude = 0;
+        m_run = false;
     }
     public void setprojectile(GameObject unit, float dmg)
     {
@@ -47,11 +49,26 @@ public class CardProjectile : MonoBehaviour
             List<GameObject> nearbylist = SpatialPartition.instance.GetObjectListAt(transform.position);
             for (int i = 0; i < nearbylist.Count; ++i)
             {
-                if (!nearbylist[i] || !nearbylist[i].GetComponent<Unit>()) // if not a unit
+                if (!nearbylist[i]) // if not a unit
                     continue;
-                Debug.Log("fdfsd");
-                // Unit takes damage
-                nearbylist[i].GetComponent<Unit>().TakeDamage(damage);
+
+                // Unit/building takes damage from spell
+                GameObject building = nearbylist[i];
+                if (nearbylist[i].GetComponent<Unit>())
+                {
+                    if (!nearbylist[i].GetComponent<Unit>().m_isFriendly && !m_run)
+                    {
+                        nearbylist[i].GetComponent<Unit>().TakeDamage(damage);
+                    }
+                }
+                if (building.GetComponent<Building>() && !building.Equals(LevelManager.instance.PlayerBase))
+                {
+                    if (!nearbylist[i].GetComponent<Building>().isfriendly && !m_run)
+                    {
+                        nearbylist[i].GetComponent<Building>().TakeDamage(damage);
+                    }
+                }
+                m_run = true;
             }
             if (GetComponent<Spell>().effectTimer.can_run)
             {
