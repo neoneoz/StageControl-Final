@@ -307,13 +307,18 @@ public class FogOfWar : MonoBehaviour
     {
         for (int index1 = 0; index1 < allObjects.Count; ++index1)
         {
-            if (CheckIfFriendly(allObjects[index1]))
+            if (!allObjects[index1])
+                continue; 
+
+            // Continue if its friendly unit. We're checking enemy against all our units.
+            if (CheckIfFriendly(allObjects[index1]) || !allObjects[index1].GetComponent<Vision>())
                 continue;
 
             bool isVisible = false;
             for (int index2 = index1 + 1; index2 < allObjects.Count; ++index2)
             {
-                if (!allObjects[index1] || !allObjects[index2] || !allObjects[index1].GetComponent<Vision>() || !allObjects[index2].GetComponent<Vision>() || !CheckIfFriendly(allObjects[index2]))
+                // Continue if other index is friendly to check enemy with friendly units.
+                if (!allObjects[index1] || !allObjects[index2] || !allObjects[index2].GetComponent<Vision>() || !CheckIfFriendly(allObjects[index2]))
                     continue;
 
                 if ((allObjects[index1].transform.position - allObjects[index2].transform.position).sqrMagnitude < allObjects[index2].GetComponent<Vision>().radius * allObjects[index2].GetComponent<Vision>().radius)
@@ -324,7 +329,7 @@ public class FogOfWar : MonoBehaviour
 
             if (allObjects[index1] != LevelManager.instance.EnemyBase)
             {
-               //Render(allObjects[index1], isVisible);
+               Render(allObjects[index1], isVisible);
                SetVisibility(allObjects[index1], isVisible);
             }
         }
@@ -346,6 +351,7 @@ public class FogOfWar : MonoBehaviour
             SetList();
         }
         UpdateTexture();
+
         UpdateVision();
 	}
 
