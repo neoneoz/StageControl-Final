@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -182,6 +183,11 @@ public class FogOfWar : MonoBehaviour
 
     bool CheckIfFriendly(GameObject obj)
     {
+        if (!obj)
+        {
+            return false;
+        }
+
         if(obj.GetComponent<Unit>())
         {
             return obj.GetComponent<Unit>().m_isFriendly;
@@ -205,10 +211,11 @@ public class FogOfWar : MonoBehaviour
 
         for (int i = 0; i < NumToUpdate; ++i)
         {
-            if (!allObjects[ObjIndex])
+
+            if (!allObjects[ObjIndex] || !allObjects[ObjIndex].activeSelf)
             {
                 ++ObjIndex;
-                if (ObjIndex >= allObjects.Count - 1)
+                if (ObjIndex >= allObjects.Count)
                 {
                     ListsSet = false;
                     isFinised = true;
@@ -216,71 +223,30 @@ public class FogOfWar : MonoBehaviour
                 }
                 continue;
             }
-            if (!allObjects[ObjIndex].activeSelf)
+
+            if (allObjects[ObjIndex].GetComponent<Vision>() && CheckIfFriendly(allObjects[ObjIndex]))
             {
-                ++ObjIndex;
-                continue;
-            }
-
-                if (allObjects[ObjIndex].GetComponent<Vision>() && CheckIfFriendly(allObjects[ObjIndex]))
+                int radius = ConvertWorldScaleToTextureScale(allObjects[ObjIndex].GetComponent<Vision>().radius);
+                Ray ray = new Ray(allObjects[ObjIndex].transform.position, (SceneData.sceneData.camera.transform.position - allObjects[ObjIndex].transform.position).normalized);
+                RaycastHit hit;
+                CollisionPlane.GetComponent<MeshCollider>().Raycast(ray, out hit, 1000);
+                int x = 0;
+                int y = 0;
+                ConvertWorldPosToTexturePos(hit.point, out x, out y);
+                if (hit.collider != null)
                 {
-                    int radius = ConvertWorldScaleToTextureScale(allObjects[ObjIndex].GetComponent<Vision>().radius);
-                    Ray ray = new Ray(allObjects[ObjIndex].transform.position, (SceneData.sceneData.camera.transform.position - allObjects[ObjIndex].transform.position).normalized);
-                    RaycastHit hit;
-                    CollisionPlane.GetComponent<MeshCollider>().Raycast(ray, out hit, 1000);
-                    int x = 0;
-                    int y = 0;
-                    ConvertWorldPosToTexturePos(hit.point, out x, out y);
-                    if (hit.collider != null)
-                    {
-                        AddFogAt(x, y, radius, BufferToEdit);
-                    }
+                    AddFogAt(x, y, radius, BufferToEdit);
                 }
-
-                if (ObjIndex >= allObjects.Count - 1)
+            }
+                ++ObjIndex;
+                if (ObjIndex >= allObjects.Count)
                 {
                     ListsSet = false;
                     isFinised = true;
                     break;
                 }
-                ++ObjIndex;
         }
 
-        //for (int buildingIndex = 0; buildingIndex < Building.m_buildingList.Count; ++buildingIndex)
-        //{
-        //    if (Building.m_buildingList[buildingIndex].GetComponent<Vision>())
-        //    {
-        //        int radius = ConvertWorldScaleToTextureScale(Building.m_buildingList[buildingIndex].GetComponent<Vision>().radius);
-        //        Ray ray = new Ray(Building.m_buildingList[buildingIndex].transform.position, (SceneData.sceneData.camera.transform.position - Building.m_buildingList[buildingIndex].transform.position).normalized);
-        //        RaycastHit hit;
-        //        Plane.GetComponent<MeshCollider>().Raycast(ray, out hit, 1000);
-        //        int x = 0;
-        //        int y = 0;
-        //        ConvertWorldPosToTexturePos(hit.point, out x, out y);
-        //        if (hit.collider != null)
-        //        {
-        //            AddFogAt(x, y, radius);
-        //        }
-        //    }
-        //}
-
-        //for (int EntityIndex = 0; EntityIndex < SceneData.sceneData.EntityList.transform.childCount; ++EntityIndex)
-        //{
-        //    if (SceneData.sceneData.EntityList.transform.GetChild(EntityIndex).GetComponent<Vision>())
-        //    {
-        //        int radius = ConvertWorldScaleToTextureScale(SceneData.sceneData.EntityList.transform.GetChild(EntityIndex).GetComponent<Vision>().radius);
-        //        Ray ray = new Ray(SceneData.sceneData.EntityList.transform.GetChild(EntityIndex).transform.position, (SceneData.sceneData.camera.transform.position - SceneData.sceneData.EntityList.transform.GetChild(EntityIndex).transform.position).normalized);
-        //        RaycastHit hit;
-        //        Plane.GetComponent<MeshCollider>().Raycast(ray, out hit, 1000);
-        //        int x = 0;
-        //        int y = 0;
-        //        ConvertWorldPosToTexturePos(hit.point, out x, out y);
-        //        if (hit.collider != null)
-        //        {
-        //            AddFogAt(x, y, radius);
-        //        }
-        //    }
-        //}
         if (isFinised)
         {
             SwitchBuffers();
@@ -289,6 +255,84 @@ public class FogOfWar : MonoBehaviour
         BufferToEdit.Apply();
     }
 
+    void Render(GameObject obj, bool toRender = true)
+    {
+        if (!obj)
+            return;
+
+        foreach (var mesh in obj.GetComponentsInChildren<MeshRenderer>())
+        {
+            mesh.enabled = toRender;
+        }
+
+        if (obj.GetComponent<Building>())
+        {
+            if (obj.GetComponent<Building>().buildingHealthImage)
+            {
+                obj.GetComponent<Building>().buildingHealthImage.enabled = toRender;
+                obj.GetComponent<Building>().buildingHealthImage.transform.GetChild(0).GetComponent<Image>().enabled = toRender;
+            }
+            if (obj.GetComponent<Building>().spawnTimerTemp)
+            {
+                obj.GetComponent<Building>().spawnTimerTemp.enabled = toRender;
+            }
+            if(obj.GetComponent<Building>().buildTimerTemp)
+            {
+                obj.GetComponent<Building>().buildTimerTemp.enabled = toRender;
+            }
+        }
+
+        if (obj.GetComponent<Unit>())
+        {
+            if (obj.GetComponent<Unit>().healthImage)
+            {
+                obj.GetComponent<Unit>().healthImage.enabled = toRender;
+                obj.GetComponent<Unit>().healthImage.transform.GetChild(0).GetComponent<Image>().enabled = toRender;
+            }
+        }
+    }
+
+    void SetVisibility(GameObject obj, bool isvisible)
+    {
+        if (!obj)
+            return;
+        if (obj.GetComponent<Unit>())
+        {
+            obj.GetComponent<Unit>().isVisible = isvisible;
+        }
+        else if (obj.GetComponent<Building>())
+        {
+            obj.GetComponent<Building>().isVisible = isvisible;
+        }
+    }
+
+    void UpdateVision()
+    {
+        for (int index1 = 0; index1 < allObjects.Count; ++index1)
+        {
+            if (CheckIfFriendly(allObjects[index1]))
+                continue;
+
+            bool isVisible = false;
+            for (int index2 = index1 + 1; index2 < allObjects.Count; ++index2)
+            {
+                if (!allObjects[index1] || !allObjects[index2] || !allObjects[index1].GetComponent<Vision>() || !allObjects[index2].GetComponent<Vision>() || !CheckIfFriendly(allObjects[index2]))
+                    continue;
+
+                if ((allObjects[index1].transform.position - allObjects[index2].transform.position).sqrMagnitude < allObjects[index2].GetComponent<Vision>().radius * allObjects[index2].GetComponent<Vision>().radius)
+                {
+                    isVisible = true;
+                }
+            }
+
+            if (allObjects[index1] != LevelManager.instance.EnemyBase)
+            {
+                Render(allObjects[index1], isVisible);
+                SetVisibility(allObjects[index1], isVisible);
+            }
+        }
+    }
+    
     public Dictionary<uint, GameObject> GetInRangeEnemies(bool isFriendly)
     {
         if (isFriendly)
@@ -304,7 +348,8 @@ public class FogOfWar : MonoBehaviour
         {
             SetList();
         }
-            UpdateTexture();
+        UpdateTexture();
+        UpdateVision();
 	}
 
     void OnDestroy()

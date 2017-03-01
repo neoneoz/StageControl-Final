@@ -52,10 +52,10 @@ public class Unit : MonoBehaviour
     public int minindex_y;
     public int maxindex_x;
     public int maxindex_y;
+    public bool isVisible = false;
 
     //Healthbar stuff
-    Image friendlyHealth = null;
-    Image enemyHealth = null;
+    public Image healthImage = null;
 
     //ID
     uint ID;
@@ -121,15 +121,30 @@ public class Unit : MonoBehaviour
     void InstantiateStats()
     {
         SpatialPartition.instance.AddGameObject(gameObject);
-        friendlyHealth = Instantiate(SceneData.sceneData.Health_friendly);
-        friendlyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
-        friendlyHealth.enabled = false;
-        friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        CreateHealthBar();
+        //friendlyHealth = Instantiate(SceneData.sceneData.Health_friendly);
+        //friendlyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
+        //friendlyHealth.enabled = false;
+        //friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
 
-        enemyHealth = Instantiate(SceneData.sceneData.Health_enemy);
-        enemyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
-        enemyHealth.enabled = false;
-        enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        //enemyHealth = Instantiate(SceneData.sceneData.Health_enemy);
+        //enemyHealth.transform.SetParent(SceneData.sceneData.UI.transform);
+        //enemyHealth.enabled = false;
+        //enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = false;
+    }
+
+    void CreateHealthBar()
+    {
+        if (m_isFriendly)
+        {
+            healthImage = Instantiate(SceneData.sceneData.Health_friendly);
+            healthImage.transform.SetParent(SceneData.sceneData.UI.transform);
+        }
+        else
+        {
+            healthImage = Instantiate(SceneData.sceneData.Health_enemy);
+            healthImage.transform.SetParent(SceneData.sceneData.UI.transform);
+        }
     }
 
     // Find enemy on same spatial partioning grid, which is less cost-expensive, better than a for loop through all entities in whole scene with a distance check inside
@@ -190,7 +205,7 @@ public class Unit : MonoBehaviour
                     continue;
                 GameObject ent = nearbyList[i]; 
 
-                if (ent.GetComponent<Unit>().m_isFriendly == m_isFriendly) // if is same team , ignore
+                if (ent.GetComponent<Unit>().m_isFriendly == m_isFriendly || !ent.GetComponent<Unit>().isVisible) // if is same team , ignore or if not visible
                     continue;
 
                 float dist = (ent.transform.position - transform.position).sqrMagnitude; // distance check, should be close enough for attacking
@@ -205,7 +220,7 @@ public class Unit : MonoBehaviour
                 {
                     if (!nearbyList[i] || nearbyList[i].GetComponent<Unit>()) // if not a unit
                         continue;
-                    if(nearbyList[i].GetComponent<Building>().b_state != Building.BUILDSTATE.B_ACTIVE) // It should be active and not dead
+                    if (nearbyList[i].GetComponent<Building>().b_state != Building.BUILDSTATE.B_ACTIVE || !nearbyList[i].GetComponent<Building>().isVisible) // It should be active and not dead
                         continue;
 
                     GameObject ent = nearbyList[i];
@@ -246,25 +261,14 @@ public class Unit : MonoBehaviour
             }
         }
         
-        // Make a friendly healthbar if unit is on the player's side
-        if (m_isFriendly == true && friendlyHealth != null)
+        // Update Healthbar
+        if (healthImage != null)
         {
-            friendlyHealth.enabled = true;
-            friendlyHealth.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10); // Get screen coordinates so the healthbar is not a world space majinky
-            friendlyHealth.transform.GetChild(0).GetComponent<Image>().enabled = true; // Set its healthbar active
-            friendlyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth; // Healthbar ratio of current health to max
-            friendlyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10); // Position bar above entity's head however if entity is too high up, the x10 would cause bar to reach for the stars
+            healthImage.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10); // Get screen coordinates so the healthbar is not a world space majinky
+            healthImage.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth; // Healthbar ratio of current health to max
+            healthImage.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10); // Position bar above entity's head however if entity is too high up, the x10 would cause bar to reach for the stars
         }
-        // Make a enemy healthbar if unit is on the AI/enemy's side
-        else if (m_isFriendly == false && enemyHealth != null)
-        {
-            enemyHealth.enabled = true;
-            enemyHealth.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
 
-            enemyHealth.transform.GetChild(0).GetComponent<Image>().enabled = true;
-            enemyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
-            enemyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
-        }
         /*Affected by spell*/
         if (SceneData.sceneData.is_spellCast && SceneData.sceneData.is_spellHit) // if spell is cast and its projectile has reached the ground
         {
@@ -304,11 +308,12 @@ public class Unit : MonoBehaviour
             Destroy(comp);
         }
 
-        
-        Destroy(friendlyHealth);
-        Destroy(friendlyHealth.transform.GetChild(0).gameObject);
-        Destroy(enemyHealth);
-        Destroy(enemyHealth.transform.GetChild(0).gameObject);
+        if (healthImage)
+        {
+            Destroy(healthImage);
+            if (healthImage.transform.GetChild(0).gameObject)
+                Destroy(healthImage.transform.GetChild(0).gameObject);
+        }
         if (SpatialPartition.instance)
         {
             SpatialPartition.instance.RemoveGameObject(gameObject); // remove from spatial partitioning

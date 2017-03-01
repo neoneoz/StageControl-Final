@@ -46,8 +46,8 @@ public class Spawn : MonoBehaviour
             m_controller = new GameObject();
             m_controller.name = "EntityList";
             GameObject temp = new GameObject();
+            temp.name = "EntityList Canvas";
             Canvas temp_canvas = temp.AddComponent<Canvas>();
-            temp_canvas.transform.SetParent(m_controller.transform);
             temp_canvas.renderMode = RenderMode.WorldSpace;
             m_initController = true;
             SceneData.sceneData.EntityList = m_controller;
