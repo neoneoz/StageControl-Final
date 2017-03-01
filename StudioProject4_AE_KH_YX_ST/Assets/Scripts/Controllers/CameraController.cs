@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
     {
         GetComponent<Camera>().transform.position = newPosition;
     }
+
 #if UNITY_ANDROID
     bool FingerDown;
     bool Finger2Down;

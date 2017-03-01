@@ -29,6 +29,7 @@ public class Spawn : MonoBehaviour
     // The building of the spawner
     private Building m_building;
     public List<GameObject> m_tempList; // Stores only entities spawned by this building
+    public Vector3 UnitSpawnPosition = Vector3.zero;
     public static int m_team1MAX = 50; // Max entities team 1 can have inside scene
     public static int m_team2MAX = 50; // Max entities team 1 can have inside scene
     // The minimap panel
@@ -70,20 +71,83 @@ public class Spawn : MonoBehaviour
         //m_minimapPanel = GameObject.FindGameObjectWithTag("Minimap").transform;
     }
 
+    public void SetSpawnPosition()
+    {
+        Vector2 this_grid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
+
+        int orientationX;
+        int orientationZ;
+        switch (m_orientationX)
+        {
+            case "right":
+                orientationX = -1;
+                break;
+            default:
+                orientationX = 1;
+                break;
+        }
+        if (m_orientationZ == "up")
+            orientationZ = -1;
+        else
+            orientationZ = 1;
+        UnitSpawnPosition = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)this_grid.x + m_offsetGridX * orientationX, (int)this_grid.y + m_offsetGridZ * orientationZ); // is actually the grid this object is on's z position + 30, not y
+        UnitSpawnPosition.y = SceneData.sceneData.gridmesh.GetTerrainHeightAtGrid(UnitSpawnPosition);
+
+        if (SceneData.sceneData.gridmesh.GetGridObjAtPosition(UnitSpawnPosition).state == Grid.GRID_STATE.UNAVAILABLE)
+        {
+            for (int s = 0; s < 4; ++s)
+            {
+                if (s == 0)
+                    orientationX = -orientationX;
+                else if (s == 1)
+                    orientationZ = -orientationZ;
+                else if (s == 2)
+                {
+                    orientationX = -orientationX;
+                }
+                else if (s == 3)
+                {
+                    orientationX = -orientationX;
+                    orientationZ = -orientationZ;
+                }
+                UnitSpawnPosition = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)this_grid.x + m_offsetGridX * orientationX, (int)this_grid.y + m_offsetGridZ * orientationZ); // is actually the grid this object is on's z position + 30, not y
+                UnitSpawnPosition.y = SceneData.sceneData.gridmesh.GetTerrainHeightAtGrid(UnitSpawnPosition);
+                if (SceneData.sceneData.gridmesh.GetGridObjAtPosition(UnitSpawnPosition).state == Grid.GRID_STATE.AVAILABLE)
+                    break;
+            }
+        }
+
+        // If spawn position available, path find
+        if (SceneData.sceneData.gridmesh.GetGridObjAtPosition(UnitSpawnPosition).state == Grid.GRID_STATE.AVAILABLE)
+        {
+            GetComponent<Pathfinder>().PathFound = false;
+        }
+    }
+
     void Update()
     {
         //if (m_building.isfriendly && m_entityList.Count > m_team1MAX)
         //    return;
         //if (!m_building.isfriendly && m_entityList.Count > m_team2MAX)
         //    return;
-        if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE)
+        if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE && GetComponent<Pathfinder>().PathFound && GetComponent<Pathfinder>().PathToEnd.Count > 0)
             m_spawntimer += Time.deltaTime;
+        else 
+        {
+            Debug.Log("PAth foiund: " + GetComponent<Pathfinder>().PathFound.ToString());
+        }
+
+        if (SceneData.sceneData.gridmesh.GetGridAtPosition(UnitSpawnPosition).GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE)
+        {
+            SetSpawnPosition();
+        }
+
         //SharedData.instance.gridmesh.RenderBuildGrids(transform.position, transform.localScale);
         if (m_spawntimer < m_secondsToSpawn)
             return;
 
 
-        if (m_spawnAmt > 0  && GetComponent<Pathfinder>().PathFound  )// && m_currAmt < m_spawnLimit)
+        if (m_spawnAmt > 0)// && m_currAmt < m_spawnLimit)
         {
             m_spawntimer = 0;//reset timer
             GameObject spawn;
@@ -112,52 +176,11 @@ public class Spawn : MonoBehaviour
                 imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
                 imgChild.color = Color.green;
                 //spawn.AddComponent<HealthBar>(); // Give it a healthbar
-                Vector2 this_grid = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(transform.position);
                 //SharedData.instance.gridmesh.GetGridAtPosition(transform.position);
 
                 //Debug.Log(transform.position);
-                int orientationX;
-                int orientationZ;
-                switch (m_orientationX)
-                {
-                    case "right":
-                        orientationX = -1;
-                        break;
-                    default:
-                        orientationX = 1;
-                        break;
-                }
-                if (m_orientationZ == "up")
-                    orientationZ = -1;
-                else
-                    orientationZ = 1;
-                Vector3 spawn_pos = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)this_grid.x + m_offsetGridX * orientationX, (int)this_grid.y + m_offsetGridZ * orientationZ); // is actually the grid this object is on's z position + 30, not y
-                spawn_pos.y = SceneData.sceneData.gridmesh.GetTerrainHeightAtGrid(spawn_pos);
 
-                if (SceneData.sceneData.gridmesh.GetGridObjAtPosition(spawn_pos).state == Grid.GRID_STATE.UNAVAILABLE)
-                {
-                    for (int s = 0; s < 4; ++s)
-                    {
-                        if (s == 0)
-                            orientationX = -orientationX;
-                        else if (s == 1)
-                            orientationZ = -orientationZ;
-                        else if (s == 2)
-                        {
-                            orientationX = -orientationX;
-                        }
-                        else if (s == 3)
-                        {
-                            orientationX = -orientationX;
-                            orientationZ = -orientationZ;
-                        }
-                        spawn_pos = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)this_grid.x + m_offsetGridX * orientationX, (int)this_grid.y + m_offsetGridZ * orientationZ); // is actually the grid this object is on's z position + 30, not y
-                        spawn_pos.y = SceneData.sceneData.gridmesh.GetTerrainHeightAtGrid(spawn_pos);
-                        if (SceneData.sceneData.gridmesh.GetGridObjAtPosition(spawn_pos).state == Grid.GRID_STATE.AVAILABLE)
-                            break;
-                    }
-                }
-                spawn.transform.position = spawn_pos;
+                spawn.transform.position = UnitSpawnPosition;
                 if (m_building.isfriendly)
                     spawn.GetComponent<Unit>().m_isFriendly = true;
                 m_entityList.Add(spawn);
@@ -192,5 +215,4 @@ public class Spawn : MonoBehaviour
 
         return m_spawntimer / m_secondsToSpawn;
     }
-
 }
