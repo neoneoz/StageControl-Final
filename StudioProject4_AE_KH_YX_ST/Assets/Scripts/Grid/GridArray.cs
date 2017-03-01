@@ -139,6 +139,14 @@ public class GridArray : MonoBehaviour
             for (int j = minY ; j <= maxY; ++j)
             {
                 gridmesh[i, j].GetComponent<Renderer>().enabled = true;
+                if (!gridmesh[i, j].GetComponent<Grid>().buildable)
+                {
+                    gridmesh[i, j].GetComponent<Renderer>().material = gridmesh[i, j].GetComponent<Grid>().materials[1];
+                }
+                else
+                {
+                    gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+                }
          
             }
         }
@@ -157,7 +165,7 @@ public class GridArray : MonoBehaviour
             {   for (int j = (int)tempmin.y; j <= (int)tempmax.y; ++j)
                 {
                     //Debug.Log("X: " + i + " Y: " + j);
-                    if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE && isbuild)
+                    if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE || !gridmesh[i, j].GetComponent<Grid>().buildable)
                     {
                         buildsucess = false;//there is a unavailble slot. Return false and send card back to hand;
                         return buildsucess;
@@ -283,22 +291,42 @@ public class GridArray : MonoBehaviour
 
     bool isGridCollidingWithTerrain(Grid grid)
     {
+        float highestvalue = 0;
+        if (highestvalue < grid.Points[0].y - grid.Points[1].y)
+            highestvalue = grid.Points[0].y - grid.Points[1].y;
+
         if (grid.Points[0].y - grid.Points[1].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue < grid.Points[1].y - grid.Points[2].y)
+            highestvalue = grid.Points[1].y - grid.Points[2].y;
+
         if (grid.Points[1].y - grid.Points[2].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue < grid.Points[2].y - grid.Points[3].y)
+            highestvalue = grid.Points[2].y - grid.Points[3].y;
         if (grid.Points[2].y - grid.Points[3].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue < grid.Points[3].y - grid.Points[4].y)
+            highestvalue = grid.Points[3].y - grid.Points[4].y;
+
         if (grid.Points[3].y - grid.Points[4].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue > 1)
+            grid.buildable = false;
+        else
+            grid.buildable = true;
         return false;
     }
 
