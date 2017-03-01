@@ -317,6 +317,8 @@ public class Unit : MonoBehaviour
 
     void DoAttack()
     {
+        if (Emitter != null)
+            Emitter.SetActive(false); // makes the enemy not emit projectile rapidly
         m_timer.Update();//update attack speed
         if (GetHealth() <=0 )//enemy hp check, enemy die, time to get a new target
         {
@@ -393,7 +395,7 @@ public class Unit : MonoBehaviour
                     if (cannotPlay)
                     {
                         PlayAudio.instance.m_source.clip = PlayAudio.instance.m_spidertank;
-                        PlayAudio.instance.m_source.volume = 0.4f;
+                        PlayAudio.instance.m_source.volume = 0.3f;
                         PlayAudio.instance.PlayOnce();
                     }
                     m_audioList[(int)UNIT_TYPE.SPIDER_TNK] = true;
@@ -408,7 +410,7 @@ public class Unit : MonoBehaviour
                     if (cannotPlay)
                     {
                         PlayAudio.instance.m_source.clip = PlayAudio.instance.m_buster;
-                        PlayAudio.instance.m_source.volume = 0.6f;
+                        PlayAudio.instance.m_source.volume = 0.3f;
                         PlayAudio.instance.PlayOnce();
                     }
                     m_audioList[(int)UNIT_TYPE.BBUSTER] = true;
@@ -423,9 +425,9 @@ public class Unit : MonoBehaviour
                     blast.GetComponent<Bprojectile>().setprojectile(m_targetEnemy, m_attkDamage, 2, 400);
                     if (cannotPlay)
                     {
-                        //PlayAudio.instance.m_source.clip = PlayAudio.instance.m_railgun;
-                        //PlayAudio.instance.m_source.volume = 0.6f;
-                        //PlayAudio.instance.PlayOnce();
+                        PlayAudio.instance.m_source.clip = PlayAudio.instance.m_railgun;
+                        PlayAudio.instance.m_source.volume = 0.6f;
+                        PlayAudio.instance.PlayOnce();
                     }
                     m_audioList[(int)UNIT_TYPE.RAILGUN] = true;
                 } break;
@@ -445,7 +447,7 @@ public class Unit : MonoBehaviour
                 } break;
 
         }
-
+        PlayAudio.instance.m_source.priority = 2;
     }
 
     void DoDamage(float damage)

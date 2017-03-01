@@ -54,6 +54,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   state: 0
+  buildable: 0
 --- !u!120 &12095586
 LineRenderer:
   m_ObjectHideFlags: 1

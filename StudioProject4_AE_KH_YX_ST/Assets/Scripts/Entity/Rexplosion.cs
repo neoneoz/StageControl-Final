@@ -40,6 +40,7 @@ public class Rexplosion : MonoBehaviour {
             PlayAudio.instance.m_source.clip = PlayAudio.instance.m_railgunExplode;
             PlayAudio.instance.m_source.volume = 0.7f;
             PlayAudio.instance.PlayOnce();
+            PlayAudio.instance.m_source.priority = 0;
             exploded = true;
         }
         if (time > 1.3)

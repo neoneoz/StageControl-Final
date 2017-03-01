@@ -51,11 +51,40 @@ public class GridArray : MonoBehaviour
         snaplocation.x -= (GridSizeX*0.5f) * offset;
         snaplocation.y = SceneData.sceneData.ground.SampleHeight(snaplocation);
         RenderBuildGrids(max, size);
-       
         //max.GetComponent<Grid>().ChangeState(Grid.GRID_STATE.UNAVAILABLE);   
         return snaplocation;
      
             
+    }
+
+
+
+
+    public void FreeGrids(GameObject building)//call this to free a building's grids after it is destroyed
+    {
+
+        float offset = (building.GetComponent<Building>().size - 1f);
+        Vector3 position = building.transform.position;
+        Vector3 maxpos = new Vector3(position.x + (GridSizeX * 0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
+        GameObject max = GetGridAtPosition(maxpos);//set the max grid
+        
+        
+        float scale = building.GetComponent<Building>().size - 1;
+        //Vector3 maxpos = max.GetComponent<Grid>().GetWorldPosition();
+        Vector2 mxIndex = new Vector2(max.GetComponent<Grid>().position.x, max.GetComponent<Grid>().position.y);
+        Vector2 mnIndex = new Vector2(mxIndex.x - scale, mxIndex.y - scale);
+        int maxX = (int)mxIndex.x; int minX = (int)mnIndex.x;
+        int maxY = (int)mxIndex.y; int minY = (int)mnIndex.y;
+
+        for (int i = minX; i <= maxX; ++i)
+        {
+            for (int j = minY; j <= maxY; ++j)
+            {
+                gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.AVAILABLE;
+                gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+
+            }
+        }
     }
 
     public void RenderRadius(Vector3 mouse_pos, float radius)
@@ -109,6 +138,14 @@ public class GridArray : MonoBehaviour
             for (int j = minY ; j <= maxY; ++j)
             {
                 gridmesh[i, j].GetComponent<Renderer>().enabled = true;
+                if (!gridmesh[i, j].GetComponent<Grid>().buildable)
+                {
+                    gridmesh[i, j].GetComponent<Renderer>().material = gridmesh[i, j].GetComponent<Grid>().materials[1];
+                }
+                else
+                {
+                    gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+                }
          
             }
         }
@@ -116,6 +153,7 @@ public class GridArray : MonoBehaviour
         tempmax = mxIndex;
         tempmin = mnIndex;
     }
+
     public bool DerenderBuildGrids(bool isbuild)
     {
         bool buildsucess = true;
@@ -126,7 +164,7 @@ public class GridArray : MonoBehaviour
             {   for (int j = (int)tempmin.y; j <= (int)tempmax.y; ++j)
                 {
                     //Debug.Log("X: " + i + " Y: " + j);
-                    if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE && isbuild)
+                    if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE || !gridmesh[i, j].GetComponent<Grid>().buildable)
                     {
                         buildsucess = false;//there is a unavailble slot. Return false and send card back to hand;
                         return buildsucess;
@@ -252,22 +290,42 @@ public class GridArray : MonoBehaviour
 
     bool isGridCollidingWithTerrain(Grid grid)
     {
+        float highestvalue = 0;
+        if (highestvalue < grid.Points[0].y - grid.Points[1].y)
+            highestvalue = grid.Points[0].y - grid.Points[1].y;
+
         if (grid.Points[0].y - grid.Points[1].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue < grid.Points[1].y - grid.Points[2].y)
+            highestvalue = grid.Points[1].y - grid.Points[2].y;
+
         if (grid.Points[1].y - grid.Points[2].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue < grid.Points[2].y - grid.Points[3].y)
+            highestvalue = grid.Points[2].y - grid.Points[3].y;
         if (grid.Points[2].y - grid.Points[3].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue < grid.Points[3].y - grid.Points[4].y)
+            highestvalue = grid.Points[3].y - grid.Points[4].y;
+
         if (grid.Points[3].y - grid.Points[4].y > SlopeLeniency)
         {
             return true;
         }
+
+        if (highestvalue > 1)
+            grid.buildable = false;
+        else
+            grid.buildable = true;
         return false;
     }
 
@@ -331,7 +389,7 @@ public class GridArray : MonoBehaviour
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 
-                grid.GetComponent<Renderer>().enabled = false;
+                grid.GetComponent<Renderer>().enabled = true;
         //        // Create a copy of the plane and offset it according to [current width, current column] using Instantiate
         //        GameObject grid = (GameObject)Instantiate(StartingGrid);
         //        grid.name = "Row: " + x + " Col: " + z;

@@ -842,7 +842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0, z: 0}
-  speed: 30
+  speed: 10
   m_stopMove: 0
 --- !u!1001 &100100000
 Prefab:
