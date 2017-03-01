@@ -191,8 +191,6 @@ public class GridArray : MonoBehaviour
 
     public void SetBuildableGrids(GameObject basepos)//sets grids aroun the base's area to be buildable
     {
-        Debug.Log("fuckass");
-
         float size = 28;//square sides in terms of grids
         Vector2 maxgrid = GetGridIndexAtPosition(basepos.transform.position);//get the grid below the base building
         Vector2 mingrid = maxgrid - new Vector2(size, size);//find minimum grid
@@ -217,6 +215,12 @@ public class GridArray : MonoBehaviour
         }
 
 
+    }
+
+    public bool OForceBuild(GameObject building, Vector3 pos)
+    {
+        
+        return true;
     }
 
     // Takes in a gameobject position and scale and returns which grids it occupies in the form on their grid index x and y
@@ -417,7 +421,7 @@ public class GridArray : MonoBehaviour
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 
-                grid.GetComponent<Renderer>().enabled = false;
+                grid.GetComponent<Renderer>().enabled = true;
         //        // Create a copy of the plane and offset it according to [current width, current column] using Instantiate
         //        GameObject grid = (GameObject)Instantiate(StartingGrid);
         //        grid.name = "Row: " + x + " Col: " + z;

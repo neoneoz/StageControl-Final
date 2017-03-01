@@ -214,8 +214,6 @@ MonoBehaviour:
   AlignmentWeight: 1
   Gametime: 0
   spell_grid: {x: 0, y: 0, z: 0, w: 0}
-  is_spellCast: 0
-  is_spellHit: 0
   spell_dmg: 0
   buildingP: {fileID: 19837254, guid: 79119af665e78f642aef9f1a48521389, type: 2}
   explosionP: {fileID: 0}
@@ -223,6 +221,7 @@ MonoBehaviour:
   spawnTimer: {fileID: 11474922, guid: 2c020845e92ec424a8335273a6da9175, type: 2}
   Health_friendly: {fileID: 11453072, guid: 6d91d8fedd7699442be904f3c70d602f, type: 2}
   Health_enemy: {fileID: 11426256, guid: 6ea9964883ea7024887f2500699c540d, type: 2}
+  NewDeckButton: {fileID: 1667334362}
 --- !u!4 &88376218
 Transform:
   m_ObjectHideFlags: 0
@@ -1226,6 +1225,52 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 451028563}
   m_Mesh: {fileID: 4300036, guid: 609e8d8bf0f457143b1f2fcd3f224785, type: 3}
+--- !u!1 &459909275
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 459909277}
+  - 114: {fileID: 459909276}
+  m_Layer: 0
+  m_Name: OpponentController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &459909276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 459909275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b491301b219e87949b4dfa354725a939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clockwork: {fileID: 133970, guid: 2314ea097235f2d45845e74971167d96, type: 2}
+  Ballista: {fileID: 186884, guid: e2c8736718b93c048863b50bec1da7c7, type: 2}
+  Bbuster: {fileID: 119436, guid: d3adaf152f5307a4a899c0ec6ace213d, type: 2}
+  Spider: {fileID: 193894, guid: b86c1ae52a6e6844183155907a587fbe, type: 2}
+  Railgun: {fileID: 195730, guid: 37fbfbb50453c754aa1b669b1ab3ccbd, type: 2}
+  Irongolem: {fileID: 114404, guid: ff93cda254e32be458d0dafa964d7ac6, type: 2}
+  e_base: {fileID: 1066008269}
+--- !u!4 &459909277
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 459909275}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 447.5315, y: 132.84793, z: 136.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 48
 --- !u!1 &470888137
 GameObject:
   m_ObjectHideFlags: 0
@@ -2426,6 +2471,104 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!1001 &786527904
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1665295755}
+    m_Modifications:
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 772.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -319
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 195194, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_Name
+      value: GenerateDeck
+      objectReference: {fileID: 0}
+    - target: {fileID: 11441446, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2089944025}
+    - target: {fileID: 11441446, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RegenerateDeck
+      objectReference: {fileID: 0}
+    - target: {fileID: 195194, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1c136d216ca88dd4aac5d54b6b82798d, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &789576126 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100034, guid: e99ee07ed28281742bed5fbf385fccb5, type: 3}
@@ -5629,6 +5772,7 @@ RectTransform:
   - {fileID: 2089944026}
   - {fileID: 397744388}
   - {fileID: 470888138}
+  - {fileID: 1667334361}
   m_Father: {fileID: 0}
   m_RootOrder: 30
   m_AnchorMin: {x: 0, y: 0}
@@ -5636,6 +5780,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!224 &1667334361 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22438766, guid: 1c136d216ca88dd4aac5d54b6b82798d,
+    type: 2}
+  m_PrefabInternal: {fileID: 786527904}
+--- !u!114 &1667334362 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11441446, guid: 1c136d216ca88dd4aac5d54b6b82798d,
+    type: 2}
+  m_PrefabInternal: {fileID: 786527904}
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1677640605
 GameObject:
   m_ObjectHideFlags: 0
@@ -6834,17 +6989,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardsToInclude:
-  - CardAmount: 8
+  - CardAmount: 2
     CardType: 0
   - CardAmount: 0
     CardType: 1
-  - CardAmount: 3
+  - CardAmount: 0
     CardType: 2
-  - CardAmount: 5
+  - CardAmount: 0
     CardType: 3
   - CardAmount: 0
     CardType: 4
-  - CardAmount: 7
+  - CardAmount: 0
     CardType: 5
   - CardAmount: 0
     CardType: 6

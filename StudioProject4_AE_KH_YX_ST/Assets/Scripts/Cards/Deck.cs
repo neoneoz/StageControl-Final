@@ -22,6 +22,8 @@ public class Deck : MonoBehaviour
     void Start()
     {
         GenerateDeck();
+        PlayAudio.instance.m_source.clip = PlayAudio.instance.m_drawCard;
+        SceneData.sceneData.NewDeckButton.gameObject.SetActive(false);
     }
 
     public void GenerateDeck()
@@ -47,9 +49,6 @@ public class Deck : MonoBehaviour
         }
 
         ShuffleDeck();
-
-        if (CardsToInclude != null)
-            CardsToInclude.Clear();
     }
 
     // Update is called once per frame
@@ -65,7 +64,8 @@ public class Deck : MonoBehaviour
 
         }
 
-
+        if (Cards.Count <= 0)
+            SceneData.sceneData.NewDeckButton.gameObject.SetActive(true);
     }
 
 
@@ -93,6 +93,9 @@ public class Deck : MonoBehaviour
             if (SceneData.sceneData.handhandler.handsize < 5 && a_draw) //&& draw.GetCurrentAnimatorStateInfo(0).IsName("Idle"))//can draw here
             {
                 //gameObject.transform.GetChild(0).GetComponent<Animation>().
+                PlayAudio.instance.m_source.clip = PlayAudio.instance.m_drawCard;
+                PlayAudio.instance.m_source.volume = 0.5f;
+                PlayAudio.instance.PlayOnce();
                 draw.SetBool("Isdraw", true);
                 a_draw = false;
             }
@@ -104,9 +107,6 @@ public class Deck : MonoBehaviour
             {
                 draw.SetBool("Isdraw", true);
                 a_draw = false;
-                GameObject NewDeckCard = GameObject.Find("NewDeckCard");
-                SceneData.sceneData.handhandler.cardlist.Add(NewDeckCard);
-                SceneData.sceneData.handhandler.ResetCardPos();
                 drawable = false;
             }
         }
@@ -123,6 +123,24 @@ public class Deck : MonoBehaviour
         return;
     }
 
-
+    public void RegenerateDeck()
+    {
+        if (Cards.Count <= 0)
+        {
+            if (SceneData.sceneData.Player.GetGold() >= 500)
+            {
+                SceneData.sceneData.Player.SpendPlayerGold(500);
+                PlayAudio.instance.m_source.clip = PlayAudio.instance.m_newDeck;
+                PlayAudio.instance.m_source.volume = 0.5f;
+                PlayAudio.instance.PlayOnce();
+                drawable = true;
+                GenerateDeck();
+                ShuffleDeck();
+            }
+        }
+        SceneData.sceneData.NewDeckButton.gameObject.SetActive(false);
+        //else if (Cards.Count > 0)
+        //SceneData.sceneData.NewDeckButton.enabled = false;
+    }
 
 }

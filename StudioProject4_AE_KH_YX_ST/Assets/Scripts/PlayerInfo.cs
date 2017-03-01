@@ -48,4 +48,9 @@ public class PlayerInfo : MonoBehaviour { // Can be singleton
 
 
     }
+
+    public int GetGold()
+    {
+        return Gold;
+    }
 }

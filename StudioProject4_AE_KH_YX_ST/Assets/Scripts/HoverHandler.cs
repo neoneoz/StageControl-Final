@@ -23,7 +23,9 @@ public class HoverHandler : MonoBehaviour {
 
         if (SceneData.sceneData.isHoldingCard)
             return;
-
+        PlayAudio.instance.m_source.clip = PlayAudio.instance.m_hoverExit;
+        PlayAudio.instance.m_source.volume = 0.5f;
+        PlayAudio.instance.PlayOnce();
         selected = gameObject.GetComponent<RectTransform>();
         selected.localScale = new Vector3(2, 2, 1);
         tempw = selected.localRotation.w;

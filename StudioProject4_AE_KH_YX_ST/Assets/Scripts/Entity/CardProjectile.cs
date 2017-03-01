@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CardProjectile : MonoBehaviour
 {
@@ -39,14 +40,28 @@ public class CardProjectile : MonoBehaviour
         Velocity = displacement.normalized * speed;
         //speed = displacement.magnitude / GetComponent<Spell>().effectTime;
         prev_speed = displacement.magnitude / GetComponent<Spell>().effectTime;
-        if (displacement.sqrMagnitude < 10 * 10 && GetComponent<Spell>().effectTimer.can_run)
+
+        // Check for all units nearby
+        if (displacement.sqrMagnitude < 10 * 10)
         {
-            ParticleSystem ps = gameObject.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
-            if (!ps.isPlaying)
+            List<GameObject> nearbylist = SpatialPartition.instance.GetObjectListAt(transform.position);
+            for (int i = 0; i < nearbylist.Count; ++i)
             {
-                ps.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z);
-                ps.gameObject.SetActive(true);
-                ps.Play();
+                if (!nearbylist[i] || !nearbylist[i].GetComponent<Unit>()) // if not a unit
+                    continue;
+                Debug.Log("fdfsd");
+                // Unit takes damage
+                nearbylist[i].GetComponent<Unit>().TakeDamage(damage);
+            }
+            if (GetComponent<Spell>().effectTimer.can_run)
+            {
+                ParticleSystem ps = gameObject.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+                if (!ps.isPlaying)
+                {
+                    ps.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z);
+                    ps.gameObject.SetActive(true);
+                    ps.Play();
+                }
             }
         }
 

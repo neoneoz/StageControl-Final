@@ -26,6 +26,10 @@ public class PlayAudio : MonoBehaviour {
     public AudioClip m_railgun;
     public AudioClip m_railgunExplode;
     public AudioClip m_spidertank;
+    public AudioClip m_drawCard;
+    public AudioClip m_hoverEnter;
+    public AudioClip m_hoverExit;
+    public AudioClip m_newDeck;
     public AudioSource m_source;
     public GameObject m_soundOwner; // Used to find out which entity is playing the sound
     // Total volume here, uses slider to adjust all in game volume
@@ -41,6 +45,10 @@ public class PlayAudio : MonoBehaviour {
         m_railgun = Resources.Load("Audio/railgun") as AudioClip;
         m_railgunExplode = Resources.Load("Audio/railgunexplode") as AudioClip;
         m_spidertank = Resources.Load("Audio/spidertank") as AudioClip;
+        m_drawCard = Resources.Load("Audio/cardFlip") as AudioClip;
+        m_hoverEnter = Resources.Load("Audio/HoverEnter") as AudioClip;
+        m_hoverExit = Resources.Load("Audio/HoverExit") as AudioClip;
+        m_newDeck = Resources.Load("Audio/NewDeckSound") as AudioClip;
         DontDestroyOnLoad(this.gameObject);
 	}
 	

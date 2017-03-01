@@ -32,11 +32,6 @@ public class SceneData : MonoBehaviour
     // Two values for storing where player is placing spell card
     [HideInInspector]
     public Vector4 spell_grid;
-    [HideInInspector]
-    public bool is_spellCast; // is the spell cast?
-    [HideInInspector]
-    public bool is_spellHit; // is the spell cast?
-    [HideInInspector]
     public float spell_dmg; // spell damage
     /**/
 
@@ -53,6 +48,9 @@ public class SceneData : MonoBehaviour
 
     //Object ID
     uint ObjectID = 0;
+
+    //New Deck Card  Game Object
+    public Button NewDeckButton;
 
     public uint GetUniqueID()
     {

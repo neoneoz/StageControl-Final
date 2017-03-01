@@ -265,16 +265,8 @@ public class Unit : MonoBehaviour
             enemyHealth.transform.GetChild(0).GetComponent<Image>().fillAmount = m_health / m_maxHealth;
             enemyHealth.transform.GetChild(0).GetComponent<Image>().transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + gameObject.transform.up.normalized * 10);
         }
-        /*Affected by spell*/
-        if (SceneData.sceneData.is_spellCast && SceneData.sceneData.is_spellHit) // if spell is cast and its projectile has reached the ground
-        {
-            if (SceneData.sceneData.gridmesh.CheckWithinRadius(transform.position, SceneData.sceneData.spell_grid)) // check if i as the unit am in range of blast
-            {
-                m_health -= Time.deltaTime * (int)SceneData.sceneData.spell_dmg; // Ouch!
-                //GetComponent<Health>().DecreaseHealthGradually(Time.deltaTime, (int)SceneData.sceneData.spell_dmg); // Old health system code for reference in future?
-            }
-        }
-       
+
+     
 
         //if ((m_targetBuilding == null || m_targetBuilding.GetComponent<Health>().GetHealth() < 0) && GetComponent<VMovement>().m_stopMove2)
         //{
