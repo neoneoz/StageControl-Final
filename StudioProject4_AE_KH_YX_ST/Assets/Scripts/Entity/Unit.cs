@@ -52,7 +52,7 @@ public class Unit : MonoBehaviour
     public int minindex_y;
     public int maxindex_x;
     public int maxindex_y;
-    public bool isVisible = false;
+    public bool isVisible = true;
 
     //Healthbar stuff
     public Image healthImage = null;
@@ -248,7 +248,7 @@ public class Unit : MonoBehaviour
         if (m_targetEnemy)
             DoAttack();
 
-        if (PathToEnd.Count > 0) // If there are places to go, go
+        if (PathToEnd.Count > 0 && m_targetEnemy == null) // If there are places to go, go
         {
             GetComponent<VMovement>().Velocity = (PathToEnd[pathindex] - transform.position).normalized; // direction vector
             if ((PathToEnd[pathindex] - transform.position).sqrMagnitude < GetComponent<VMovement>().speed * GetComponent<VMovement>().speed)
@@ -342,7 +342,7 @@ public class Unit : MonoBehaviour
             if (ismelee && displacement.sqrMagnitude > mrange) // distannce check
             {
                 gameObject.GetComponent<VMovement>().Velocity = displacement.normalized * 35; // move towards enemy if not within attack range
-                GetComponent<VMovement>().m_stopMove = false; // Stop moving to fight
+                GetComponent<VMovement>().m_stopMove = false; //move towards enemy
                 return;
             }
         }

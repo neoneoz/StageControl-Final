@@ -38,4 +38,14 @@ public class PlayerInfo : MonoBehaviour { // Can be singleton
 
         return true;
     }
+
+    public bool CheckPlayerGold(int amount)
+    {
+        if (Gold < amount)
+            return false;
+
+        return true;
+
+
+    }
 }

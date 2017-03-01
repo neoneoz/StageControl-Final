@@ -64,9 +64,6 @@ public class SpatialPartition : MonoBehaviour
             return obj.GetComponent<Building>().GetID();
         }
 
-        Debug.Log("Object does not have Unit/Building Component");
-        Debug.Break();
-
         return 0;
     }
 
@@ -178,6 +175,11 @@ public class SpatialPartition : MonoBehaviour
         {
             for (int index_Y = min_indexY; index_Y <= max_indexY; ++index_Y)
             {
+                if (index_X < 0 || index_Y < 0
+                   || index_X > m_rows - 1 || index_Y > m_columns - 1)
+                {
+                    return NearbyList;
+                }
                 NearbyList.AddRange(SPGridMesh[index_X * m_columns + index_Y].ObjectList);
             }
         }

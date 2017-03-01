@@ -103,8 +103,6 @@ public class FogOfWar : MonoBehaviour
         CollisionPlane.transform.Rotate(Vector3.right, 180f);
 
         defaultquadHeight = quadHeight;
-        Debug.Log(FogTexture.width);
-        Debug.Log(FogTexture.height);
         WorldToTextureRatio.x = FogTexture.width / SceneData.sceneData.ground.terrainData.size.x;
         WorldToTextureRatio.y = FogTexture.height / SceneData.sceneData.ground.terrainData.size.z;
 
@@ -122,7 +120,6 @@ public class FogOfWar : MonoBehaviour
         FogTexture = buffer1;
 
         ClearScreen = new Color[FogTexture.width * FogTexture.height];
-
         for(int x = 0; x < FogTexture.width; ++x)
         {
             for (int y = 0; y < FogTexture.height; ++y)
@@ -327,8 +324,8 @@ public class FogOfWar : MonoBehaviour
 
             if (allObjects[index1] != LevelManager.instance.EnemyBase)
             {
-                Render(allObjects[index1], isVisible);
-                SetVisibility(allObjects[index1], isVisible);
+               //Render(allObjects[index1], isVisible);
+               SetVisibility(allObjects[index1], isVisible);
             }
         }
     }

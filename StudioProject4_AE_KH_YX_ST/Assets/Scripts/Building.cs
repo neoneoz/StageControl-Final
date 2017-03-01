@@ -34,7 +34,7 @@ public class Building : MonoBehaviour
     public float buildingHealth;
     public float maxBuildingHealth;
     public bool isbase = false;
-    public bool isVisible = false;
+    public bool isVisible = true;
 
     //ID
     uint ID;
@@ -62,9 +62,10 @@ public class Building : MonoBehaviour
             m_initController = false;
         }
 
-        if (isfriendly && isbase)
+        if (isbase)
         {
-            Debug.Log("shit");
+            isVisible = true;
+            if(isfriendly)
             SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
         }
 
