@@ -181,7 +181,11 @@ public class Pathfinder : MonoBehaviour
             }
         }
         newNode.parent = parent;
-        newNode.G = newCost;
+        if (!SceneData.sceneData.gridmesh.gridmesh[posX, posY].GetComponent<Grid>().buildable)
+            newNode.G = newCost + 10;
+        else
+            newNode.G = newCost;
+
         newNode.H = parent.Distance(EndNode);
 
         foreach(Node node in OpenList)

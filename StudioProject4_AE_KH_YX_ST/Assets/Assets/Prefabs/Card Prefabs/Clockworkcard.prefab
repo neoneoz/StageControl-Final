@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Clockwork
   UnitType: Clockwork Soldier
-  goldValue: 5
+  goldValue: 60
   Time: 8
   cardDescr: Summons Clockwork Soldiers that is formidable when in groups
   GOModel: {fileID: 133970, guid: 2314ea097235f2d45845e74971167d96, type: 2}

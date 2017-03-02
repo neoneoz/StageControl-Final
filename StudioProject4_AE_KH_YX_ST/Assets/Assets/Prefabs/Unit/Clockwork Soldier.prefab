@@ -510,7 +510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_type: 0
   m_attkRadius: 120
-  m_attkDamage: 10
+  m_attkDamage: 15
   m_attkAnim: {fileID: 7400000, guid: 6833b506f6030d1498557d7e0c7d89c0, type: 3}
   m_attackspeed: 1.2
   m_health: 60
@@ -528,7 +528,9 @@ MonoBehaviour:
   minindex_y: 0
   maxindex_x: 0
   maxindex_y: 0
-  m_gold: 20
+  isVisible: 1
+  healthImage: {fileID: 0}
+  m_gold: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -52,7 +52,7 @@ public class SceneData : MonoBehaviour
 #else
     public float SPAWN_LIMIT = 30;
 #endif
-    float p_unitcount, e_unitcount;
+    public float p_unitcount, e_unitcount;
     public bool p_unitmax, e_unitmax;
 
 

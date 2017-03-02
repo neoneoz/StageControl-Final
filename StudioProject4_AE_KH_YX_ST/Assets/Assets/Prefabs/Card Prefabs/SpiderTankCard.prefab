@@ -307,7 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Spidertank
   UnitType: Spidertank
-  goldValue: 50
+  goldValue: 110
   Time: 30
   cardDescr: Summons a spider tank that destroys his enemies
   GOModel: {fileID: 193894, guid: b86c1ae52a6e6844183155907a587fbe, type: 2}

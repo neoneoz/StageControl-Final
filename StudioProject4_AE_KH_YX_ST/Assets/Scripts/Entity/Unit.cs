@@ -307,7 +307,7 @@ public class Unit : MonoBehaviour
             Destroy(comp);
         }
 
-        SceneData.sceneData.AddUnitCount(m_isFriendly);
+        SceneData.sceneData.RemoveUnitCount(m_isFriendly);
 
         if (healthImage)
         {

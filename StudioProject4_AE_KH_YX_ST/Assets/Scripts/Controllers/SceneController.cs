@@ -41,4 +41,13 @@ public class SceneController : MonoBehaviour {
 #endif
     }
 
+    public void GoToLevel3()
+    {
+#if UNITY_ANDROID
+        SceneManager.LoadScene("Stage 3 Android");
+#else
+        SceneManager.LoadScene("Stage 3 PC");
+#endif
+    }
+
 }

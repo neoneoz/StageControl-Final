@@ -316,7 +316,7 @@ public class FogOfWar : MonoBehaviour
                 continue;
 
             bool isVisible = false;
-            for (int index2 = index1 + 1; index2 < allObjects.Count; ++index2)
+            for (int index2 = 0; index2 < allObjects.Count; ++index2)
             {
                 // Continue if other index is friendly to check enemy with friendly units.
                 if (!allObjects[index1] || !allObjects[index2] || !allObjects[index2].GetComponent<Vision>() || !CheckIfFriendly(allObjects[index2]))
@@ -334,8 +334,8 @@ public class FogOfWar : MonoBehaviour
             if (allObjects[index1] != LevelManager.instance.EnemyBase)
             {
                Render(allObjects[index1], isVisible);
-               SetVisibility(allObjects[index1], isVisible);
             }
+                SetVisibility(allObjects[index1], isVisible);
         }
 
 
@@ -378,7 +378,7 @@ public class FogOfWar : MonoBehaviour
 
 
 
-            if (allObjects[index1] != LevelManager.instance.PlayerBase)
+            //if (allObjects[index1] != LevelManager.instance.PlayerBase)
             {
                 //Render(allObjects[index1], isVisible);
                 SetVisibility(allObjects[index1], isVisible);

@@ -198,7 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Iron Golem
   UnitType: Iron Golem
-  goldValue: 100
+  goldValue: 200
   Time: 50
   cardDescr: Summons a giant Iron Golem that destroys enemies in his path
   GOModel: {fileID: 114404, guid: ff93cda254e32be458d0dafa964d7ac6, type: 2}

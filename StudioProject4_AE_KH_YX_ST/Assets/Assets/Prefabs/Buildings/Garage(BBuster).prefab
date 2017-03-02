@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442db459fc7ae5b44979a8d6b3662592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_secondsToSpawn: 10
+  m_secondsToSpawn: 27
   m_spawntimer: 0
   m_entity: {fileID: 116948, guid: 6f889c45066575344b892cf0e5aedeb3, type: 2}
   m_orientationX: left
@@ -546,6 +546,7 @@ MonoBehaviour:
   m_spawnAmt: 1
   m_spawnLimit: 2
   m_tempList: []
+  UnitSpawnPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11406754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -676,9 +677,14 @@ MonoBehaviour:
   b_state: 0
   isfriendly: 1
   m_isDistract: 0
+  buildTimerTemp: {fileID: 0}
+  spawnTimerTemp: {fileID: 0}
+  buildingHealthImage: {fileID: 0}
   buildTimer: 3
   buildingHealth: 1000
   maxBuildingHealth: 1000
+  isbase: 0
+  isVisible: 1
 --- !u!114 &11487650
 MonoBehaviour:
   m_ObjectHideFlags: 1

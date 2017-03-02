@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Buster
   UnitType: Buster
-  goldValue: 30
+  goldValue: 150
   Time: 15
   cardDescr: Summons Busters that moves at a extremely high speed
   GOModel: {fileID: 119436, guid: d3adaf152f5307a4a899c0ec6ace213d, type: 2}

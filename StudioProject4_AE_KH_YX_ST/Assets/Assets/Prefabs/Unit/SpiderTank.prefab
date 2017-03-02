@@ -1041,12 +1041,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_type: 2
-  m_attkRadius: 120
+  m_attkRadius: 110
   m_attkDamage: 5
   m_attkAnim: {fileID: 7400000, guid: 3b8cf772cb944f249b18a067937929b7, type: 3}
   m_attackspeed: 0.3
-  m_health: 175
-  m_maxHealth: 175
+  m_health: 135
+  m_maxHealth: 135
   PathToEnd: []
   pathindex: 0
   m_isFriendly: 0
@@ -1060,7 +1060,9 @@ MonoBehaviour:
   minindex_y: 0
   maxindex_x: 0
   maxindex_y: 0
-  m_gold: 30
+  isVisible: 1
+  healthImage: {fileID: 0}
+  m_gold: 70
 --- !u!114 &11433476
 MonoBehaviour:
   m_ObjectHideFlags: 1

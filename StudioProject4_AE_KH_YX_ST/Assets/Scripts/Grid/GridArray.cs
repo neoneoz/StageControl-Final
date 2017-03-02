@@ -190,10 +190,10 @@ public class GridArray : MonoBehaviour
                 {
                     gridmesh[i, j].GetComponent<Renderer>().material = gridmesh[i, j].GetComponent<Grid>().materials[1];
                 }
-                else
-                {
-                    gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
-                }
+                //else
+                //{
+                //    gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+                //}
          
             }
         }
@@ -474,6 +474,7 @@ public class GridArray : MonoBehaviour
 
         float halfGridSizeX = GridSizeX * 0.5f;
         float halfGridSizeZ = GridSizeZ * 0.5f;
+                float highestYvalue = 0f;
 
         // Create rows
         for (int x = 0; x < m_rows; x++)
@@ -487,6 +488,7 @@ public class GridArray : MonoBehaviour
                 grid.GetComponent<Grid>().position.y = z;
                 float worldpositionX = x * GridSizeX + GridSizeX * 0.5f;
                 float worldpositionZ = z * GridSizeZ + GridSizeZ * 0.5f;
+
                 // Update the grid position
                 grid.transform.position = new Vector3(worldpositionX, ground.terrainData.GetInterpolatedHeight(worldpositionX / ground.terrainData.size.x, worldpositionZ / ground.terrainData.size.z), worldpositionZ);
                 // Create Four Points that define the grid
@@ -496,6 +498,13 @@ public class GridArray : MonoBehaviour
                 grid.GetComponent<Grid>().Points[3] = new Vector3(-halfGridSizeX + grid.transform.position.x, ground.SampleHeight(new Vector3(-halfGridSizeX + grid.transform.position.x, 0, halfGridSizeZ + grid.transform.position.z))  + 2, halfGridSizeZ + grid.transform.position.z);
                 grid.GetComponent<Grid>().Points[4] = new Vector3(-halfGridSizeX + grid.transform.position.x, ground.SampleHeight(new Vector3(-halfGridSizeX + grid.transform.position.x, 0, -halfGridSizeZ + grid.transform.position.z)) + 2, -halfGridSizeZ + grid.transform.position.z);
                 UpdateGridAvailability(grid.GetComponent<Grid>());
+                if (highestYvalue == 0)
+                    highestYvalue = grid.GetComponent<Grid>().Points[0].y;
+                if (grid.GetComponent<Grid>().Points[0].y >= highestYvalue - 5)
+                {
+                    grid.GetComponent<Grid>().buildable = false;
+                }
+                grid.GetComponent<LineRenderer>().material = grid.GetComponent<Grid>().materials[1];
                 grid.GetComponent<LineRenderer>().SetVertexCount(5);
                 grid.GetComponent<LineRenderer>().SetPositions(grid.GetComponent<Grid>().Points);
                 grid.GetComponent<LineRenderer>().SetWidth(1, 1);

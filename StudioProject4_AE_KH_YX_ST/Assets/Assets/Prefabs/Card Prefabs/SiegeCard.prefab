@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Siege
   UnitType: Ballista
-  goldValue: 20
+  goldValue: 70
   Time: 10
   cardDescr: Summons Sieges that fires large impaling arrows
   GOModel: {fileID: 186884, guid: e2c8736718b93c048863b50bec1da7c7, type: 2}
