@@ -50,8 +50,14 @@ public class Building : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-       
+
         //b_state = BUILDSTATE.B_HOLOGRAM;
+
+#if UNITY_ANDROID
+        size = size >> 1;
+        if (size <= 0)
+            size = 1;
+#endif
 
         Invoke("InstantiateParticles", 0.1f);
         //isfriendly = true;//default to the player's units
@@ -134,7 +140,7 @@ public class Building : MonoBehaviour
 
     public Vector3 GetMaxPosOfBuilding(Vector3 position, int othersize)
     {
-        Vector3 maxpos = position + new Vector3(SceneData.sceneData.gridmesh.GridSizeX * (othersize), 0, SceneData.sceneData.gridmesh.GridSizeX * (othersize));
+        Vector3 maxpos = position + new Vector3(SceneData.sceneData.gridmesh.GridSizeX * (othersize) + SceneData.sceneData.gridmesh.GridSizeX, 0, SceneData.sceneData.gridmesh.GridSizeZ * (othersize) + SceneData.sceneData.gridmesh.GridSizeZ);
         return maxpos;
     }
 

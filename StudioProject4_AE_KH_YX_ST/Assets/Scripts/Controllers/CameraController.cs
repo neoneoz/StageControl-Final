@@ -189,7 +189,7 @@ public class CameraController : MonoBehaviour
                 debugtext.text = "ZOOMING";
                 Vector2 currentinBetween = Input.GetTouch(0).position - Input.GetTouch(1).position;
                 debugtext.text = debugtext.text + "\n Current: " + currentinBetween.magnitude + "\n Initial: " + inbetween.magnitude;
-                zoomlevel = Mathf.Clamp(zoomlevel + (inbetween.magnitude - currentinBetween.magnitude) * zoomAndroidSensitivity, 1, 10);
+                zoomlevel = Mathf.Clamp(zoomlevel + (inbetween.magnitude - currentinBetween.magnitude) * zoomAndroidSensitivity, zoomMinLevel, zoomMaxLevel);
                 CameraDistanceFromTerrain = defaultCameraDistanceFromTerrain * zoomlevel;
                 RaycastHit hit;
                 Ray ray = GetComponent<Camera>().ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0));
