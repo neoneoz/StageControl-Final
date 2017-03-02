@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 
@@ -268,7 +269,14 @@ public class Building : MonoBehaviour
             SceneData.sceneData.gridmesh.FreeGrids(gameObject);
             Building.m_buildingList.Remove(gameObject);
             Destroy(gameObject);
-            
+
+          if (gameObject == LevelManager.instance.PlayerBase)
+              SceneController.GoToScene("DefeatScene");
+
+          else if (gameObject == LevelManager.instance.EnemyBase)
+              SceneController.GoToScene("VictoryScene");
+
+
         }
         
     }

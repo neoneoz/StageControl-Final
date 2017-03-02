@@ -312,6 +312,7 @@ public class FogOfWar : MonoBehaviour
 
             // Continue if its friendly unit. We're checking enemy against all our units.
             if (CheckIfFriendly(allObjects[index1]) || !allObjects[index1].GetComponent<Vision>())
+
                 continue;
 
             bool isVisible = false;
@@ -350,12 +351,11 @@ public class FogOfWar : MonoBehaviour
 
             // Continue if its friendly unit. We're checking enemy against all our units.
             if (!CheckIfFriendly(allObjects[index1]))
+
                 continue;
 
-            // Skip if this unit does not have vision component
-            if (!allObjects[index1].GetComponent<Vision>())
-                continue;
             bool isVisible = false;
+
 
             GameObject friendlyUnit = allObjects[index1];
 
@@ -364,6 +364,7 @@ public class FogOfWar : MonoBehaviour
                 // Continue if other index is friendly to check enemy with friendly units.
                 if (!allObjects[index1] || !allObjects[index2] || !allObjects[index2].GetComponent<Vision>() || CheckIfFriendly(allObjects[index2]))
                     continue;
+
 
                 GameObject enemyUnit = allObjects[index2];
 
