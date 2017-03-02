@@ -22,4 +22,23 @@ public class SceneController : MonoBehaviour {
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public void GoToLevel1()
+    {
+#if UNITY_ANDROID
+        SceneManager.LoadScene("Stage 1 Android");
+#else
+        SceneManager.LoadScene("Stage 1 PC");
+#endif
+    }
+
+    public void GoToLevel2()
+    {
+#if UNITY_ANDROID
+        SceneManager.LoadScene("Stage 2 Android");
+#else
+        SceneManager.LoadScene("Stage 2 PC");
+#endif
+    }
+
 }

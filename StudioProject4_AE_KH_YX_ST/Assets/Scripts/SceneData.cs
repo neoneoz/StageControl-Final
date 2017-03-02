@@ -47,7 +47,11 @@ public class SceneData : MonoBehaviour
     public Image Health_enemy;
 
     //Spawn limits
+#if UNITY_ANDROID
+    public float SPAWN_LIMIT = 8;
+#else
     public float SPAWN_LIMIT = 30;
+#endif
     float p_unitcount, e_unitcount;
     public bool p_unitmax, e_unitmax;
 
@@ -59,7 +63,7 @@ public class SceneData : MonoBehaviour
     //New Deck Card  Game Object
     public Button NewDeckButton;
     public Image fireSPrite;
-
+                                                                                                                                                        
     public uint GetUniqueID()
     {
         ObjectID++;
