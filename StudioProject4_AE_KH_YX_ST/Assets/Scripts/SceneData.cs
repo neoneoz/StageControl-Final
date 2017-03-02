@@ -46,13 +46,24 @@ public class SceneData : MonoBehaviour
     public Image Health_friendly;
     public Image Health_enemy;
 
+    //Spawn limits
+#if UNITY_ANDROID
+    public float SPAWN_LIMIT = 8;
+#else
+    public float SPAWN_LIMIT = 30;
+#endif
+    float p_unitcount, e_unitcount;
+    public bool p_unitmax, e_unitmax;
+
+
+
     //Object ID
     uint ObjectID = 0;
 
     //New Deck Card  Game Object
     public Button NewDeckButton;
     public Image fireSPrite;
-
+                                                                                                                                                        
     public uint GetUniqueID()
     {
         ObjectID++;
@@ -91,7 +102,42 @@ public class SceneData : MonoBehaviour
               
         }
     }
+    public void AddUnitCount(bool isfriendly)
+    { 
+        if(isfriendly)
+            ++p_unitcount;
+        else
+            ++e_unitcount;
+        updateUnitcount();
+    }
 
+    public void RemoveUnitCount(bool isfriendly)
+    {
+        if (isfriendly)
+           ++p_unitcount;
+        else
+           ++e_unitcount;
+        updateUnitcount();
+    }
+
+    void updateUnitcount()
+    {
+        if (p_unitcount >= SPAWN_LIMIT)
+        {
+            p_unitmax = true;
+        }
+        else
+            p_unitmax = false;
+
+
+        if (e_unitcount >= SPAWN_LIMIT)
+        {
+            e_unitmax = true;
+        }
+        else
+            e_unitmax = false;
+
+    }
     void Awake()
     {
         sceneData = this;
@@ -100,6 +146,10 @@ public class SceneData : MonoBehaviour
 
     void Start()
     {
+        p_unitcount = 0;
+        e_unitcount = 0;
+        p_unitmax=  false;
+        e_unitmax = false;
         //SnapBasesToGrid();
     }
 }
