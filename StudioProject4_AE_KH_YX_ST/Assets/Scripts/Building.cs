@@ -36,6 +36,8 @@ public class Building : MonoBehaviour
     public bool isbase = false;
     public bool isVisible = true;
 
+    bool buildgrids = false;
+
     //ID
     uint ID;
 
@@ -62,16 +64,11 @@ public class Building : MonoBehaviour
             m_buildingList = new List<GameObject>();
             m_initController = false;
         }
-
-        if (isbase)
-        {
-            isVisible = true;
-            if (isfriendly)
-                SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
-        }
-
-
+        
         transform.SetParent(m_buildingControl.transform);
+     
+
+       
         //GameObject handle, handleChild;
         //handle = new GameObject();
         //handleChild = new GameObject();
@@ -90,6 +87,8 @@ public class Building : MonoBehaviour
         //imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
         //imgChild.color = Color.green;
         m_buildingList.Add(gameObject);
+
+
         
     }
 
@@ -141,7 +140,6 @@ public class Building : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         switch (b_state)
         {
             case BUILDSTATE.B_HOLOGRAM:

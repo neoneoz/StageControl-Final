@@ -1,0 +1,400 @@
+fileFormatVersion: 2
+guid: 06180e96752f39840a2ad6715cdcab75
+timeCreated: 1488433302
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: fireSPriteSheet_0
+    21300002: fireSPriteSheet_1
+    21300004: fireSPriteSheet_2
+    21300006: fireSPriteSheet_3
+    21300008: fireSPriteSheet_4
+    21300010: fireSPriteSheet_5
+    21300012: fireSPriteSheet_6
+    21300014: fireSPriteSheet_7
+    21300016: fireSPriteSheet_8
+    21300018: fireSPriteSheet_9
+    21300020: fireSPriteSheet_10
+    21300022: fireSPriteSheet_11
+    21300024: fireSPriteSheet_12
+    21300026: fireSPriteSheet_13
+    21300028: fireSPriteSheet_14
+    21300030: fireSPriteSheet_15
+    21300032: fireSPriteSheet_16
+    21300034: fireSPriteSheet_17
+    21300036: fireSPriteSheet_18
+    21300038: fireSPriteSheet_19
+    21300040: fireSPriteSheet_20
+    21300042: fireSPriteSheet_21
+    21300044: fireSPriteSheet_22
+    21300046: fireSPriteSheet_23
+    21300048: fireSPriteSheet_24
+    21300050: fireSPriteSheet_25
+    21300052: fireSPriteSheet_26
+    21300054: fireSPriteSheet_27
+    21300056: fireSPriteSheet_28
+    21300058: fireSPriteSheet_29
+    21300060: fireSPriteSheet_30
+    21300062: fireSPriteSheet_31
+    21300064: fireSPriteSheet_32
+    21300066: fireSPriteSheet_33
+    21300068: fireSPriteSheet_34
+    21300070: fireSPriteSheet_35
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 256
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: fireSPriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 960
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 4}
+        - {x: -9, y: -15}
+        - {x: -7, y: -16}
+        - {x: 12, y: -16}
+        - {x: 12, y: 9}
+        - {x: 0, y: 9}
+        - {x: -7, y: 8}
+    - name: fireSPriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 960
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 9}
+        - {x: -9, y: -16}
+        - {x: 10, y: -16}
+        - {x: 12, y: -11}
+        - {x: 12, y: 6}
+        - {x: 11, y: 9}
+    - name: fireSPriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 960
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 10}
+        - {x: -9, y: 5}
+        - {x: -9, y: -15}
+        - {x: -7, y: -16}
+        - {x: 11, y: -16}
+        - {x: 12, y: -13}
+        - {x: 12, y: 8}
+        - {x: 8, y: 10}
+    - name: fireSPriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 960
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: -13}
+        - {x: -8, y: -16}
+        - {x: 7, y: -16}
+        - {x: 12, y: -13}
+        - {x: 12, y: 4}
+        - {x: 10, y: 7}
+        - {x: 7, y: 9}
+        - {x: -6, y: 9}
+        - {x: -10, y: 3}
+    - name: fireSPriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 640
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: 9}
+        - {x: -1, y: 9}
+        - {x: -10, y: 3}
+        - {x: -10, y: -12}
+        - {x: -4, y: -16}
+        - {x: 8, y: -16}
+        - {x: 13, y: -9}
+        - {x: 13, y: 0}
+        - {x: 12, y: 5}
+    - name: fireSPriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 640
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 10}
+        - {x: -10, y: 1}
+        - {x: -10, y: -5}
+        - {x: -9, y: -11}
+        - {x: -7, y: -16}
+        - {x: 12, y: -16}
+        - {x: 13, y: -12}
+        - {x: 13, y: 5}
+        - {x: 4, y: 10}
+    - name: fireSPriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 640
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 3}
+        - {x: 6, y: 9}
+        - {x: 3, y: 10}
+        - {x: -3, y: 10}
+        - {x: -9, y: 6}
+        - {x: -10, y: 5}
+        - {x: -10, y: -12}
+        - {x: -5, y: -15}
+        - {x: 7, y: -15}
+        - {x: 10, y: -12}
+        - {x: 13, y: -8}
+        - {x: 13, y: -2}
+    - name: fireSPriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 640
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 11}
+        - {x: -10, y: -11}
+        - {x: -8, y: -14}
+        - {x: -4, y: -15}
+        - {x: 10, y: -15}
+        - {x: 12, y: -12}
+        - {x: 12, y: 1}
+        - {x: 9, y: 11}
+    - name: fireSPriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: -11}
+        - {x: -5, y: -16}
+        - {x: 9, y: -16}
+        - {x: 12, y: -14}
+        - {x: 12, y: 1}
+        - {x: 6, y: 12}
+        - {x: -2, y: 12}
+        - {x: -10, y: 5}
+    - name: fireSPriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 320
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 11}
+        - {x: -9, y: 5}
+        - {x: -9, y: -13}
+        - {x: -4, y: -16}
+        - {x: 9, y: -16}
+        - {x: 11, y: -14}
+        - {x: 13, y: -5}
+        - {x: 13, y: 2}
+        - {x: 6, y: 11}
+    - name: fireSPriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 320
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 12}
+        - {x: -5, y: 12}
+        - {x: -9, y: 10}
+        - {x: -9, y: -13}
+        - {x: -8, y: -16}
+        - {x: 8, y: -16}
+        - {x: 12, y: -10}
+        - {x: 12, y: 5}
+        - {x: 9, y: 11}
+    - name: fireSPriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 320
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4, y: 13}
+        - {x: 1, y: 13}
+        - {x: -9, y: 6}
+        - {x: -10, y: 0}
+        - {x: -10, y: -8}
+        - {x: -5, y: -16}
+        - {x: 7, y: -16}
+        - {x: 10, y: -14}
+        - {x: 11, y: -7}
+        - {x: 11, y: 4}
+    - name: fireSPriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 10}
+        - {x: -9, y: 3}
+        - {x: -9, y: -12}
+        - {x: -6, y: -16}
+        - {x: 9, y: -16}
+        - {x: 11, y: -14}
+        - {x: 11, y: 8}
+        - {x: 6, y: 10}
+    - name: fireSPriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 10}
+        - {x: -9, y: -16}
+        - {x: 11, y: -16}
+        - {x: 11, y: 10}
+    - name: fireSPriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 9}
+        - {x: -9, y: 6}
+        - {x: -9, y: -16}
+        - {x: 9, y: -16}
+        - {x: 12, y: -14}
+        - {x: 12, y: 4}
+        - {x: 7, y: 9}
+    - name: fireSPriteSheet_15
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 0
+        width: 320
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: 9}
+        - {x: -9, y: 5}
+        - {x: -9, y: -10}
+        - {x: -8, y: -16}
+        - {x: 9, y: -16}
+        - {x: 12, y: -13}
+        - {x: 12, y: 2}
+        - {x: 8, y: 9}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

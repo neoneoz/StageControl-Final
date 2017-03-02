@@ -226,6 +226,8 @@ public class GridArray : MonoBehaviour
         Vector2 maxgrid = GetGridIndexAtPosition(basepos.transform.position);//get the grid below the base building
         Vector2 mingrid = maxgrid - new Vector2(size, size);//find minimum grid
         maxgrid += new Vector2(size, size);//find max grid
+
+
         for (int i = (int)mingrid.x; i <= (int)maxgrid.x; ++i)
         {
             if (i < 0 || i > m_rows)
