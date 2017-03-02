@@ -68,7 +68,8 @@ public class CardProjectile : MonoBehaviour
                         nearbylist[i].GetComponent<Building>().TakeDamage(damage);
                     }
                 }
-                m_run = true;
+                if (i == nearbylist.Count - 1)
+                    m_run = true;
             }
             if (GetComponent<Spell>().effectTimer.can_run)
             {

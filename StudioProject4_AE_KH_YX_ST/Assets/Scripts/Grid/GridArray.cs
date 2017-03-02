@@ -30,8 +30,8 @@ public class GridArray : MonoBehaviour
         int index_x = (int)(position.x - GridSizeX * 0.5f) / GridSizeX;
         int index_z = (int)(position.z - GridSizeZ * 0.5f) / GridSizeZ;
 
-        if (index_x >= 0 && index_x <= m_rows &&
-            index_z >= 0 && index_z <= m_columns)
+        if (index_x >= 0 && index_x < m_rows &&
+            index_z >= 0 && index_z < m_columns)
         {
             return gridmesh[index_x, index_z];
         }
@@ -92,12 +92,29 @@ public class GridArray : MonoBehaviour
         }
     }
 
-    public void RenderRadius(Vector3 mouse_pos, float radius)
+    public void RenderRadius(Vector3 mouse_pos, float radius, ref Vector2 oldCoord)
     {
         float offset = (radius - 1f);
         Vector3 maxpos = new Vector3(mouse_pos.x + (GridSizeX * 0.5f) * offset, mouse_pos.y, mouse_pos.z + (GridSizeZ * 0.5f) * offset);
         GameObject max = GetGridAtPosition(maxpos);
-        RenderBuildGrids(max, radius);
+        float scale = radius - 1;
+        //Vector3 maxpos = max.GetComponent<Grid>().GetWorldPosition();
+        Vector2 mxIndex = new Vector2(max.GetComponent<Grid>().position.x, max.GetComponent<Grid>().position.y);
+        Vector2 mnIndex = new Vector2(mxIndex.x - scale, mxIndex.y - scale);
+        //int diffX = index_maxx - (index_minx + 1);
+        //int diffZ = index_maxz - (index_minz + 1);
+        //int maxX = (int)mxIndex.x; int minX = (int)mnIndex.x;
+        //int maxY = (int)mxIndex.y; int minY = (int)mnIndex.y;
+
+            gridmesh[(int)oldCoord.x, (int)oldCoord.y].GetComponent<Renderer>().enabled = false;
+            gridmesh[(int)mnIndex.x, (int)mnIndex.y].GetComponent<Renderer>().enabled = true;
+            gridmesh[(int)mnIndex.x, (int)mnIndex.y].GetComponent<Renderer>().material = gridmesh[(int)mnIndex.x, (int)mnIndex.y].GetComponent<Grid>().materials[1];
+            oldCoord = mnIndex;
+    }
+
+    public void EraseRadius(Vector2 index)
+    {
+        gridmesh[(int)index.x, (int)index.y].GetComponent<Renderer>().enabled = false;
     }
 
     public Vector4 GetMouseGrid(Vector3 position, float size)
@@ -126,7 +143,11 @@ public class GridArray : MonoBehaviour
         return false;
     }
 
-
+    public void Reset()
+    {
+        tempmax = new Vector2(0,0);
+        tempmin = new Vector2(0, 0);
+    }
 
     public void RenderBuildGrids(GameObject max, float size)
     {
@@ -161,11 +182,11 @@ public class GridArray : MonoBehaviour
         tempmin = mnIndex;
     }//renders the grids saved in[tempmn, tempmax]
 
-    public bool DerenderBuildGrids(bool isbuild)
+    public bool DerenderBuildGrids(bool isbuild,bool enemy = false)
     {
         bool buildsucess = true;
 
-        if (isbuild)
+        if (isbuild && !enemy)
         {
             for (int i = (int)tempmin.x; i <= (int)tempmax.x; ++i)
             {   for (int j = (int)tempmin.y; j <= (int)tempmax.y; ++j)
@@ -464,7 +485,7 @@ public class GridArray : MonoBehaviour
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 
-                grid.GetComponent<Renderer>().enabled = true;
+                grid.GetComponent<Renderer>().enabled = false;
         //        // Create a copy of the plane and offset it according to [current width, current column] using Instantiate
         //        GameObject grid = (GameObject)Instantiate(StartingGrid);
         //        grid.name = "Row: " + x + " Col: " + z;

@@ -47,6 +47,7 @@ public class Building : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+       
         //b_state = BUILDSTATE.B_HOLOGRAM;
 
         Invoke("InstantiateParticles", 0.1f);
@@ -65,30 +66,31 @@ public class Building : MonoBehaviour
         if (isbase)
         {
             isVisible = true;
-            if(isfriendly)
-            SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
+            if (isfriendly)
+                SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
         }
 
 
         transform.SetParent(m_buildingControl.transform);
-        GameObject handle, handleChild;
-        handle = new GameObject();
-        handleChild = new GameObject();
-        Image img, imgChild;
-        //handle = handleChild = (GameObject)Instantiate(m_entity);
-        handle.AddComponent<Image>();
-        img = handle.GetComponent<Image>();
-        img.transform.SetParent(transform.parent.GetChild(0));
-        img.rectTransform.sizeDelta = new Vector2(50, 10);
-        img.rectTransform.pivot = new Vector2(0f, 0.5f);
-        img.color = Color.red;
-        handleChild.AddComponent<Image>();
-        imgChild = handleChild.GetComponent<Image>();
-        imgChild.transform.SetParent(img.transform);
-        imgChild.rectTransform.sizeDelta = new Vector2(50, 10);
-        imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
-        imgChild.color = Color.green;
+        //GameObject handle, handleChild;
+        //handle = new GameObject();
+        //handleChild = new GameObject();
+        //Image img, imgChild;
+        ////handle = handleChild = (GameObject)Instantiate(m_entity);
+        //handle.AddComponent<Image>();
+        //img = handle.GetComponent<Image>();
+        //img.transform.SetParent(transform.parent.GetChild(0));
+        //img.rectTransform.sizeDelta = new Vector2(50, 10);
+        //img.rectTransform.pivot = new Vector2(0f, 0.5f);
+        //img.color = Color.red;
+        //handleChild.AddComponent<Image>();
+        //imgChild = handleChild.GetComponent<Image>();
+        //imgChild.transform.SetParent(img.transform);
+        //imgChild.rectTransform.sizeDelta = new Vector2(50, 10);
+        //imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
+        //imgChild.color = Color.green;
         m_buildingList.Add(gameObject);
+        
     }
 
     void InstantiateParticles()
@@ -268,7 +270,7 @@ public class Building : MonoBehaviour
             SceneData.sceneData.gridmesh.FreeGrids(gameObject);
             Building.m_buildingList.Remove(gameObject);
             Destroy(gameObject);
-
+            
         }
         
     }

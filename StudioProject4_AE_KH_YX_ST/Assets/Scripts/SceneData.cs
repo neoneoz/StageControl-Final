@@ -64,23 +64,33 @@ public class SceneData : MonoBehaviour
     }
     void SnapBasesToGrid()
     {
+
         if (LevelManager.instance)
         {
+
+
+            SceneData.sceneData.gridmesh.Reset();
+
             LevelManager.instance.PlayerBase.transform.position = SceneData.sceneData.gridmesh.SnapBuildingPos(LevelManager.instance.PlayerBase.transform.position, 4);
             SceneData.sceneData.gridmesh.DerenderBuildGrids(true);
+            SceneData.sceneData.gridmesh.Reset();
             LevelManager.instance.EnemyBase.transform.position = SceneData.sceneData.gridmesh.SnapBuildingPos(LevelManager.instance.EnemyBase.transform.position, 4);
-            SceneData.sceneData.gridmesh.DerenderBuildGrids(true);      
+
+            SceneData.sceneData.gridmesh.DerenderBuildGrids(true,true);
+
+
+              
         }
     }
 
     void Awake()
     {
         sceneData = this;
-        Invoke("SnapBasesToGrid", 1);
+        Invoke("SnapBasesToGrid", 2);
     }
 
     void Start()
     {
-
+        //SnapBasesToGrid();
     }
 }
