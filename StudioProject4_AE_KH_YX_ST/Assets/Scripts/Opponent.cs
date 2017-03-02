@@ -23,15 +23,25 @@ public class Opponent : MonoBehaviour {
 	void Start () {
 
         lastupdatetime = 0;
+        if (SceneData.sceneData.gridmesh.gridmesh == null)
+            Invoke("SetSources", 1);
+        else
+            SetSources();
         //source = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(new Vector3(820,0,615));//order of execution
-        source = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(e_base.transform.position);
-        msource = source;
         //Debug.Log("source :" +source);
         //source.x += 8;
         //source.y += 8;
         //currentbehaviour = 
 	}
-	
+
+    void SetSources()
+    {
+        source = SceneData.sceneData.gridmesh.GetGridIndexAtPosition(e_base.transform.position);
+        Debug.Log("source: " + source.x + " " + source.y);
+        source.Set(source.x - 2, source.y - 2);
+        msource = source;
+    }
+
 	// Update is called once per frame
     void Update()
     {
@@ -67,25 +77,24 @@ public class Opponent : MonoBehaviour {
         }
         switch(currentbehaviour )
         {
-             
             case BEHAVIOUR.E_EXPAND://build more shit futher up
                 Debug.Log("expanding");
                 if (!roll(80))
                 {
-                    //Debug.Log("failed 80 roll");
+                    Debug.Log("failed 80 roll");
                     break;
 
                 }
                 if (roll(50))
                 {
-                    //Debug.Log("balista roll");
+                    Debug.Log("balista roll");
                     ConstructBuilding(Ballista);
                     break;
                     
                 }
                 if (roll(30))
                 {
-                    //Debug.Log("irongolem roll roll");
+                    Debug.Log("irongolem roll roll");
                     ConstructBuilding(Irongolem);
                     break;
                 }
@@ -200,9 +209,14 @@ public class Opponent : MonoBehaviour {
             case BEHAVIOUR.E_EXPAND://build more shit futher up
             for (int i = 0; i < 4; i++)
             { 
+#if UNITY_ANDROID
+                offset.x = Random.Range(-4, 1);
+                offset.y = Random.Range(-4, 1);
+#else
             offset.x= Random.Range(-8,2);
             offset.y = Random.Range(-8,2);
-            offset = source + offset;
+#endif
+                offset = source + offset;
             
             
             if (trybuild(building, offset))
@@ -218,8 +232,13 @@ public class Opponent : MonoBehaviour {
             case BEHAVIOUR.E_DEFEND://build more shit futher up
             for (int i = 0; i < 4; i++)
             {
+#if UNITY_ANDROID
+                offset.x = Random.Range(-3, 2);
+                offset.y = Random.Range(-3, 2);
+#else
             offset.x= Random.Range(-6,4);
             offset.y = Random.Range(-6,4);
+#endif
             offset = source + offset;
             if (trybuild(building, offset))
                 break;
@@ -232,8 +251,13 @@ public class Opponent : MonoBehaviour {
             case BEHAVIOUR.E_NULL://build more shit futher up
             for (int i = 0; i < 4; i++)
             {
+#if UNITY_ANDROID
+                offset.x = Random.Range(-4, 4);
+                offset.y = Random.Range(-4, 4);
+#else
             offset.x= Random.Range(-8,8);
             offset.y = Random.Range(-8,8);
+#endif
             offset= source + offset;
 
             if (trybuild(building, offset))
@@ -254,16 +278,29 @@ public class Opponent : MonoBehaviour {
 
     bool trybuild(GameObject building,Vector2 grid)
     {
-        if (grid.x >SceneData.sceneData.gridmesh.m_rows  || grid.x <= 0)
+        if (grid.x > SceneData.sceneData.gridmesh.m_rows || grid.x <= 0)
+        {
+            Debug.Log(grid.x + " " + grid.y);
+            Debug.Log("coutside grid");
             return false;
-
-        if (grid.y >SceneData.sceneData.gridmesh.m_columns || grid.y <= 0)
+        }
+        if (grid.y > SceneData.sceneData.gridmesh.m_columns || grid.y <= 0)
+        {
+            Debug.Log(grid.x + " " + grid.y);
+            Debug.Log("coutside grid");
             return false;
+        }
 
 
 
         Vector3 pos = SceneData.sceneData.gridmesh.GetPositionAtGrid((int)grid.x, (int)grid.y);//get the position frm grid
-        pos = SceneData.sceneData.gridmesh.SnapBuildingPos(pos, building.GetComponent<Building>().size,false);//snap the building to the grid
+        int size = building.GetComponent<Building>().size;
+#if UNITY_ANDROID
+        size = size >> 1;
+        if (size <= 0)
+            size = 1;
+#endif
+        pos = SceneData.sceneData.gridmesh.SnapBuildingPos(pos, size,false);//snap the building to the grid
         if (SceneData.sceneData.gridmesh.ForceConstruct(building, pos))
         {
             Debug.Log("Ai build");

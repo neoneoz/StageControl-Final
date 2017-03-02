@@ -70,6 +70,8 @@ public class Deck : MonoBehaviour
             SceneData.sceneData.NewDeckButton.gameObject.SetActive(true);
             if (SceneData.sceneData.Player.GetGold() >= 500)
                 SceneData.sceneData.fireSPrite.gameObject.SetActive(true);
+            else
+                SceneData.sceneData.fireSPrite.gameObject.SetActive(false);
         }
 
 

@@ -32,6 +32,13 @@ public class SharedData : MonoBehaviour {
         m_bgmObject = GameObject.FindGameObjectWithTag("bgm").GetComponent<AudioSource>(); // Find audio source of background music
 	    if(instance == null)
         {
+#if UNITY_ANDROID
+            Application.targetFrameRate = 30;
+            //Application.targetFrameRate = -1;
+#elif UNITY_STANDALONE_WIN
+            Application.targetFrameRate = -1;
+#endif
+
             if (DatabasePopulater == null)
             {
                 Debug.Log("Database populater is null");

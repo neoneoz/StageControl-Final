@@ -15,11 +15,31 @@ public class GridArray : MonoBehaviour
     public GameObject[,] gridmesh;
     public Text debugtext;
     public Vector2 tempmax, tempmin;
-    public float SlopeLeniency = 3;
+    private float SlopeLeniency;
+    private float BuildLeniency;
+#if UNITY_ANDROID
+    public float AndroidSlopeLeniency = 15;
+    public float AndroidBuildLeniency = 2;
+#elif UNITY_STANDALONE_WIN
+    public float PCSlopeLeniency = 10;
+    public float PCBuildLeniency = 1;
+#endif
 
     // Use this for initialization
     void Start()
     {
+#if UNITY_ANDROID
+        SlopeLeniency = AndroidSlopeLeniency;
+        BuildLeniency = AndroidBuildLeniency;
+#elif UNITY_STANDALONE_WIN
+        SlopeLeniency = PCSlopeLeniency;
+        BuildLeniency = PCBuildLeniency;
+#endif
+
+#if UNITY_ANDROID
+        GridSizeX = GridSizeX * 2;
+        GridSizeZ = GridSizeZ * 2;
+#endif
         GenerateGrid();
         GridHyp = Mathf.Sqrt(GridSizeX * GridSizeX + GridSizeZ * GridSizeZ);
 
@@ -223,6 +243,10 @@ public class GridArray : MonoBehaviour
     public void SetBuildableGrids(GameObject basepos)//sets grids aroun the base's area to be buildable
     {
         float size = 28;//square sides in terms of grids
+
+#if UNITY_ANDROID
+        size *= 0.5f;
+#endif
         Vector2 maxgrid = GetGridIndexAtPosition(basepos.transform.position);//get the grid below the base building
         Vector2 mingrid = maxgrid - new Vector2(size, size);//find minimum grid
         maxgrid += new Vector2(size, size);//find max grid
@@ -252,8 +276,13 @@ public class GridArray : MonoBehaviour
 
     public bool ForceConstruct(GameObject building, Vector3 pos)//ai function to help find a place to build a building
     {
-
-        float offset = (building.GetComponent<Building>().size - 1f);
+        int size = building.GetComponent<Building>().size;
+#if UNITY_ANDROID
+        size = size >> 1;
+        if (size <= 0)
+            size = 1;
+#endif
+        float offset = (size - 1f);
         Vector3 position = pos;
         Vector3 maxpos = new Vector3(position.x + (GridSizeX * 0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
         GameObject max = GetGridAtPosition(maxpos);
@@ -392,38 +421,24 @@ public class GridArray : MonoBehaviour
         if (highestvalue < grid.Points[0].y - grid.Points[1].y)
             highestvalue = grid.Points[0].y - grid.Points[1].y;
 
-        if (grid.Points[0].y - grid.Points[1].y > SlopeLeniency)
-        {
-            return true;
-        }
-
         if (highestvalue < grid.Points[1].y - grid.Points[2].y)
             highestvalue = grid.Points[1].y - grid.Points[2].y;
 
-        if (grid.Points[1].y - grid.Points[2].y > SlopeLeniency)
-        {
-            return true;
-        }
-
         if (highestvalue < grid.Points[2].y - grid.Points[3].y)
             highestvalue = grid.Points[2].y - grid.Points[3].y;
-        if (grid.Points[2].y - grid.Points[3].y > SlopeLeniency)
-        {
-            return true;
-        }
 
         if (highestvalue < grid.Points[3].y - grid.Points[4].y)
             highestvalue = grid.Points[3].y - grid.Points[4].y;
 
-        if (grid.Points[3].y - grid.Points[4].y > SlopeLeniency)
-        {
-            return true;
-        }
 
-        if (highestvalue > 1)
+
+        if (highestvalue > BuildLeniency)
             grid.buildable = false;
         else
             grid.buildable = true;
+
+        if (highestvalue > SlopeLeniency)
+            return true;
         return false;
     }
 
