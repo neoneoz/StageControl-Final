@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
         lasttouchposition = Input.mousePosition;
         LeftMouseDown = true;
 #endif
-        debugtext.text = "IN MOUSE DOWN";
+        //debugtext.text = "IN MOUSE DOWN";
     }
 
     void OnButtonUp()
@@ -73,7 +73,7 @@ public class CameraController : MonoBehaviour
 #else
         LeftMouseDown = false;
 #endif
-        debugtext.text = "IN LET GO";
+       // debugtext.text = "IN LET GO";
     }
 
     void OnDrag()
@@ -123,7 +123,7 @@ public class CameraController : MonoBehaviour
         }
         lasttouchposition = Input.mousePosition;
 #endif
-        debugtext.text = "PANNING\nCamera Pos: [" + GetCamera().transform.position.x + "," + GetCamera().transform.position.y + "," + GetCamera().transform.position.z + "]";
+        //debugtext.text = "PANNING\nCamera Pos: [" + GetCamera().transform.position.x + "," + GetCamera().transform.position.y + "," + GetCamera().transform.position.z + "]";
     }
 
     void zoomUpdate()
@@ -141,7 +141,7 @@ public class CameraController : MonoBehaviour
             newCameraPos.z = Mathf.Clamp(newCameraPos.z, MinConstrainZ, MaxConstrainZ);
             SetCameraPosition(newCameraPos);
         }
-        debugtext.text = "ZOOMING\nZoom Out Level: " + zoomlevel;
+        //debugtext.text = "ZOOMING\nZoom Out Level: " + zoomlevel;
     }
 
     void Start()
@@ -238,7 +238,7 @@ public class CameraController : MonoBehaviour
         else if (Input.GetMouseButton(0) && LeftMouseDown)
         {
             OnDrag();
-            debugtext.text = "PANNING\nCamera Pos: [" + GetCamera().transform.position.x + "," + GetCamera().transform.position.y + "," + GetCamera().transform.position.z + "]";
+            //debugtext.text = "PANNING\nCamera Pos: [" + GetCamera().transform.position.x + "," + GetCamera().transform.position.y + "," + GetCamera().transform.position.z + "]";
         }
 
         if(Input.GetAxis("Mouse ScrollWheel") != 0f)

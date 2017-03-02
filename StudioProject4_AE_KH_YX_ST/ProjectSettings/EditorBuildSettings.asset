@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/Scenes/VictoryScene.unity
   - enabled: 1
     path: Assets/Scenes/DefeatScene.unity
+  - enabled: 1
+    path: Assets/Scenes/Stage 3 PC.unity
