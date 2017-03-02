@@ -224,4 +224,9 @@ public class Spawn : MonoBehaviour
 
         return m_spawntimer / m_secondsToSpawn;
     }
+
+    void OnDestroy()
+    {
+        m_initController = false;
+    }
 }

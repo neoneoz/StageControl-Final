@@ -65,15 +65,10 @@ public class Building : MonoBehaviour
         // The controller all building belongs to
         if (m_initController)
         {
-            m_buildingControl = new GameObject();
-            m_buildingControl.name = "Building Controller";
-
             m_buildingList = new List<GameObject>();
             m_initController = false;
         }
-        
-        transform.SetParent(m_buildingControl.transform);
-     
+             
 
        
         //GameObject handle, handleChild;

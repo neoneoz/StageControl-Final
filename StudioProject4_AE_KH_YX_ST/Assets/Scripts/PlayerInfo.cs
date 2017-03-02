@@ -9,7 +9,6 @@ public class PlayerInfo : MonoBehaviour { // Can be singleton
     public Text goldtext; 
 	// Use this for initialization
 	void Start () {
-        Gold = 500;
         goldtext.text = ((int)Gold).ToString();
 	}
 	

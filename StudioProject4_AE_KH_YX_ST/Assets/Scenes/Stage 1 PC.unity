@@ -3920,6 +3920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gold: 800
+  GoldIncomeRate: 1
   goldtext: {fileID: 1836513074}
 --- !u!4 &2002022918
 Transform:
@@ -4003,19 +4004,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardsToInclude:
-  - CardAmount: 0
+  - CardAmount: 3
     CardType: 0
   - CardAmount: 3
     CardType: 1
-  - CardAmount: 0
+  - CardAmount: 3
     CardType: 2
-  - CardAmount: 0
+  - CardAmount: 3
     CardType: 3
-  - CardAmount: 0
+  - CardAmount: 3
     CardType: 4
-  - CardAmount: 0
+  - CardAmount: 3
     CardType: 5
-  - CardAmount: 0
+  - CardAmount: 3
     CardType: 6
   Cards: []
   handHandler: {fileID: 119334292}
