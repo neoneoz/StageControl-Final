@@ -478,7 +478,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 487652, guid: 3a133c92e164a2b44a9d92a602c40bd8, type: 2}
       propertyPath: m_RootOrder
-      value: 22
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 149596, guid: 3a133c92e164a2b44a9d92a602c40bd8, type: 2}
       propertyPath: m_Name
@@ -1122,6 +1122,123 @@ MonoBehaviour:
   zoomMinLevel: 5
   ground: {fileID: 1551452616}
   debugtext: {fileID: 0}
+--- !u!1 &1313431232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1313431237}
+  - 33: {fileID: 1313431236}
+  - 64: {fileID: 1313431235}
+  - 23: {fileID: 1313431234}
+  - 114: {fileID: 1313431233}
+  m_Layer: 0
+  m_Name: Fog of war
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1313431233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1313431232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1dbc7e2a31ad0146bd74cd4f738e541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quadHeight: 180
+  fogColor: {r: 0, g: 0, b: 0, a: 0.5882353}
+  EntityList: {fileID: 0}
+  Buildings: {fileID: 0}
+  FogTexture: {fileID: 2800000, guid: ba621a8a627d6864990293854f9716b7, type: 3}
+  buffer1: {fileID: 0}
+  buffer2: {fileID: 0}
+  FogCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 10
+    - time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 10
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  allObjects: []
+  NumToUpdate: 1
+--- !u!23 &1313431234
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1313431232}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 18dbb3e440184fc4fb21344e039adf07, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!64 &1313431235
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1313431232}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &1313431236
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1313431232}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1313431237
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1313431232}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
+  m_LocalPosition: {x: -117.5, y: 16.466328, z: 288.51035}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
 --- !u!1 &1321056150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,7 +2058,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 487652, guid: 3a133c92e164a2b44a9d92a602c40bd8, type: 2}
       propertyPath: m_RootOrder
-      value: 23
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 149596, guid: 3a133c92e164a2b44a9d92a602c40bd8, type: 2}
       propertyPath: m_Name
@@ -2061,7 +2178,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 458392, guid: 785853207db31114aa4ad4b26236b599, type: 2}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 785853207db31114aa4ad4b26236b599, type: 2}
