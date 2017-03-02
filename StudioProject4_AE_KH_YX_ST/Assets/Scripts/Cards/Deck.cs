@@ -24,6 +24,7 @@ public class Deck : MonoBehaviour
         GenerateDeck();
         PlayAudio.instance.m_source.clip = PlayAudio.instance.m_drawCard;
         SceneData.sceneData.NewDeckButton.gameObject.SetActive(false);
+        SceneData.sceneData.fireSPrite.gameObject.SetActive(false);
     }
 
     public void GenerateDeck()
@@ -65,7 +66,13 @@ public class Deck : MonoBehaviour
         }
 
         if (Cards.Count <= 0)
+        {
             SceneData.sceneData.NewDeckButton.gameObject.SetActive(true);
+            if (SceneData.sceneData.Player.GetGold() >= 500)
+                SceneData.sceneData.fireSPrite.gameObject.SetActive(true);
+        }
+
+
     }
 
 
@@ -129,6 +136,7 @@ public class Deck : MonoBehaviour
         {
             if (SceneData.sceneData.Player.GetGold() >= 500)
             {
+
                 SceneData.sceneData.Player.SpendPlayerGold(500);
                 PlayAudio.instance.m_source.clip = PlayAudio.instance.m_newDeck;
                 PlayAudio.instance.m_source.volume = 0.5f;
@@ -139,6 +147,7 @@ public class Deck : MonoBehaviour
             }
         }
         SceneData.sceneData.NewDeckButton.gameObject.SetActive(false);
+        SceneData.sceneData.fireSPrite.gameObject.SetActive(false);
         //else if (Cards.Count > 0)
         //SceneData.sceneData.NewDeckButton.enabled = false;
     }

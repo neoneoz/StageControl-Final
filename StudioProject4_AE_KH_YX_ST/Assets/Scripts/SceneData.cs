@@ -51,6 +51,7 @@ public class SceneData : MonoBehaviour
 
     //New Deck Card  Game Object
     public Button NewDeckButton;
+    public Image fireSPrite;
 
     public uint GetUniqueID()
     {
