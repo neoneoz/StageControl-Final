@@ -136,6 +136,12 @@ public class Building : MonoBehaviour
             buildingHealthImage = Instantiate(SceneData.sceneData.Health_enemy);
             buildingHealthImage.transform.SetParent(SceneData.sceneData.UI.transform);
         }
+
+        if (!isbase)
+        {
+            buildingHealthImage.enabled = false;
+            buildingHealthImage.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        }
     }
 
     public Vector3 GetMaxPosOfBuilding(Vector3 position, int othersize)
@@ -184,6 +190,8 @@ public class Building : MonoBehaviour
                             gameObject.transform.GetChild(0).transform.GetChild(i).GetComponent<MeshRenderer>().material = undamaged;
                         }
                         b_state = BUILDSTATE.B_ACTIVE;
+                        buildingHealthImage.enabled = true;
+                        buildingHealthImage.transform.GetChild(0).GetComponent<Image>().enabled = true;
                         GetComponent<Spawn>().SetSpawnPosition();
                         Destroy(buildingTemp);
                         Destroy(buildTimerTemp);
