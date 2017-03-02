@@ -114,9 +114,9 @@ public class SceneData : MonoBehaviour
     public void RemoveUnitCount(bool isfriendly)
     {
         if (isfriendly)
-           ++p_unitcount;
+           --p_unitcount;
         else
-           ++e_unitcount;
+           --e_unitcount;
         updateUnitcount();
     }
 
