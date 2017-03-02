@@ -130,8 +130,14 @@ public class Spawn : MonoBehaviour
         //    return;
         //if (!m_building.isfriendly && m_entityList.Count > m_team2MAX)
         //    return;
-        if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE && GetComponent<Pathfinder>().PathFound && GetComponent<Pathfinder>().PathToEnd.Count > 0)
+        if (m_building.b_state == Building.BUILDSTATE.B_ACTIVE && GetComponent<Pathfinder>().PathFound && GetComponent<Pathfinder>().PathToEnd.Count > 0)//pathfind check
+        {
+            if(m_building.isfriendly && !SceneData.sceneData.p_unitmax)
             m_spawntimer += Time.deltaTime;
+
+            if (!m_building.isfriendly && !SceneData.sceneData.e_unitmax)
+            m_spawntimer += Time.deltaTime;
+        }
 
         if (SceneData.sceneData.gridmesh.GetGridAtPosition(UnitSpawnPosition).GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE)
         {
@@ -157,6 +163,9 @@ public class Spawn : MonoBehaviour
                 GameObject handle, handleChild;
                 handle = new GameObject();
                 handleChild = new GameObject();
+
+
+
                 Image img, imgChild;
                 //handle = handleChild = (GameObject)Instantiate(m_entity);
                 handle.AddComponent<Image>();
@@ -177,12 +186,14 @@ public class Spawn : MonoBehaviour
                 //Debug.Log(transform.position);
 
                 spawn.transform.position = UnitSpawnPosition;
-                if (m_building.isfriendly)
-                {
-                    spawn.GetComponent<Unit>().m_isFriendly = true;
-                }
+
+                spawn.GetComponent<Unit>().m_isFriendly = m_building.isfriendly;
+                SceneData.sceneData.AddUnitCount(m_building.isfriendly);
                 m_entityList.Add(spawn);
                 m_tempList.Add(spawn);
+
+
+
             }
 
             //if (m_entityList.Count < m_spawnLimit && m_currAmt > m_spawnLimit)
