@@ -3915,7 +3915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95929f0e0cb98264b9750e21cc70aef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gold: 0
+  Gold: 800
   goldtext: {fileID: 1836513074}
 --- !u!4 &2002022918
 Transform:
