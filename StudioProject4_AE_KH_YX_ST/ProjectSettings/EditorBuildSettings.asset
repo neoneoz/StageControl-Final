@@ -19,3 +19,7 @@ EditorBuildSettings:
     path: Assets/Scenes/UI.unity
   - enabled: 1
     path: Assets/Scenes/Attacking.unity
+  - enabled: 1
+    path: Assets/Scenes/VictoryScene.unity
+  - enabled: 1
+    path: Assets/Scenes/DefeatScene.unity

@@ -17,4 +17,9 @@ public class SceneController : MonoBehaviour {
     {
         SceneManager.LoadScene(m_sceneName);
     }
+
+    public static void GoToScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 }
