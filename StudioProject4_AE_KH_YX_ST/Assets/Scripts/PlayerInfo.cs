@@ -4,16 +4,20 @@ using UnityEngine.UI;
 
 public class PlayerInfo : MonoBehaviour { // Can be singleton
 
-    public int Gold;
+    public float Gold;
+    public float GoldIncomeRate = 1;
     public Text goldtext; 
 	// Use this for initialization
 	void Start () {
         Gold = 500;
-        goldtext.text = Gold.ToString();
+        goldtext.text = ((int)Gold).ToString();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        Gold += GoldIncomeRate * Time.deltaTime;
+        goldtext.text = ((int)Gold).ToString();
 	}
 
     public bool AddPlayerGold(int amount)
@@ -21,7 +25,7 @@ public class PlayerInfo : MonoBehaviour { // Can be singleton
         if (goldtext)
         {
             Gold += amount;
-            goldtext.text = Gold.ToString();
+            goldtext.text = ((int)Gold).ToString();
         }
         else
             return false;
@@ -51,6 +55,6 @@ public class PlayerInfo : MonoBehaviour { // Can be singleton
 
     public int GetGold()
     {
-        return Gold;
+        return (int)Gold;
     }
 }
