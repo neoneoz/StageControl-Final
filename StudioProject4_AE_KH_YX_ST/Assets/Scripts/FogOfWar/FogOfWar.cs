@@ -333,7 +333,7 @@ public class FogOfWar : MonoBehaviour
 
             if (allObjects[index1] != LevelManager.instance.EnemyBase)
             {
-               //Render(allObjects[index1], isVisible);
+               Render(allObjects[index1], isVisible);
                SetVisibility(allObjects[index1], isVisible);
             }
         }

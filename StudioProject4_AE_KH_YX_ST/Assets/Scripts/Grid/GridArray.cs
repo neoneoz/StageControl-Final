@@ -498,7 +498,7 @@ public class GridArray : MonoBehaviour
                 UpdateGridAvailability(grid.GetComponent<Grid>());
                 grid.GetComponent<LineRenderer>().SetVertexCount(5);
                 grid.GetComponent<LineRenderer>().SetPositions(grid.GetComponent<Grid>().Points);
-                grid.GetComponent<LineRenderer>().SetWidth(3, 3);
+                grid.GetComponent<LineRenderer>().SetWidth(1, 1);
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 

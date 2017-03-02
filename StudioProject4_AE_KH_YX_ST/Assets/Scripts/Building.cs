@@ -214,7 +214,8 @@ public class Building : MonoBehaviour
 
                 if (GetComponent<Spawn>() && spawnTimerTemp)
                 {
-                    spawnTimerTemp.enabled = true;
+                    if (isfriendly)
+                        spawnTimerTemp.enabled = true; 
                     spawnTimerTemp.fillAmount = GetComponent<Spawn>().GetRatio();
                     spawnTimerTemp.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
                 }
