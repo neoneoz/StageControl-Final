@@ -60,28 +60,46 @@ public class SceneData : MonoBehaviour
     }
     void Update()
     {
-        //Gametime += Time.deltaTime;
+        Gametime += Time.deltaTime;
         //GameTimer.text = Gametime.ToString();
     }
     void SnapBasesToGrid()
     {
+
         if (LevelManager.instance)
         {
+
+
+            SceneData.sceneData.gridmesh.Reset();
+
+#if UNITY_ANDROID
+            LevelManager.instance.PlayerBase.transform.position = SceneData.sceneData.gridmesh.SnapBuildingPos(LevelManager.instance.PlayerBase.transform.position, 2);
+#else
             LevelManager.instance.PlayerBase.transform.position = SceneData.sceneData.gridmesh.SnapBuildingPos(LevelManager.instance.PlayerBase.transform.position, 4);
-            SceneData.sceneData.gridmesh.DerenderBuildGrids(true);
+#endif
+            SceneData.sceneData.gridmesh.DerenderBuildGrids(true,true);
+
+            SceneData.sceneData.gridmesh.Reset();
+#if UNITY_ANDROID
+            LevelManager.instance.EnemyBase.transform.position = SceneData.sceneData.gridmesh.SnapBuildingPos(LevelManager.instance.EnemyBase.transform.position, 2);
+#else
             LevelManager.instance.EnemyBase.transform.position = SceneData.sceneData.gridmesh.SnapBuildingPos(LevelManager.instance.EnemyBase.transform.position, 4);
-            SceneData.sceneData.gridmesh.DerenderBuildGrids(true);      
+#endif
+            SceneData.sceneData.gridmesh.DerenderBuildGrids(true,true);
+
+            SceneData.sceneData.gridmesh.SetBuildableGrids(LevelManager.instance.PlayerBase);
+              
         }
     }
 
     void Awake()
     {
         sceneData = this;
-        Invoke("SnapBasesToGrid", 1);
+        Invoke("SnapBasesToGrid",1);
     }
 
     void Start()
     {
-
+        //SnapBasesToGrid();
     }
 }

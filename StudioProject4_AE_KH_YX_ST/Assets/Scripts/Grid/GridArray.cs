@@ -15,24 +15,43 @@ public class GridArray : MonoBehaviour
     public GameObject[,] gridmesh;
     public Text debugtext;
     public Vector2 tempmax, tempmin;
-    public float SlopeLeniency = 3;
+    private float SlopeLeniency;
+    private float BuildLeniency;
+#if UNITY_ANDROID
+    public float AndroidSlopeLeniency = 15;
+    public float AndroidBuildLeniency = 2;
+#elif UNITY_STANDALONE_WIN
+    public float PCSlopeLeniency = 10;
+    public float PCBuildLeniency = 1;
+#endif
 
     // Use this for initialization
     void Start()
     {
+#if UNITY_ANDROID
+        SlopeLeniency = AndroidSlopeLeniency;
+        BuildLeniency = AndroidBuildLeniency;
+#elif UNITY_STANDALONE_WIN
+        SlopeLeniency = PCSlopeLeniency;
+        BuildLeniency = PCBuildLeniency;
+#endif
+
+#if UNITY_ANDROID
+        GridSizeX = GridSizeX * 2;
+        GridSizeZ = GridSizeZ * 2;
+#endif
         GenerateGrid();
         GridHyp = Mathf.Sqrt(GridSizeX * GridSizeX + GridSizeZ * GridSizeZ);
 
     }
-
     // Gets gameobject at position passed in or returns null if there is nothing there
     public GameObject GetGridAtPosition(Vector3 position)
     {
         int index_x = (int)(position.x - GridSizeX * 0.5f) / GridSizeX;
         int index_z = (int)(position.z - GridSizeZ * 0.5f) / GridSizeZ;
 
-        if (index_x >= 0 && index_x <= m_rows &&
-            index_z >= 0 && index_z <= m_columns)
+        if (index_x >= 0 && index_x < m_rows &&
+            index_z >= 0 && index_z < m_columns)
         {
             return gridmesh[index_x, index_z];
         }
@@ -40,7 +59,7 @@ public class GridArray : MonoBehaviour
         return null;
     }
 
-    public Vector3 SnapBuildingPos(Vector3 position , float size)
+    public Vector3 SnapBuildingPos(Vector3 position , float size,bool render = true)
     {
         float offset = (size - 1f);
         Vector3 maxpos = new Vector3(position.x + (GridSizeX *0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
@@ -49,12 +68,15 @@ public class GridArray : MonoBehaviour
         snaplocation.z -= (GridSizeZ*0.5f) * offset;
         snaplocation.x -= (GridSizeX*0.5f) * offset;
         snaplocation.y = SceneData.sceneData.ground.SampleHeight(snaplocation);
+
+        if (render)
         RenderBuildGrids(max, size);
+
         //max.GetComponent<Grid>().ChangeState(Grid.GRID_STATE.UNAVAILABLE);   
         return snaplocation;
      
             
-    }
+    }//takes a position , and a building's size and snaps it to the closet correct position
 
     public void FreeGrids(GameObject building)//call this to free a building's grids after it is destroyed
     {
@@ -90,12 +112,29 @@ public class GridArray : MonoBehaviour
         }
     }
 
-    public void RenderRadius(Vector3 mouse_pos, float radius)
+    public void RenderRadius(Vector3 mouse_pos, float radius, ref Vector2 oldCoord)
     {
         float offset = (radius - 1f);
         Vector3 maxpos = new Vector3(mouse_pos.x + (GridSizeX * 0.5f) * offset, mouse_pos.y, mouse_pos.z + (GridSizeZ * 0.5f) * offset);
         GameObject max = GetGridAtPosition(maxpos);
-        RenderBuildGrids(max, radius);
+        float scale = radius - 1;
+        //Vector3 maxpos = max.GetComponent<Grid>().GetWorldPosition();
+        Vector2 mxIndex = new Vector2(max.GetComponent<Grid>().position.x, max.GetComponent<Grid>().position.y);
+        Vector2 mnIndex = new Vector2(mxIndex.x - scale, mxIndex.y - scale);
+        //int diffX = index_maxx - (index_minx + 1);
+        //int diffZ = index_maxz - (index_minz + 1);
+        //int maxX = (int)mxIndex.x; int minX = (int)mnIndex.x;
+        //int maxY = (int)mxIndex.y; int minY = (int)mnIndex.y;
+
+            gridmesh[(int)oldCoord.x, (int)oldCoord.y].GetComponent<Renderer>().enabled = false;
+            gridmesh[(int)mnIndex.x, (int)mnIndex.y].GetComponent<Renderer>().enabled = true;
+            gridmesh[(int)mnIndex.x, (int)mnIndex.y].GetComponent<Renderer>().material = gridmesh[(int)mnIndex.x, (int)mnIndex.y].GetComponent<Grid>().materials[1];
+            oldCoord = mnIndex;
+    }
+
+    public void EraseRadius(Vector2 index)
+    {
+        gridmesh[(int)index.x, (int)index.y].GetComponent<Renderer>().enabled = false;
     }
 
     public Vector4 GetMouseGrid(Vector3 position, float size)
@@ -122,6 +161,12 @@ public class GridArray : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Reset()
+    {
+        tempmax = new Vector2(0,0);
+        tempmin = new Vector2(0, 0);
     }
 
     public void RenderBuildGrids(GameObject max, float size)
@@ -155,13 +200,13 @@ public class GridArray : MonoBehaviour
         //store the min max of rendered gfrids
         tempmax = mxIndex;
         tempmin = mnIndex;
-    }
+    }//renders the grids saved in[tempmn, tempmax]
 
-    public bool DerenderBuildGrids(bool isbuild)
+    public bool DerenderBuildGrids(bool isbuild,bool enemy = false)
     {
         bool buildsucess = true;
 
-        if (isbuild)
+        if (isbuild && !enemy)
         {
             for (int i = (int)tempmin.x; i <= (int)tempmax.x; ++i)
             {   for (int j = (int)tempmin.y; j <= (int)tempmax.y; ++j)
@@ -190,14 +235,23 @@ public class GridArray : MonoBehaviour
         }
 
         return buildsucess;
-    }
+    }//derenders the grids saved in [tempmin.tempmax], if isbuild, constructs buildinjg and updates grids
+
+
+
 
     public void SetBuildableGrids(GameObject basepos)//sets grids aroun the base's area to be buildable
     {
         float size = 28;//square sides in terms of grids
+
+#if UNITY_ANDROID
+        size *= 0.5f;
+#endif
         Vector2 maxgrid = GetGridIndexAtPosition(basepos.transform.position);//get the grid below the base building
         Vector2 mingrid = maxgrid - new Vector2(size, size);//find minimum grid
         maxgrid += new Vector2(size, size);//find max grid
+
+
         for (int i = (int)mingrid.x; i <= (int)maxgrid.x; ++i)
         {
             if (i < 0 || i > m_rows)
@@ -220,10 +274,48 @@ public class GridArray : MonoBehaviour
 
     }
 
-    public bool OForceBuild(GameObject building, Vector3 pos)
+    public bool ForceConstruct(GameObject building, Vector3 pos)//ai function to help find a place to build a building
     {
-        
+        int size = building.GetComponent<Building>().size;
+#if UNITY_ANDROID
+        size = size >> 1;
+        if (size <= 0)
+            size = 1;
+#endif
+        float offset = (size - 1f);
+        Vector3 position = pos;
+        Vector3 maxpos = new Vector3(position.x + (GridSizeX * 0.5f) * offset, position.y, position.z + (GridSizeZ * 0.5f) * offset);
+        GameObject max = GetGridAtPosition(maxpos);
+        Vector2 mxIndex = new Vector2(max.GetComponent<Grid>().position.x, max.GetComponent<Grid>().position.y);
+        Vector2 mnIndex = new Vector2(mxIndex.x - offset, mxIndex.y - offset);
+
+
+        int maxX = (int)mxIndex.x; int minX = (int)mnIndex.x;
+        int maxY = (int)mxIndex.y; int minY = (int)mnIndex.y;
+        for (int i = minX; i <= maxX; ++i)
+        {
+            for (int j = minY; j <= maxY; ++j)
+            {
+                if (gridmesh[i, j].GetComponent<Grid>().state == Grid.GRID_STATE.UNAVAILABLE)
+                    return false;
+                gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+
+            }
+        }
+
+        for (int i = minX; i <= maxX; ++i)
+        {
+            for (int j = minY; j <= maxY; ++j)
+            {
+                gridmesh[i, j].GetComponent<Grid>().state = Grid.GRID_STATE.UNAVAILABLE;
+                gridmesh[i, j].GetComponent<Grid>().UpdateAvailability();
+
+            }
+        }
         return true;
+
+             
+
     }
 
     // Takes in a gameobject position and scale and returns which grids it occupies in the form on their grid index x and y
@@ -329,38 +421,24 @@ public class GridArray : MonoBehaviour
         if (highestvalue < grid.Points[0].y - grid.Points[1].y)
             highestvalue = grid.Points[0].y - grid.Points[1].y;
 
-        if (grid.Points[0].y - grid.Points[1].y > SlopeLeniency)
-        {
-            return true;
-        }
-
         if (highestvalue < grid.Points[1].y - grid.Points[2].y)
             highestvalue = grid.Points[1].y - grid.Points[2].y;
 
-        if (grid.Points[1].y - grid.Points[2].y > SlopeLeniency)
-        {
-            return true;
-        }
-
         if (highestvalue < grid.Points[2].y - grid.Points[3].y)
             highestvalue = grid.Points[2].y - grid.Points[3].y;
-        if (grid.Points[2].y - grid.Points[3].y > SlopeLeniency)
-        {
-            return true;
-        }
 
         if (highestvalue < grid.Points[3].y - grid.Points[4].y)
             highestvalue = grid.Points[3].y - grid.Points[4].y;
 
-        if (grid.Points[3].y - grid.Points[4].y > SlopeLeniency)
-        {
-            return true;
-        }
 
-        if (highestvalue > 1)
+
+        if (highestvalue > BuildLeniency)
             grid.buildable = false;
         else
             grid.buildable = true;
+
+        if (highestvalue > SlopeLeniency)
+            return true;
         return false;
     }
 
@@ -424,7 +502,7 @@ public class GridArray : MonoBehaviour
                 grid.transform.SetParent(gameObject.transform);
                 gridmesh[x, z] = grid;
 
-                grid.GetComponent<Renderer>().enabled = true;
+                grid.GetComponent<Renderer>().enabled = false;
         //        // Create a copy of the plane and offset it according to [current width, current column] using Instantiate
         //        GameObject grid = (GameObject)Instantiate(StartingGrid);
         //        grid.name = "Row: " + x + " Col: " + z;

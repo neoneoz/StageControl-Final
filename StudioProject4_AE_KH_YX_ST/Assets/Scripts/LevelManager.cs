@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+
         if (instance == null)
         {
             instance = this;

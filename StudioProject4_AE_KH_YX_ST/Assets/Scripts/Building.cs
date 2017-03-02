@@ -37,6 +37,8 @@ public class Building : MonoBehaviour
     public bool isbase = false;
     public bool isVisible = true;
 
+    bool buildgrids = false;
+
     //ID
     uint ID;
 
@@ -48,7 +50,14 @@ public class Building : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
         //b_state = BUILDSTATE.B_HOLOGRAM;
+
+#if UNITY_ANDROID
+        size = size >> 1;
+        if (size <= 0)
+            size = 1;
+#endif
 
         Invoke("InstantiateParticles", 0.1f);
         //isfriendly = true;//default to the player's units
@@ -62,34 +71,32 @@ public class Building : MonoBehaviour
             m_buildingList = new List<GameObject>();
             m_initController = false;
         }
-
-        if (isbase)
-        {
-            isVisible = true;
-            if(isfriendly)
-            SceneData.sceneData.gridmesh.SetBuildableGrids(gameObject);
-        }
-
-
+        
         transform.SetParent(m_buildingControl.transform);
-        GameObject handle, handleChild;
-        handle = new GameObject();
-        handleChild = new GameObject();
-        Image img, imgChild;
-        //handle = handleChild = (GameObject)Instantiate(m_entity);
-        handle.AddComponent<Image>();
-        img = handle.GetComponent<Image>();
-        img.transform.SetParent(transform.parent.GetChild(0));
-        img.rectTransform.sizeDelta = new Vector2(50, 10);
-        img.rectTransform.pivot = new Vector2(0f, 0.5f);
-        img.color = Color.red;
-        handleChild.AddComponent<Image>();
-        imgChild = handleChild.GetComponent<Image>();
-        imgChild.transform.SetParent(img.transform);
-        imgChild.rectTransform.sizeDelta = new Vector2(50, 10);
-        imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
-        imgChild.color = Color.green;
+     
+
+       
+        //GameObject handle, handleChild;
+        //handle = new GameObject();
+        //handleChild = new GameObject();
+        //Image img, imgChild;
+        ////handle = handleChild = (GameObject)Instantiate(m_entity);
+        //handle.AddComponent<Image>();
+        //img = handle.GetComponent<Image>();
+        //img.transform.SetParent(transform.parent.GetChild(0));
+        //img.rectTransform.sizeDelta = new Vector2(50, 10);
+        //img.rectTransform.pivot = new Vector2(0f, 0.5f);
+        //img.color = Color.red;
+        //handleChild.AddComponent<Image>();
+        //imgChild = handleChild.GetComponent<Image>();
+        //imgChild.transform.SetParent(img.transform);
+        //imgChild.rectTransform.sizeDelta = new Vector2(50, 10);
+        //imgChild.rectTransform.pivot = new Vector2(0f, 0.5f);
+        //imgChild.color = Color.green;
         m_buildingList.Add(gameObject);
+
+
+        
     }
 
     void InstantiateParticles()
@@ -129,18 +136,23 @@ public class Building : MonoBehaviour
             buildingHealthImage = Instantiate(SceneData.sceneData.Health_enemy);
             buildingHealthImage.transform.SetParent(SceneData.sceneData.UI.transform);
         }
+
+        if (!isbase)
+        {
+            buildingHealthImage.enabled = false;
+            buildingHealthImage.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        }
     }
 
     public Vector3 GetMaxPosOfBuilding(Vector3 position, int othersize)
     {
-        Vector3 maxpos = position + new Vector3(SceneData.sceneData.gridmesh.GridSizeX * (othersize), 0, SceneData.sceneData.gridmesh.GridSizeX * (othersize));
+        Vector3 maxpos = position + new Vector3(SceneData.sceneData.gridmesh.GridSizeX * (othersize) + SceneData.sceneData.gridmesh.GridSizeX, 0, SceneData.sceneData.gridmesh.GridSizeZ * (othersize) + SceneData.sceneData.gridmesh.GridSizeZ);
         return maxpos;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         switch (b_state)
         {
             case BUILDSTATE.B_HOLOGRAM:
@@ -178,6 +190,8 @@ public class Building : MonoBehaviour
                             gameObject.transform.GetChild(0).transform.GetChild(i).GetComponent<MeshRenderer>().material = undamaged;
                         }
                         b_state = BUILDSTATE.B_ACTIVE;
+                        buildingHealthImage.enabled = true;
+                        buildingHealthImage.transform.GetChild(0).GetComponent<Image>().enabled = true;
                         GetComponent<Spawn>().SetSpawnPosition();
                         Destroy(buildingTemp);
                         Destroy(buildTimerTemp);
@@ -275,6 +289,7 @@ public class Building : MonoBehaviour
 
           else if (gameObject == LevelManager.instance.EnemyBase)
               SceneController.GoToScene("VictoryScene");
+
 
         }
         

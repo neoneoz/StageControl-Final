@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1690f764439d7a24a8dc9c262a224ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_sceneName: Attacking
+  m_sceneName: Attacking Fixed
 --- !u!1 &257438987
 GameObject:
   m_ObjectHideFlags: 0
